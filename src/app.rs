@@ -1,358 +1,231 @@
-use log::*;
-use serde_derive::{Deserialize, Serialize};
-use strum::IntoEnumIterator;
-use strum_macros::{EnumIter, ToString};
-use yew::format::Json;
+#![recursion_limit = "256"]
+
 use yew::prelude::*;
-use yew::services::storage::{Area, StorageService};
 
-const KEY: &str = "yew.todomvc.self";
+use crate::button::Button;
+use serde::{Deserialize, Serialize};
+use yew::services::{DialogService, StorageService};
 
+#[derive(Debug)]
 pub struct App {
     link: ComponentLink<Self>,
-    storage: StorageService,
-    state: State,
+    scene: Scene,
+    name: String,
+    description: String
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct State {
-    entries: Vec<Entry>,
-    filter: Filter,
-    value: String,
-    edit_value: String,
-}
-
-#[derive(Serialize, Deserialize)]
-struct Entry {
-    description: String,
-    completed: bool,
-    editing: bool,
-}
-
+#[derive(Debug)]
 pub enum Msg {
-    Add,
-    Edit(usize),
-    Update(String),
-    UpdateEdit(String),
-    Remove(usize),
-    SetFilter(Filter),
-    ToggleAll,
-    ToggleEdit(usize),
-    Toggle(usize),
-    ClearCompleted,
-    Nope,
+    StartDiscover,
+    AddWebsite,
+    SwitchTo(Scene),
+    AddNew,
+    UpdateUrl(String),
+    UpdateDescription(String),
+    Clear,
 }
 
-impl Component for App {
-    type Message = Msg;
-    type Properties = ();
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Website {
+    url: String,
+    description: String,
+}
 
-    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let storage = StorageService::new(Area::Local).unwrap();
-        let entries = {
-            if let Json(Ok(restored_entries)) = storage.restore(KEY) {
-                restored_entries
-            } else {
-                Vec::new()
-            }
-        };
-        let state = State {
-            entries,
-            filter: Filter::All,
-            value: "".into(),
-            edit_value: "".into(),
-        };
-        App {
-            link,
-            storage,
-            state,
+impl Website {
+    fn empty() -> Self {
+        Website {
+            url: "".into(),
+            description: "".into(),
         }
     }
+}
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        false
-    }
+#[derive(Debug)]
+pub enum Scene {
+    Home,
+    NewWebsiteForm(Website),
+    Settings
+}
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::Add => {
-                let entry = Entry {
-                    description: self.state.value.clone(),
-                    completed: false,
-                    editing: false,
-                };
-                self.state.entries.push(entry);
-                self.state.value = "".to_string();
-            }
-            Msg::Edit(idx) => {
-                let edit_value = self.state.edit_value.clone();
-                self.state.complete_edit(idx, edit_value);
-                self.state.edit_value = "".to_string();
-            }
-            Msg::Update(val) => {
-                println!("Input: {}", val);
-                self.state.value = val;
-            }
-            Msg::UpdateEdit(val) => {
-                println!("Input: {}", val);
-                self.state.edit_value = val;
-            }
-            Msg::Remove(idx) => {
-                self.state.remove(idx);
-            }
-            Msg::SetFilter(filter) => {
-                self.state.filter = filter;
-            }
-            Msg::ToggleEdit(idx) => {
-                self.state.edit_value = self.state.entries[idx].description.clone();
-                self.state.toggle_edit(idx);
-            }
-            Msg::ToggleAll => {
-                let status = !self.state.is_all_completed();
-                self.state.toggle_all(status);
-            }
-            Msg::Toggle(idx) => {
-                self.state.toggle(idx);
-            }
-            Msg::ClearCompleted => {
-                self.state.clear_completed();
-            }
-            Msg::Nope => {}
-        }
-        self.storage.store(KEY, Json(&self.state.entries));
-        true
-    }
 
-    fn view(&self) -> Html {
-        info!("rendered!");
+impl App {
+    fn render_home(&self, link: &ComponentLink<App>) -> Html {
+        let styled_page = String::from("
+            height: 100vh;
+            width: 100%;
+            padding: 20px;
+        ",);
+
+        let styled_section = String::from("
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto;
+        ",);
         html! {
-            <div class="todomvc-wrapper">
-                <section class="todoapp">
-                    <header class="header">
-                        <h1>{ "todos" }</h1>
-                        { self.view_input() }
-                    </header>
-                    <section class="main">
-                        <input class="toggle-all" type="checkbox" checked=self.state.is_all_completed() onclick=self.link.callback(|_| Msg::ToggleAll) />
-                        <ul class="todo-list">
-                            { for self.state.entries.iter().filter(|e| self.state.filter.fit(e))
-                                .enumerate()
-                                .map(|val| self.view_entry(val)) }
-                        </ul>
-                    </section>
-                    <footer class="footer">
-                        <span class="todo-count">
-                            <strong>{ self.state.total() }</strong>
-                            { " item(s) left" }
-                        </span>
-                        <ul class="filters">
-                            { for Filter::iter().map(|flt| self.view_filter(flt)) }
-                        </ul>
-                        <button class="clear-completed" onclick=self.link.callback(|_| Msg::ClearCompleted)>
-                            { format!("Clear completed ({})", self.state.total_completed()) }
-                        </button>
-                    </footer>
-                </section>
-                <footer class="info">
-                    <p>{ "Double-click to edit a todo" }</p>
-                    <p>{ "Written by " }<a href="https://github.com/DenisKolodin/" target="_blank">{ "Denis Kolodin" }</a></p>
-                    <p>{ "Part of " }<a href="http://todomvc.com/" target="_blank">{ "TodoMVC" }</a></p>
-                </footer>
+            <div style=styled_page>
+                <div style=styled_section>
+                    <h1 class="h1">{ &self.name }</h1>
+                    <p>{ &self.description }</p>
+                    <button onclick=self.link.callback(|_| Msg::StartDiscover)>{ "Discover and earn IOTA" }</button>
+                    <button onclick=self.link.callback(|_| Msg::SwitchTo(Scene::NewWebsiteForm(Website::empty())))>{ "Add New" }</button>
+                    <button onclick=self.link.callback(|_| Msg::SwitchTo(Scene::Settings))>{ "Settings" }</button>
+                </div>
+            </div>
+        }
+    }
+    fn render_new_website(&self, link: &ComponentLink<App>, website: &Website) -> Html {
+        html! {
+            <div class="crm">
+                <h1>{"Add a new website"}</h1>
+                <div class="names">
+                    <div>
+                        { website.view_url_input(&self.link) }
+                    </div>
+                    <div>
+                        { website.view_description_textarea(&self.link) }
+                    </div>
+                </div>
+                <button disabled=website.url.is_empty() || website.description.is_empty()
+                        onclick=self.link.callback(|_| Msg::AddNew)>{ "Add New" }</button>
+                <button onclick=self.link.callback(|_| Msg::SwitchTo(Scene::Home))>{ "Go Back" }</button>
+            </div>
+        }
+    }
+    fn render_settings(&self, link: &ComponentLink<App>) -> Html {
+        html! {
+            <div>
+                <h1>{"Settings"}</h1>
+                <button onclick=self.link.callback(|_| Msg::Clear)>{ "Clear Database" }</button>
+                <button onclick=self.link.callback(|_| Msg::SwitchTo(Scene::Home))>{ "Go Back" }</button>
             </div>
         }
     }
 }
 
-impl App {
-    fn view_filter(&self, filter: Filter) -> Html {
-        let flt = filter.clone();
+impl Component for App {
+    type Message = Msg;
+    type Properties = ();
+    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+        Self {
+            link,
+            scene: Scene::Home,
+            name: ("ANNA").into(),
+            description: ("This is a beta application of the open marketplace, you can discover websites and earn IOTA. Have fun!").into()
+        }
+    }
 
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        log::info!("update::self {:?}", self);
+        log::info!("update::msg {:?}", msg);
+
+        let mut new_scene = None;
+        match self.scene {
+            Scene::Home => match msg {
+                Msg::SwitchTo(Scene::NewWebsiteForm(client)) => {
+                    new_scene = Some(Scene::NewWebsiteForm(client));
+                }
+                Msg::SwitchTo(Scene::Settings) => {
+                    new_scene = Some(Scene::Settings);
+                }
+                Msg::StartDiscover => {
+                    log::info!("Msg::StartDiscover {:?}", self);
+                }
+                Msg::AddWebsite => {
+                    log::info!("Msg::AddWebsite {:?}", self);
+                }
+                unexpected => {
+                    panic!(
+                        "Unexpected message when clients list shown: {:?}",
+                        unexpected
+                    );
+                }
+            },
+            Scene::NewWebsiteForm(ref mut website) => match msg {
+                Msg::UpdateUrl(val) => {
+                    println!("Input: {}", val);
+                    website.url = val;
+                }
+                Msg::UpdateDescription(val) => {
+                    println!("Input: {}", val);
+                    website.description = val;
+                }
+                Msg::AddNew => {
+                    let mut new_website = Website::empty();
+                    println!("new_website: {:?}", new_website);
+                }
+                Msg::SwitchTo(Scene::Home) => {
+                    new_scene = Some(Scene::Home);
+                }
+                unexpected => {
+                    panic!(
+                        "Unexpected message during new client editing: {:?}",
+                        unexpected
+                    );
+                }
+            },
+            Scene::Settings => match msg {
+                Msg::Clear => {
+                    let ok = { DialogService::confirm("Do you really want to clear the data?") };
+                    if ok {
+                        println!("Clear data: {:?}", self);
+                    }
+                }
+                Msg::SwitchTo(Scene::Home) => {
+                    new_scene = Some(Scene::Home);
+                }
+                unexpected => {
+                    panic!("Unexpected message for settings scene: {:?}", unexpected);
+                }
+            },
+        }
+        if let Some(new_scene) = new_scene.take() {
+            self.scene = new_scene;
+        }
+
+        true
+    }
+
+    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+        // log::info!("change::self: {:?}", self);
+        // log::info!("change::_props: {:?}", _props);
+
+        // Should only return "true" if new properties are different to
+        // previously received properties.
+        // This component has no properties so we will always return "false".
+        false
+    }
+
+    fn view(&self) -> Html {
+        match self.scene {
+            Scene::Home => App::render_home(&self, &self.link),
+            Scene::NewWebsiteForm(ref website) => App::render_new_website(&self, &self.link, website),
+            Scene::Settings => App::render_settings(&self, &self.link),
+        }
+    }
+}
+
+
+impl Website {
+
+    fn view_url_input(&self, link: &ComponentLink<App>) -> Html {
         html! {
-            <li>
-                <a class=if self.state.filter == flt { "selected" } else { "not-selected" }
-                   href=&flt
-                   onclick=self.link.callback(move |_| Msg::SetFilter(flt.clone()))>
-                    { filter }
-                </a>
-            </li>
+            <input class="new-website url"
+                   placeholder="Website url"
+                   value=&self.url
+                   oninput=link.callback(|e: InputData| Msg::UpdateUrl(e.value)) />
         }
     }
 
-    fn view_input(&self) -> Html {
+    fn view_description_textarea(&self, link: &ComponentLink<App>) -> Html {
         html! {
-            // You can use standard Rust comments. One line:
-            // <li></li>
-            <input class="new-todo"
-                   placeholder="What needs to be done?"
-                   value=&self.state.value
-                   oninput=self.link.callback(|e: InputData| Msg::Update(e.value))
-                   onkeypress=self.link.callback(|e: KeyboardEvent| {
-                       if e.key() == "Enter" { Msg::Add } else { Msg::Nope }
-                   }) />
-            /* Or multiline:
-            <ul>
-                <li></li>
-            </ul>
-            */
+            <textarea class=("new-website", "description")
+               placeholder="Description"
+               value=&self.description
+               oninput=link.callback(|e: InputData| Msg::UpdateDescription(e.value)) />
         }
-    }
-
-    fn view_entry(&self, (idx, entry): (usize, &Entry)) -> Html {
-        let mut class = "todo".to_string();
-        if entry.editing {
-            class.push_str(" editing");
-        }
-        if entry.completed {
-            class.push_str(" completed");
-        }
-
-        html! {
-            <li class=class>
-                <div class="view">
-                    <input class="toggle" type="checkbox" checked=entry.completed onclick=self.link.callback(move |_| Msg::Toggle(idx)) />
-                    <label ondblclick=self.link.callback(move |_| Msg::ToggleEdit(idx))>{ &entry.description }</label>
-                    <button class="destroy" onclick=self.link.callback(move |_| Msg::Remove(idx)) />
-                </div>
-                { self.view_entry_edit_input((&idx, &entry)) }
-            </li>
-        }
-    }
-
-    fn view_entry_edit_input(&self, (idx, entry): (&usize, &Entry)) -> Html {
-        let idx = *idx;
-        if entry.editing {
-            html! {
-                <input class="edit"
-                       type="text"
-                       value=&entry.description
-                       oninput=self.link.callback(move |e: InputData| Msg::UpdateEdit(e.value))
-                       onblur=self.link.callback(move |_| Msg::Edit(idx))
-                       onkeypress=self.link.callback(move |e: KeyboardEvent| {
-                          if e.key() == "Enter" { Msg::Edit(idx) } else { Msg::Nope }
-                       }) />
-            }
-        } else {
-            html! { <input type="hidden" /> }
-        }
-    }
-}
-
-#[derive(EnumIter, ToString, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Filter {
-    All,
-    Active,
-    Completed,
-}
-
-impl<'a> Into<Href> for &'a Filter {
-    fn into(self) -> Href {
-        match *self {
-            Filter::All => "#/".into(),
-            Filter::Active => "#/active".into(),
-            Filter::Completed => "#/completed".into(),
-        }
-    }
-}
-
-impl Filter {
-    fn fit(&self, entry: &Entry) -> bool {
-        match *self {
-            Filter::All => true,
-            Filter::Active => !entry.completed,
-            Filter::Completed => entry.completed,
-        }
-    }
-}
-
-impl State {
-    fn total(&self) -> usize {
-        self.entries.len()
-    }
-
-    fn total_completed(&self) -> usize {
-        self.entries
-            .iter()
-            .filter(|e| Filter::Completed.fit(e))
-            .count()
-    }
-
-    fn is_all_completed(&self) -> bool {
-        let mut filtered_iter = self
-            .entries
-            .iter()
-            .filter(|e| self.filter.fit(e))
-            .peekable();
-
-        if filtered_iter.peek().is_none() {
-            return false;
-        }
-
-        filtered_iter.all(|e| e.completed)
-    }
-
-    fn toggle_all(&mut self, value: bool) {
-        for entry in self.entries.iter_mut() {
-            if self.filter.fit(entry) {
-                entry.completed = value;
-            }
-        }
-    }
-
-    fn clear_completed(&mut self) {
-        let entries = self
-            .entries
-            .drain(..)
-            .filter(|e| Filter::Active.fit(e))
-            .collect();
-        self.entries = entries;
-    }
-
-    fn toggle(&mut self, idx: usize) {
-        let filter = self.filter.clone();
-        let mut entries = self
-            .entries
-            .iter_mut()
-            .filter(|e| filter.fit(e))
-            .collect::<Vec<_>>();
-        let entry = entries.get_mut(idx).unwrap();
-        entry.completed = !entry.completed;
-    }
-
-    fn toggle_edit(&mut self, idx: usize) {
-        let filter = self.filter.clone();
-        let mut entries = self
-            .entries
-            .iter_mut()
-            .filter(|e| filter.fit(e))
-            .collect::<Vec<_>>();
-        let entry = entries.get_mut(idx).unwrap();
-        entry.editing = !entry.editing;
-    }
-
-    fn complete_edit(&mut self, idx: usize, val: String) {
-        let filter = self.filter.clone();
-        let mut entries = self
-            .entries
-            .iter_mut()
-            .filter(|e| filter.fit(e))
-            .collect::<Vec<_>>();
-        let entry = entries.get_mut(idx).unwrap();
-        entry.description = val;
-        entry.editing = !entry.editing;
-    }
-
-    fn remove(&mut self, idx: usize) {
-        let idx = {
-            let filter = self.filter.clone();
-            let entries = self
-                .entries
-                .iter()
-                .enumerate()
-                .filter(|&(_, e)| filter.fit(e))
-                .collect::<Vec<_>>();
-            let &(idx, _) = entries.get(idx).unwrap();
-            idx
-        };
-        self.entries.remove(idx);
-    }
+    }    
 }
