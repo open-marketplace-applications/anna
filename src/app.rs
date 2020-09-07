@@ -1,30 +1,50 @@
+use crate::types::{CartProduct, Product};
+use yew::prelude::*;
+use yew_router::prelude::*;
 use crate::components::Layout;
+use yew_router::{route::Route, router::Router as YewRouter};
+
 use crate::router::Router;
-use yew::prelude::{html, Component, ComponentLink, Html, ShouldRender};
+use crate::components::Navbar;
 
-pub struct App {}
+struct State {
+    cart_products: Vec<CartProduct>,
+}
 
-pub enum Msg {}
+pub struct App {
+    state: State,
+    link: ComponentLink<Self>,
+}
+
+pub enum Msg {
+    AddToCart(Product),
+}
 
 impl Component for App {
     type Message = Msg;
     type Properties = ();
 
-    fn create(_: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        Self {}
+    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let cart_products = vec![];
+
+        Self {
+            state: State { cart_products },
+            link,
+        }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-        true
+       true
     }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+    fn change(&mut self, _: Self::Properties) -> ShouldRender {
         false
     }
 
     fn view(&self) -> Html {
         html! {
             <Layout>
+                <Navbar cart_products=self.state.cart_products.clone() />
                 <Router />
             </Layout>
         }
