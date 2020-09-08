@@ -1,4 +1,4 @@
-use crate::components::AtcButton;
+use crate::components::AddToCartButton;
 use crate::types::Product;
 use yew::prelude::*;
 use yew_router::components::RouterAnchor;
@@ -11,6 +11,7 @@ pub struct ProductCard {
 #[derive(Properties, Clone)]
 pub struct Props {
     pub product: Product,
+    #[prop_or_default]
     pub on_add_to_cart: Callback<Product>,
 }
 
@@ -40,7 +41,7 @@ impl Component for ProductCard {
                     <div class="product_card_name">{&self.props.product.name}</div>
                     <div class="product_card_price">{"$"}{&self.props.product.price}</div>
                 </Anchor>
-                <AtcButton product=self.props.product.clone() on_add_to_cart=self.props.on_add_to_cart.clone() />
+                <AddToCartButton product=self.props.product.clone() on_add_to_cart=self.props.on_add_to_cart.clone() />
             </div>
         }
     }

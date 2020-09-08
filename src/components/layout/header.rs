@@ -76,6 +76,9 @@ impl Component for Header {
                     <RouterAnchor<AppRoutes> route=AppRoutes::Profile>
                         { "Profile" }
                     </RouterAnchor<AppRoutes>>
+                    <RouterAnchor<AppRoutes> route=AppRoutes::ShoppingCart>
+                        { "Cart" }
+                    </RouterAnchor<AppRoutes>>
                 </div>
                 <div class="divider"/>
                 <div class="auth-info">

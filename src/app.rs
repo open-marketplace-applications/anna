@@ -38,13 +38,13 @@ impl Component for App {
     }
 
     fn change(&mut self, _: Self::Properties) -> ShouldRender {
-        false
+        true
     }
 
     fn view(&self) -> Html {
         html! {
             <Layout>
-                <Navbar cart_products=self.state.cart_products.clone() />
+                <Navbar />
                 <Router />
             </Layout>
         }

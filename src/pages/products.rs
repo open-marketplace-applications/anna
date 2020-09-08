@@ -1,6 +1,6 @@
 use crate::api;
 use crate::components::ProductCard;
-use crate::types::{CartProduct, Product};
+use crate::types::{Product};
 use anyhow::Error;
 use yew::format::Json;
 use yew::prelude::*;
@@ -14,8 +14,6 @@ struct State {
 
 #[derive(Properties, Clone)]
 pub struct Props {
-    pub cart_products: Vec<CartProduct>,
-    pub on_add_to_cart: Callback<Product>,
 }
 
 pub struct Products {
@@ -94,7 +92,7 @@ impl Component for Products {
             .iter()
             .map(|product: &Product| {
                 html! {
-                  <ProductCard product={product} on_add_to_cart=self.props.on_add_to_cart.clone()/>
+                  <ProductCard product={product} />
                 }
             })
             .collect();

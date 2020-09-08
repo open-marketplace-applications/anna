@@ -1,5 +1,5 @@
 use crate::api;
-use crate::components::AtcButton;
+use crate::components::AddToCartButton;
 use crate::types::Product;
 use anyhow::Error;
 use yew::format::Json;
@@ -21,9 +21,7 @@ pub struct ProductDetail {
 
 #[derive(Properties, Clone)]
 pub struct Props {
-    pub id: i32,
-    pub on_add_to_cart: Callback<Product>,
-}
+    pub id: i32}
 
 pub enum Msg {
     GetProduct,
@@ -91,7 +89,7 @@ impl Component for ProductDetail {
                     <div class="product_card_name">{&product.name}</div>
                     <div style="margin: 10px 0; line-height: 24px;">{&product.description}</div>
                     <div class="product_card_price">{"$"}{&product.price}</div>
-                    <AtcButton product=product.clone() on_add_to_cart=self.props.on_add_to_cart.clone() />
+                    <AddToCartButton product=product.clone() />
                 </div>
             }
         } else if !self.state.get_product_loaded {
