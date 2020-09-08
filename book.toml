@@ -1,0 +1,11 @@
+
+[book]
+authors = ["huhn511"]
+language = "en"
+multilingual = false
+src = "./docs"
+title = "ANNA - A Nice Network Application"
+
+[build]
+build-dir = "book"
+create-missing = false
