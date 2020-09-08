@@ -1,10 +1,47 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5ba03ba7-ff8b-4c54-94e7-cd5fd76a6737/deploy-status)](https://app.netlify.com/sites/yew-todomvc/deploys)
+<p align="center">
+  <br>
+  <a href="https://openmarketplace.org/">
+     <img
+      alt="open marketplace apps"
+      src="./static/logo.svg"
+      width="150"
+    />
+  </a>
+</p>
 
-## About
 
-This template shows how to create a web app using Yew and wasm-pack. 
+<h1 align="center"><a href="https://openmarketplace.org"> Open Marketplace Apps</a></h1>
 
-## 🚴 Usage
+<p align="center">Open marketplace apps are decentralized open source apps for smart cities and local communities.</p>
+
+<p align="center">
+  <a href="https://discord.gg/XDQQcJC" style="text-decoration:none;"><img src="https://img.shields.io/badge/Discord-9cf.svg?logo=discord" alt="Discord"></a>
+  <a href="https://github.com/open-marketplace-applications/anna/blob/master/LICENSE_APACHE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/open-marketplace-applications/anna.svg" alt="Apache 2.0 license"></a>
+  <a href="https://github.com/open-marketplace-applications/anna/blob/master/LICENSE_MIT" style="text-decoration:none;"><img src="https://img.shields.io/github/license/open-marketplace-applications/anna.svg" alt="MIT license"></a>
+</p>
+
+<p align="center">
+  <a href="#introduction">Introduction</a> ◈
+  <a href="#warning">Warning</a> ◈
+  <a href="#usage">Usage</a> ◈
+  <a href="#planned-milestones">Planned Milestones</a> ◈  
+  <a href="#roadmap">Roadmap</a> ◈
+  <a href="#joining-the-discussion">Joining the discussion</a>
+</p>
+
+---
+
+# ANNA 
+
+> A Nice Network Application
+
+## Introduction
+This is an implementation of a decentralized eCommerce Platform written in Rust.
+
+## Warning
+This application is currently under development and is not yet ready to be used. It is currently feature incomplete and cannot be considered alpha.
+
+## Usage
 
 ### 🛠️ Build
 
@@ -25,9 +62,13 @@ yarn run start:dev
 ```
 
 
-## 🔋 Batteries Included
+### 🔋 Batteries Included
 
 * [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
   between WebAssembly and JavaScript.
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
+
+
+## Joining the discussion
+If you want to get involved in discussions about this application, or you're looking for support, go to the #anna channel on [our Discord](https://discord.gg/XDQQcJC).
