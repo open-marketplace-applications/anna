@@ -1,4 +1,4 @@
-use crate::models::Signup as Model;
+use crate::types::Signup as Model;
 use anyhow::Error;
 use css_in_rust::Style;
 use serde::{Deserialize, Serialize};

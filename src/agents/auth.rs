@@ -1,6 +1,6 @@
 // https://github.com/yewstack/yew/tree/master/examples/pub_sub/src
 
-use crate::models::Auth;
+use crate::types::Auth;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::collections::HashSet;

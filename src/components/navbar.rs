@@ -38,8 +38,7 @@ impl Component for Model {
 
         html! {
             <div class="navbar">
-                <div class="navbar_title">{"AnnaMart"}</div>
-                <div class="navbar_cart_value">{format!("${:.2}", cart_value)}</div>
+                <div class="navbar_cart_value">{format!("Your cart: ${:.2}", cart_value)}</div>
             </div>
         }
     }

@@ -1,11 +1,14 @@
 use yew::prelude::*;
+use css_in_rust::Style;
 
 #[derive(Debug)]
 pub struct Button {
     link: ComponentLink<Self>,
     title: String,
     onsignal: Callback<()>,
-    color: String
+    color: String,
+    style: Style,
+    props: Props,
 }
 
 #[derive(Debug)]
@@ -19,6 +22,8 @@ pub struct Props {
     pub title: String,
     pub color: String,
     pub onsignal: Callback<()>,
+    #[prop_or_default]
+    pub class: String,
 }
 
 impl Component for Button {
@@ -26,8 +31,13 @@ impl Component for Button {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+        let style = Style::create("button", include_str!("button.scss"))
+            .expect("An error occured while creating the style.");
+
         Button {
             link,
+            style,
+            props: props.to_owned(),
             title: props.title,
             color: props.color,
             onsignal: props.onsignal,
@@ -52,24 +62,11 @@ impl Component for Button {
     }
 
     fn view(&self) -> Html {
-        let styled_button = String::from("
-            padding: 16px 24px;
-            border-radius: var(--radius);
-            outline: none;
-            margin-right: 20px;
-            border: var(--border);
-            font-weight: var(--font-bold);
-            font-size: 16px;
-            color: var(--color-white); 
-            background-color: var(--color-primary);
-            transition: var(--transition);
-            &:hover {
-                background-color: var(--color-primary-darken);
-            }
-        ",);
 
         html! {
-            <button style=styled_button onclick=self.link.callback(|_| Msg::Clicked)>
+            <button 
+                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string()) 
+                onclick=self.link.callback(|_| Msg::Clicked)>
                 { &self.title }
             </button>
         }

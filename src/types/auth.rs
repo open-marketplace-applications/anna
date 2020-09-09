@@ -1,3 +1,5 @@
+// TODO: Extract User type
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Default, Clone, PartialEq, Debug)]

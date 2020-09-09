@@ -34,7 +34,7 @@ impl Component for App {
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-       true
+        true
     }
 
     fn change(&mut self, _: Self::Properties) -> ShouldRender {

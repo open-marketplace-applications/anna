@@ -92,7 +92,7 @@ impl Component for Products {
             .iter()
             .map(|product: &Product| {
                 html! {
-                  <ProductCard product={product} />
+                    <ProductCard product={product} />
                 }
             })
             .collect();
@@ -106,9 +106,9 @@ impl Component for Products {
             }
         } else if let Some(_) = self.state.get_products_error {
             html! {
-              <div>
-                <span>{"Error loading products! :("}</span>
-              </div>
+                <div>
+                    <span>{"Error loading products! :("}</span>
+                </div>
             }
         } else {
             html! {

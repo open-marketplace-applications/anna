@@ -71,7 +71,7 @@ impl Component for Model {
                 } else {
                     // product not found in card, add it.
                     let mut temp_arr = state.clone();
-                    // add the new abject to the cart
+                    // add the new object to the cart
                     temp_arr.push(CartProduct {
                         product: self.props.product.clone(),
                         quantity: 1,

@@ -1,9 +1,6 @@
-mod footer;
-mod header;
-
 use css_in_rust::Style;
-use footer::Footer;
-use header::Header;
+use crate::design_system::Footer;
+use crate::design_system::Header;
 use yew::prelude::*;
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 
@@ -37,6 +34,7 @@ impl Component for Layout {
                 min-height: 100vh;
                 .content {
                     flex-grow: 1;
+                    padding: 130px 50px 50px 50px;
                 }
                 "#,
             ),

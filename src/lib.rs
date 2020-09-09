@@ -6,14 +6,12 @@ extern crate serde;
 mod agents;
 mod app;
 mod components;
-mod models;
+mod design_system;
+mod types;
 mod router;
 mod pages;
 mod utils;
-
-mod types;
 mod api;
-
 
 use wasm_bindgen::prelude::*;
 

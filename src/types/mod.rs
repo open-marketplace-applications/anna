@@ -1,6 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 mod auth;
+mod product;
+
+pub use product::Product;
+pub use product::CartProduct;
 
 pub use auth::Auth;
 pub use auth::Login;
