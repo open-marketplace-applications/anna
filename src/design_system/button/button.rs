@@ -1,5 +1,5 @@
-use yew::prelude::*;
 use css_in_rust::Style;
+use yew::prelude::*;
 
 #[derive(Debug)]
 pub struct Button {
@@ -31,8 +31,8 @@ impl Component for Button {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style = Style::create("button", include_str!("button.scss"))
-            .expect("An error occured while creating the style.");
+        let style =
+            Style::create("button", include_str!("button.scss")).expect("An error occured while creating the style.");
 
         Button {
             link,
@@ -62,10 +62,9 @@ impl Component for Button {
     }
 
     fn view(&self) -> Html {
-
         html! {
-            <button 
-                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string()) 
+            <button
+                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
                 onclick=self.link.callback(|_| Msg::Clicked)>
                 { &self.title }
             </button>

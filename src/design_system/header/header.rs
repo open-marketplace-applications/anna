@@ -1,6 +1,4 @@
-use crate::{
-    pages::AppRoutes,
-};
+use crate::pages::AppRoutes;
 use css_in_rust::Style;
 use yew::agent::{Bridge, Bridged};
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
@@ -19,20 +17,16 @@ pub struct Props {
 }
 
 #[derive(PartialEq, Debug)]
-pub enum Msg {
-}
+pub enum Msg {}
 
 impl Component for Header {
     type Message = Msg;
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style = Style::create("header", include_str!("header.scss"))
-            .expect("An error occured while creating the style.");
-        Self {
-            props,
-            style,
-        }
+        let style =
+            Style::create("header", include_str!("header.scss")).expect("An error occured while creating the style.");
+        Self { props, style }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {

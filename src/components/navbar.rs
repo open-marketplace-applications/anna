@@ -1,7 +1,7 @@
 use crate::types::CartProduct;
 use yew::prelude::*;
-use yewtil::NeqAssign;
 use yew_state::{GlobalHandle, SharedStateComponent};
+use yewtil::NeqAssign;
 
 pub struct Model {
     cart_products: GlobalHandle<Vec<CartProduct>>,

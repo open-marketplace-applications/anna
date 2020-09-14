@@ -52,8 +52,8 @@ impl Component for Login {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style = Style::create("login", include_str!("login.scss"))
-            .expect("An error occured while creating the style.");
+        let style =
+            Style::create("login", include_str!("login.scss")).expect("An error occured while creating the style.");
         Self {
             link,
             props,
@@ -100,39 +100,32 @@ impl Component for Login {
                     .body(Json(&self.form_data))
                     .expect("Failed to build login request.");
                 let fetch_task = FetchService::fetch(
-                        req,
-                        self.link
-                            .callback(|response: Response<Result<String, Error>>| {
-                                match (&response).status() {
-                                    StatusCode::OK => {
-                                        // Msg::Response(Ok("User has been registered".to_string()))
-                                        let empty = &"".to_string();
-                                        let body = response.body().as_ref().unwrap_or(empty);
-                                        Msg::Response(Ok(body.clone()))
-                                    }
-                                    StatusCode::NOT_FOUND => {
-                                        Msg::Response(Err(LoginFailure::BadUsername))
-                                    }
-                                    StatusCode::BAD_REQUEST => {
-                                        Msg::Response(Err(LoginFailure::BadPassword))
-                                    }
-                                    _ => Msg::Response(Err(LoginFailure::Other)),
-                                }
-                            }),
-                    )
-                    .unwrap();
+                    req,
+                    self.link.callback(|response: Response<Result<String, Error>>| {
+                        match (&response).status() {
+                            StatusCode::OK => {
+                                // Msg::Response(Ok("User has been registered".to_string()))
+                                let empty = &"".to_string();
+                                let body = response.body().as_ref().unwrap_or(empty);
+                                Msg::Response(Ok(body.clone()))
+                            }
+                            StatusCode::NOT_FOUND => Msg::Response(Err(LoginFailure::BadUsername)),
+                            StatusCode::BAD_REQUEST => Msg::Response(Err(LoginFailure::BadPassword)),
+                            _ => Msg::Response(Err(LoginFailure::Other)),
+                        }
+                    }),
+                )
+                .unwrap();
                 self.fetch_task = Some(fetch_task);
             }
             Msg::Response(res) => {
                 match res {
                     Ok(data) => {
-                        let login_info: ServerResponse<LoginSuccess> =
-                            serde_json::from_str(data.as_str()).unwrap();
-                        self.auth_event_bus
-                            .send(AuthEventBusRequest::Login(AuthModel {
-                                jwt: login_info.data.token,
-                                user: login_info.data.user,
-                            }))
+                        let login_info: ServerResponse<LoginSuccess> = serde_json::from_str(data.as_str()).unwrap();
+                        self.auth_event_bus.send(AuthEventBusRequest::Login(AuthModel {
+                            jwt: login_info.data.token,
+                            user: login_info.data.user,
+                        }))
                     }
                     Err(fail) => match fail {
                         LoginFailure::BadUsername => {
@@ -155,12 +148,8 @@ impl Component for Login {
             ev.prevent_default();
             Msg::Request
         });
-        let oninput_email_or_username = self
-            .link
-            .callback(|ev: InputData| Msg::UpdateEmailOrUsername(ev.value));
-        let oninput_password = self
-            .link
-            .callback(|ev: InputData| Msg::UpdatePassword(ev.value));
+        let oninput_email_or_username = self.link.callback(|ev: InputData| Msg::UpdateEmailOrUsername(ev.value));
+        let oninput_password = self.link.callback(|ev: InputData| Msg::UpdatePassword(ev.value));
         let mut username_class = "";
         if self.username_error.is_some() {
             username_class = "invalid"

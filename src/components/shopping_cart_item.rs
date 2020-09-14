@@ -1,8 +1,8 @@
 use crate::components::AddToCartButton;
+use crate::pages::AppRoutes;
 use crate::types::CartProduct;
 use yew::prelude::*;
 use yew_router::components::RouterAnchor;
-use crate::pages::{AppRoutes};
 
 pub struct ShopingCartItem {
     props: Props,

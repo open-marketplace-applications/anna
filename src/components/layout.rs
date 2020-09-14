@@ -1,6 +1,6 @@
-use css_in_rust::Style;
 use crate::design_system::Footer;
 use crate::design_system::Header;
+use css_in_rust::Style;
 use yew::prelude::*;
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 

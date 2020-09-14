@@ -21,7 +21,8 @@ pub struct ProductDetail {
 
 #[derive(Properties, Clone)]
 pub struct Props {
-    pub id: i32}
+    pub id: i32,
+}
 
 pub enum Msg {
     GetProduct,
@@ -51,15 +52,13 @@ impl Component for ProductDetail {
     fn update(&mut self, message: Self::Message) -> ShouldRender {
         match message {
             Msg::GetProduct => {
-                let handler = self
-                    .link
-                    .callback(move |response: api::FetchResponse<Product>| {
-                        let (_, Json(data)) = response.into_parts();
-                        match data {
-                            Ok(product) => Msg::GetProductSuccess(product),
-                            Err(err) => Msg::GetProductError(err),
-                        }
-                    });
+                let handler = self.link.callback(move |response: api::FetchResponse<Product>| {
+                    let (_, Json(data)) = response.into_parts();
+                    match data {
+                        Ok(product) => Msg::GetProductSuccess(product),
+                        Err(err) => Msg::GetProductError(err),
+                    }
+                });
 
                 self.task = Some(api::get_product(self.props.id, handler));
                 true

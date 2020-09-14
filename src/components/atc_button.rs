@@ -1,11 +1,11 @@
 // newbutton.rs
-use yew::prelude::*;
-use yew_state::{GlobalHandle, SharedStateComponent, SharedState};
 use crate::types::{CartProduct, Product};
+use yew::prelude::*;
+use yew_state::{GlobalHandle, SharedState, SharedStateComponent};
 
 pub struct Model {
     props: Props,
-    link: ComponentLink<Self>
+    link: ComponentLink<Self>,
 }
 
 #[derive(Properties, Clone)]
@@ -14,7 +14,7 @@ pub struct Props {
     #[prop_or_default]
     pub on_add_to_cart: Callback<Product>,
     #[prop_or_default]
-    handle: GlobalHandle<Vec<CartProduct>>
+    handle: GlobalHandle<Vec<CartProduct>>,
 }
 
 impl SharedState for Props {
@@ -34,7 +34,7 @@ impl Component for Model {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { props, link}
+        Self { props, link }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
@@ -48,7 +48,6 @@ impl Component for Model {
                     .state()
                     .iter()
                     .find(|&x| x.product.id == self.props.product.id);
-                
 
                 if let Some(cp) = cart_product {
                     // product found int cart, increment the quantity
@@ -67,7 +66,6 @@ impl Component for Model {
                     temp_arr.push(temp_obj);
                     // update the state
                     self.props.handle.reduce(move |state| *state = temp_arr.clone());
-
                 } else {
                     // product not found in card, add it.
                     let mut temp_arr = state.clone();
@@ -82,7 +80,7 @@ impl Component for Model {
 
                 // emit to parent
                 self.props.on_add_to_cart.emit(self.props.product.clone())
-            },
+            }
         }
         true
     }

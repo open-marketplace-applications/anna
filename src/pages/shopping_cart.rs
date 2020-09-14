@@ -1,7 +1,7 @@
+use crate::types::CartProduct;
 use css_in_rust::Style;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_state::{GlobalHandle, SharedStateComponent};
-use crate::types::CartProduct;
 use yewtil::NeqAssign;
 
 use crate::components::ShopingCartItem;
@@ -26,7 +26,10 @@ impl Component for Model {
             ),
         )
         .expect("An error occured while creating the style.");
-        Self { style, cart_products: _props }
+        Self {
+            style,
+            cart_products: _props,
+        }
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
