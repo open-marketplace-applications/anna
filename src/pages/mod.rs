@@ -14,11 +14,14 @@ pub use products::Products;
 pub use profile::Profile;
 pub use shopping_cart::ShoppingCart;
 
+pub mod chat;
 /// App routes
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoutes {
     #[to = "/profile"]
     Profile,
+    #[to = "/chat"]
+    ChatModel,
     #[to = "/products"]
     Products,
     #[to = "/product/{id}"]

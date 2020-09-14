@@ -58,6 +58,9 @@ impl Component for Header {
                     <RouterAnchor<AppRoutes> route=AppRoutes::ShoppingCart>
                         { "Cart" }
                     </RouterAnchor<AppRoutes>>
+                    <RouterAnchor<AppRoutes> route=AppRoutes::ChatModel>
+                        { "Chat" }
+                    </RouterAnchor<AppRoutes>>
                 </div>
             </div>
         }

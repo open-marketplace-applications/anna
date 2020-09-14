@@ -1,4 +1,4 @@
-use crate::pages::{AppRoutes, Home, ProductDetail, Products, Profile, ShoppingCart};
+use crate::pages::{AppRoutes, chat::ChatModel, Home, ProductDetail, Products, Profile, ShoppingCart};
 // use std::marker::PhantomData;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_router::switch::Permissive;
@@ -33,6 +33,7 @@ impl Component for Router {
                         AppRoutes::Profile => html!{<Profile />},
                         AppRoutes::ProductDetail(id) => html! {<ProductDetail id=id />},
                         AppRoutes::Products => html! {<Products />},
+                        AppRoutes::ChatModel => html! {<ChatModel />},
                         AppRoutes::ShoppingCart => html! {<ShoppingCart />},
                         AppRoutes::NotFound(Permissive(None)) => html!{"Page not found"},
                         AppRoutes::NotFound(Permissive(Some(missed_route))) => html!{format!("Page '{}' not found", missed_route)}
