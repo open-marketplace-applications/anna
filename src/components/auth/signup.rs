@@ -1,4 +1,4 @@
-use crate::models::Signup as Model;
+use crate::types::Signup as Model;
 use anyhow::Error;
 use css_in_rust::Style;
 use serde::{Deserialize, Serialize};
@@ -54,8 +54,8 @@ impl Component for Signup {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style = Style::create("signup", include_str!("signup.scss"))
-            .expect("An error occured while creating the style.");
+        let style =
+            Style::create("signup", include_str!("signup.scss")).expect("An error occured while creating the style.");
         Self {
             props,
             link,
@@ -88,17 +88,16 @@ impl Component for Signup {
                     .body(Json(&request_data))
                     .expect("Failed to build signup request.");
                 let fetch_task = FetchService::fetch(
-                        req,
-                        self.link
-                            .callback(|response: Response<Result<String, Error>>| {
-                                if response.status().is_success() {
-                                    Msg::Response(Ok("User has been registered".to_string()))
-                                } else {
-                                    Msg::Response(Err("User could not be registered".to_string()))
-                                }
-                            }),
-                    )
-                    .unwrap();
+                    req,
+                    self.link.callback(|response: Response<Result<String, Error>>| {
+                        if response.status().is_success() {
+                            Msg::Response(Ok("User has been registered".to_string()))
+                        } else {
+                            Msg::Response(Err("User could not be registered".to_string()))
+                        }
+                    }),
+                )
+                .unwrap();
                 self.fetch_task = Some(fetch_task);
             }
             Msg::Response(res) => {
@@ -123,18 +122,10 @@ impl Component for Signup {
             ev.prevent_default();
             Msg::Request
         });
-        let oninput_username = self
-            .link
-            .callback(|ev: InputData| Msg::UpdateUsername(ev.value));
-        let oninput_email = self
-            .link
-            .callback(|ev: InputData| Msg::UpdateEmail(ev.value));
-        let oninput_password = self
-            .link
-            .callback(|ev: InputData| Msg::UpdatePassword(ev.value));
-        let oninput_password_repeat = self
-            .link
-            .callback(|ev: InputData| Msg::UpdatePasswordRepeat(ev.value));
+        let oninput_username = self.link.callback(|ev: InputData| Msg::UpdateUsername(ev.value));
+        let oninput_email = self.link.callback(|ev: InputData| Msg::UpdateEmail(ev.value));
+        let oninput_password = self.link.callback(|ev: InputData| Msg::UpdatePassword(ev.value));
+        let oninput_password_repeat = self.link.callback(|ev: InputData| Msg::UpdatePasswordRepeat(ev.value));
         html! {
             <div class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())>
                 <form id=&self.id class="signup" onsubmit=onsubmit>

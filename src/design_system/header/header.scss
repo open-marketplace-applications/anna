@@ -1,13 +1,19 @@
 & {
-    background-color: rgb(var(--color-fg));
-    color: rgb(var(--color-bg));
+    background-color: var(--black);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    padding: 20px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    z-index: 1;
   }
   
   .menu {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
   }
   
   .divider {
@@ -21,8 +27,9 @@
   }
   
   a {
+    color: var(--white);
     display: inline-block;
-    padding: 5px 7px;
+    padding: 10px 20px;
     text-decoration: none;
     outline: none;
   }

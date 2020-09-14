@@ -1,6 +1,6 @@
 use crate::api;
 use crate::components::ProductCard;
-use crate::types::{Product};
+use crate::types::Product;
 use anyhow::Error;
 use yew::format::Json;
 use yew::prelude::*;
@@ -13,8 +13,7 @@ struct State {
 }
 
 #[derive(Properties, Clone)]
-pub struct Props {
-}
+pub struct Props {}
 
 pub struct Products {
     props: Props,
@@ -54,15 +53,13 @@ impl Component for Products {
         match message {
             Msg::GetProducts => {
                 self.state.get_products_loaded = false;
-                let handler =
-                    self.link
-                        .callback(move |response: api::FetchResponse<Vec<Product>>| {
-                            let (_, Json(data)) = response.into_parts();
-                            match data {
-                                Ok(products) => Msg::GetProductsSuccess(products),
-                                Err(err) => Msg::GetProductsError(err),
-                            }
-                        });
+                let handler = self.link.callback(move |response: api::FetchResponse<Vec<Product>>| {
+                    let (_, Json(data)) = response.into_parts();
+                    match data {
+                        Ok(products) => Msg::GetProductsSuccess(products),
+                        Err(err) => Msg::GetProductsError(err),
+                    }
+                });
 
                 self.task = Some(api::get_products(handler));
                 true
@@ -92,7 +89,7 @@ impl Component for Products {
             .iter()
             .map(|product: &Product| {
                 html! {
-                  <ProductCard product={product} />
+                    <ProductCard product={product} />
                 }
             })
             .collect();
@@ -106,9 +103,9 @@ impl Component for Products {
             }
         } else if let Some(_) = self.state.get_products_error {
             html! {
-              <div>
-                <span>{"Error loading products! :("}</span>
-              </div>
+                <div>
+                    <span>{"Error loading products! :("}</span>
+                </div>
             }
         } else {
             html! {

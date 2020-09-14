@@ -1,9 +1,4 @@
-use crate::{
-    agents::auth::AuthEventBus,
-    components::auth::{AuthControls, Login, Signup},
-    models::Auth as AuthModel,
-    pages::AppRoutes,
-};
+use crate::pages::AppRoutes;
 use css_in_rust::Style;
 use yew::agent::{Bridge, Bridged};
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
@@ -13,8 +8,6 @@ use yew_router::prelude::*;
 pub struct Header {
     props: Props,
     style: Style,
-    auth: Option<AuthModel>,
-    _auth_event_bus_producer: Box<dyn Bridge<AuthEventBus>>,
 }
 
 #[derive(Properties, Clone, PartialEq, Debug)]
@@ -24,33 +17,19 @@ pub struct Props {
 }
 
 #[derive(PartialEq, Debug)]
-pub enum Msg {
-    AuthEvent(Option<AuthModel>),
-}
+pub enum Msg {}
 
 impl Component for Header {
     type Message = Msg;
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style = Style::create("header", include_str!("header.scss"))
-            .expect("An error occured while creating the style.");
-        let auth_cb = link.callback(Msg::AuthEvent);
-        let auth_producer = AuthEventBus::bridge(auth_cb);
-        Self {
-            props,
-            style,
-            auth: None,
-            _auth_event_bus_producer: auth_producer,
-        }
+        let style =
+            Style::create("header", include_str!("header.scss")).expect("An error occured while creating the style.");
+        Self { props, style }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::AuthEvent(auth) => {
-                self.auth = auth;
-            }
-        }
         true
     }
 
@@ -80,28 +59,7 @@ impl Component for Header {
                         { "Cart" }
                     </RouterAnchor<AppRoutes>>
                 </div>
-                <div class="divider"/>
-                <div class="auth-info">
-                    { self.render_auth() }
-                </div>
             </div>
-        }
-    }
-}
-
-impl Header {
-    fn render_auth(&self) -> Html {
-        match &self.auth {
-            // TODO add logout option
-            Some(auth) => html! {
-                <AuthControls auth=auth />
-            },
-            None => html! {
-                <>
-                    <Login class="login" />
-                    <Signup class="signup" />
-                </>
-            },
         }
     }
 }

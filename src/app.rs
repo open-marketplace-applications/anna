@@ -1,11 +1,11 @@
+use crate::components::Layout;
 use crate::types::{CartProduct, Product};
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::components::Layout;
 use yew_router::{route::Route, router::Router as YewRouter};
 
-use crate::router::Router;
 use crate::components::Navbar;
+use crate::router::Router;
 
 struct State {
     cart_products: Vec<CartProduct>,
@@ -34,7 +34,7 @@ impl Component for App {
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-       true
+        true
     }
 
     fn change(&mut self, _: Self::Properties) -> ShouldRender {

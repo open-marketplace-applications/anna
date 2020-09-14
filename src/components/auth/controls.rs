@@ -1,5 +1,5 @@
 use crate::agents::auth::{AuthEventBus, Request as AuthEventBusRequest};
-use crate::models::Auth;
+use crate::types::Auth;
 use anyhow::Error;
 use css_in_rust::Style;
 use yew::{
@@ -55,11 +55,11 @@ impl Component for Controls {
                     .body(Nothing)
                     .expect("Failed to build login request.");
                 let fetch_task = FetchService::fetch(
-                        req,
-                        self.link
-                            .callback(|_response: Response<Result<String, Error>>| Msg::Response),
-                    )
-                    .unwrap();
+                    req,
+                    self.link
+                        .callback(|_response: Response<Result<String, Error>>| Msg::Response),
+                )
+                .unwrap();
                 self.fetch_task = Some(fetch_task);
             }
             Msg::Response => {
