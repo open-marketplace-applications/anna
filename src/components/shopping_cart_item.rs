@@ -1,4 +1,3 @@
-use crate::components::AddToCartButton;
 use crate::pages::AppRoutes;
 use crate::types::CartProduct;
 use yew::prelude::*;
