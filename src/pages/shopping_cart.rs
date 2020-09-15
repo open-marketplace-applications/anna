@@ -1,17 +1,24 @@
 use crate::types::CartProduct;
 use css_in_rust::Style;
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew::{html, Component, ComponentLink, Html, ShouldRender, InputData};
 use yew_state::{GlobalHandle, SharedStateComponent};
 use yewtil::NeqAssign;
 
 use crate::components::ShopingCartItem;
+use crate::components::OrderForm;
+
 
 pub struct Model {
     style: Style,
     cart_products: GlobalHandle<Vec<CartProduct>>,
+    link: ComponentLink<Self>,
+    value: String
 }
 
-pub enum Msg {}
+pub enum Msg {
+    GotInput(String),
+    Clicked,
+}
 
 impl Component for Model {
     type Message = Msg;
@@ -29,6 +36,8 @@ impl Component for Model {
         Self {
             style,
             cart_products: _props,
+            value: "".into(),
+            link: _link,
         }
     }
 
@@ -57,6 +66,9 @@ impl Component for Model {
             <div class=self.style.to_string()>
                 <h1>{"shopping_cart"}</h1>
                 <div class="product_card_list">{products}</div>
+
+   
+                <OrderForm />
             </div>
         }
     }
