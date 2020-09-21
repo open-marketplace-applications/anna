@@ -17,7 +17,13 @@ pub struct App {
 }
 
 pub enum Msg {
-    AddToCart(Product),
+}
+
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/js/wasm_bridge.js")]
+extern "C" {
+    fn js_test();
 }
 
 impl Component for App {
@@ -26,7 +32,7 @@ impl Component for App {
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let cart_products = vec![];
-
+        js_test();
         Self {
             state: State { cart_products },
             link,
