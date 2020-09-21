@@ -47,5 +47,5 @@ h1, h2, h3, h4, h5, h6, a, button {
   box-shadow: var(--box-shadow);
   border-radius: var(--radius);
   cursor: pointer;
-  width: calc( (100% / 4) - 30px );
+  width: 100%;
 }
