@@ -1,8 +1,36 @@
-use crate::pages::{AppRoutes, chat::ChatModel, Home, ProductDetail, Products, Profile, ShoppingCart};
-// use std::marker::PhantomData;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_router::switch::Permissive;
 use yew_router::{route::Route, router::Router as YewRouter};
+
+use yew_router::Switch;
+// use yew_router::matcher::MatcherToken;
+
+use crate::pages::{ ProductDetail, Products, Profile, Home, Scanner, ShoppingCart, chat::ChatModel };
+
+/// App routes
+#[derive(Switch, Debug, Clone)]
+pub enum AppRoutes {
+    #[to = "/profile"]
+    Profile,
+    #[to = "/scanner"]
+    Scanner,
+    #[to = "/chat"]
+    ChatModel,
+    #[to = "/products"]
+    Products,
+    #[to = "/product/{id}"]
+    ProductDetail(i32),
+    #[to = "/shopping_cart"]
+    ShoppingCart,
+    #[to = "/404"]
+    NotFound(Permissive<String>),
+    #[to = "/"]
+    Home,
+    // #[to = MatcherToken::Exact("/")]
+    // Home,
+    // #[to = "/{*:any}"]
+    // NotFound(Permissive<String>),
+}
 
 pub struct Router {
     link: ComponentLink<Self>,
@@ -31,6 +59,7 @@ impl Component for Router {
                     match switch {
                         AppRoutes::Home => html!{<Home />},
                         AppRoutes::Profile => html!{<Profile />},
+                        AppRoutes::Scanner => html!{<Scanner />},
                         AppRoutes::ProductDetail(id) => html! {<ProductDetail id=id />},
                         AppRoutes::Products => html! {<Products />},
                         AppRoutes::ChatModel => html! {<ChatModel />},

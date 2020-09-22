@@ -1,4 +1,4 @@
-use crate::pages::AppRoutes;
+use crate::router::AppRoutes;
 use css_in_rust::Style;
 use yew::agent::{Bridge, Bridged};
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};

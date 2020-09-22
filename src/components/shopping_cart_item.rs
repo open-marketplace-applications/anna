@@ -1,4 +1,4 @@
-use crate::pages::AppRoutes;
+use crate::router::AppRoutes;
 use crate::types::CartProduct;
 use yew::prelude::*;
 use yew_router::components::RouterAnchor;
