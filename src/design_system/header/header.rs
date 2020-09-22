@@ -52,6 +52,9 @@ impl Component for Header {
                     <RouterAnchor<AppRoutes> route=AppRoutes::Products>
                         { "Products" }
                     </RouterAnchor<AppRoutes>>
+                    <RouterAnchor<AppRoutes> route=AppRoutes::Scanner>
+                        { "Scanner" }
+                    </RouterAnchor<AppRoutes>>
                     <RouterAnchor<AppRoutes> route=AppRoutes::Profile>
                         { "Profile" }
                     </RouterAnchor<AppRoutes>>
