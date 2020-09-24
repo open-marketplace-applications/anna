@@ -1,0 +1,51 @@
+<mxfile host="e764cec5-398b-4940-9805-1d0ed45556a1" modified="2020-09-23T14:47:27.207Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.49.1 Chrome/83.0.4103.122 Electron/9.2.1 Safari/537.36" etag="1ZAesYYNPlz2nmp5Goeo" version="13.1.3">
+    <diagram id="6hGFLwfOUW9BJ-s0fimq" name="Page-1">
+        <mxGraphModel dx="1065" dy="1611" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="App to Server Authentication" style="swimlane;html=1;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;startSize=20;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="-110" width="690" height="500" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="identity Owner (ANNA)" style="swimlane;html=1;startSize=20;" parent="2" vertex="1">
+                    <mxGeometry y="20" width="260" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.data_encryption_key;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="3">
+                    <mxGeometry x="103.41" y="150" width="46.5" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shadow=0;dashed=0;strokeWidth=1;shape=mxgraph.android.phone2;strokeColor=#c0c0c0;" vertex="1" parent="3">
+                    <mxGeometry x="60" y="50" width="133.32" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="swimlane;html=1;startSize=20;" parent="2" vertex="1">
+                    <mxGeometry x="260" y="20" width="210" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="2.&lt;br&gt;DID-Auth Response&lt;br&gt;(Open return link)" style="endArrow=classic;html=1;" edge="1" parent="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="-60" y="250" as="sourcePoint"/>
+                        <mxPoint x="260" y="250" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="1.&lt;br&gt;DID-Auth Challenge&lt;br&gt;(Deep link)" style="endArrow=classic;html=1;" edge="1" parent="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="265" y="89" as="sourcePoint"/>
+                        <mxPoint x="-55" y="89" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="Relying Party (ADORA)" style="swimlane;html=1;startSize=20;" parent="2" vertex="1">
+                    <mxGeometry x="470" y="20" width="220" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="3. Update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="5" source="19" target="24">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="90" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="Webseite" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/home_page.svg;" vertex="1" parent="5">
+                    <mxGeometry x="65" y="70" width="50" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Web Server" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/web_server.svg;" vertex="1" parent="5">
+                    <mxGeometry x="70" y="220" width="40" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
