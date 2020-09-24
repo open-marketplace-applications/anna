@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap');
+
+:root {
+  --primary: #4CB6C2;
+  --primary_light: #7FC7BD;
+  --white: #FFFFFF;
+  --light: #EDF7F2;
+  --dark: #193F43;
+  --black: #0F282B;
+
+  --radius: 16px;
+  --box-shadow: 0 0 6px rgba(0,0,0,.15);
+}
+
+body {
+  background-color: var(--light);
+}
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+span, p, blockquote, ul, ol {
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6, a, button {
+  font-weight: 800;
+}
+
+// TODO: Put into UI components
+.navbar_cart_value {
+  margin-bottom: 20px;
+}
+
+.product_card_list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+
+.product_card_container {
+  padding: 24px;
+  margin: 0 12px 24px;
+  background-color: var(--white);
+  box-shadow: var(--box-shadow);
+  border-radius: var(--radius);
+  cursor: pointer;
+  width: 100%;
+}
