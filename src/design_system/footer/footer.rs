@@ -50,7 +50,7 @@ impl Component for Footer {
     fn view(&self) -> Html {
         html! {
             <div class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())>
-                <p>{"Yew Fullstack Boilerplate"}</p>
+                <p>{"ANNA - An Open Marketplace Application"}</p>
             </div>
         }
     }
