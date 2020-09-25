@@ -2,7 +2,7 @@
 authors = ["huhn511"]
 language = "en"
 multilingual = false
-src = "./docs"
+src = "./"
 title = "ANNA - A Nice Network Application"
 
 [build]

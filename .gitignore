@@ -7,5 +7,5 @@ dist/
 wasm-pack.log
 node_modules
 book
-index.html
+docs/index.html
 .DS_Store
