@@ -33,7 +33,7 @@
 
 # ANNA 
 
-> A Nice Network Application
+> A Next Network Application
 
 ## Introduction
 This is an implementation of a decentralized eCommerce Platform written in Rust.
