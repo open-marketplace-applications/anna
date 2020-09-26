@@ -1,5 +1,5 @@
 [package]
-name = "anna_wallet"
+name = "anna_scanner"
 version = "0.0.1"
 authors = ["huhn <huhn@einfachiota.de"]
 edition = "2018"
