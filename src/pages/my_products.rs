@@ -1,5 +1,5 @@
 use crate::api;
-use crate::components::{ProductCard, CreateProductForm};
+use crate::components::{MyProductCard, CreateProductForm};
 use crate::types::Product;
 use anyhow::Error;
 use yew::format::Json;
@@ -31,7 +31,8 @@ pub enum Msg {
     GetProductsSuccess(Vec<Product>),
     GetProductsError(Error),
     SwitchTo(Scene),
-    AddProduct(Product)
+    AddProduct(Product),
+    Publish(Product)
 }
 
 #[derive(Debug)]
@@ -99,6 +100,10 @@ impl Component for MyProducts {
                 self.state.get_products_loaded = true;
                 true
             }
+            Msg::Publish(product) => {
+                
+                true
+            }
         }
     }
 
@@ -114,7 +119,8 @@ impl Component for MyProducts {
             .iter()
             .map(|product: &Product| {
                 html! {
-                    <ProductCard product={product} />
+
+                        <MyProductCard product={product} />
                 }
             })
             .collect();
