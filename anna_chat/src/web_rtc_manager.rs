@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::*;
 
-use crate::pages::chat::*;
+use crate::chat::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;

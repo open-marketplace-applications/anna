@@ -5,9 +5,10 @@ use yew_router::{route::Route, router::Router as YewRouter};
 use yew_router::Switch;
 // use yew_router::matcher::MatcherToken;
 
-use crate::pages::{ ProductDetail, Products, MyProducts, Profile, Scanner, ShoppingCart, chat::ChatModel };
+use crate::pages::{ ProductDetail, Products, MyProducts, Profile, Scanner, ShoppingCart };
 
 use anna_home::Home;
+use anna_chat::chat::ChatModel;
 
 /// App routes
 #[derive(Switch, Debug, Clone)]

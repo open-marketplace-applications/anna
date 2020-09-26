@@ -2,7 +2,7 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::*;
 
-use crate::components::*;
+use crate::web_rtc_manager::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -450,7 +450,7 @@ impl ChatModel {
         html! {
             <header class="msger-header">
                 <div style="font-size:25">
-                    {"Rust WebRTC WASM Chat V1"}
+                    {"ANNA Chat V0.0.1"}
                 </div>
 
                 { self.get_debug_html() }

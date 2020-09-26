@@ -3,7 +3,6 @@ pub mod products;
 pub mod profile;
 pub mod shopping_cart;
 pub mod scanner;
-pub mod chat;
 pub mod my_products;
 
 pub use product_detail::ProductDetail;

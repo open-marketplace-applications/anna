@@ -25,13 +25,6 @@ css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
 anyhow = "1.0.31"
 uuid = {version = "0.8.1", features = ["serde", "v4", "wasm-bindgen"]}
 
-# chat dependencies
-base64 = "0.12.1"
-wasm-bindgen-futures = "0.4.13"
-hmac-sha256 = "0.1.2"
-hex = "0.4.2"
-js-sys = "0.3.39"
-
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
 # all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
@@ -42,8 +35,9 @@ console_error_panic_hook = { version = "0.1.6", optional = true }
 rqrr = "0.2.0"
 image = "0.21.2"
 
-# home
+# internal dependencies
 anna_home = { path = "../anna_home" }
+anna_chat = { path = "../anna_chat" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

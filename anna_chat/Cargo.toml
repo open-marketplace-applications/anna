@@ -4,7 +4,92 @@ version = "0.0.1"
 authors = ["huhn <huhn@einfachiota.de"]
 edition = "2018"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 yew = { version = "^0.17", features = ["web_sys"] }
 css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
+
+wasm-bindgen = "0.2.63"
+base64 = "0.12.1"
+wasm-bindgen-futures = "0.4.13"
+hmac-sha256 = "0.1.2"
+hex = "0.4.2"
+js-sys = "0.3.39"
+serde = "1.0.104"
+serde_json = "1.0.53"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'KeyboardEvent',
+    "console",
+  'Document',
+  'Element',
+  'HtmlElement',
+  'Node',
+  'Window',
+  'RtcAnswerOptions',
+  'RtcCertificate',
+  'RtcCertificateExpiration',
+  'RtcCodecStats',
+  'RtcConfiguration',
+  'RtcDataChannel',
+  'RtcDataChannelEvent',
+  'RtcDataChannelEventInit',
+  'RtcDataChannelInit',
+  'RtcDataChannelState',
+  'RtcFecParameters',
+  'RtcIceCandidate',
+  'RtcIceCandidateInit',
+  'RtcIceCandidatePairStats',
+  'RtcIceCandidateStats',
+  'RtcIceComponentStats',
+  'RtcIceServer',
+  'RtcIdentityAssertion',
+  'RtcIdentityAssertionResult',
+  'RtcIdentityProvider',
+  'RtcIdentityProviderDetails',
+  'RtcIdentityProviderOptions',
+  'RtcIdentityProviderRegistrar',
+  'RtcIdentityValidationResult',
+  'RtcInboundRtpStreamStats',
+  'RtcMediaStreamStats',
+  'RtcMediaStreamTrackStats',
+  'RtcOfferAnswerOptions',
+  'RtcOfferOptions',
+  'RtcOutboundRtpStreamStats',
+  'RtcPeerConnection',
+  'RtcPeerConnectionIceEvent',
+  'RtcPeerConnectionIceEventInit',
+  'RtcRtcpParameters',
+  'RtcRtpCodecParameters',
+  'RtcRtpContributingSource',
+  'RtcRtpEncodingParameters',
+  'RtcRtpHeaderExtensionParameters',
+  'RtcRtpParameters',
+  'RtcRtpReceiver',
+  'RtcRtpSender',
+  'RtcRtpSourceEntry',
+  'RtcRtpSynchronizationSource',
+  'RtcRtpTransceiver',
+  'RtcRtpTransceiverInit',
+  'RtcRtxParameters',
+  'RtcSessionDescription',
+  'RtcSessionDescriptionInit',
+  'RtcStats',
+  'RtcStatsReport',
+  'RtcStatsReportInternal',
+  'RtcTrackEvent',
+  'RtcTrackEventInit',
+  'RtcTransportStats',
+  'RtcIceConnectionState',
+  'RtcIceGatheringState',
+  'RtcSdpType',
+  'RtcdtmfSender',
+  'RtcdtmfToneChangeEvent',
+  'RtcdtmfToneChangeEventInit',
+  'RtcrtpContributingSourceStats',
+  'HtmlDocument',
+]

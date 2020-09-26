@@ -1,7 +1,8 @@
 [workspace]
 
 members = [
-    "anna_app"
+    "anna_app",
+    "anna_chat",
 ]
 exclude = [
 ]

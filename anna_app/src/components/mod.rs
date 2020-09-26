@@ -5,7 +5,6 @@ mod atc_button;
 mod navbar;
 mod product_card;
 mod shopping_cart_item;
-mod web_rtc_manager;
 mod order_form;
 mod create_product_form;
 mod my_product_card;
@@ -14,7 +13,6 @@ mod my_product_card;
 pub use layout::Layout;
 
 pub use order_form::OrderForm;
-pub use web_rtc_manager::*;
 pub use atc_button::AddToCartButton;
 pub use navbar::Navbar;
 pub use product_card::ProductCard;
