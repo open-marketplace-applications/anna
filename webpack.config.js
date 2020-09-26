@@ -30,10 +30,10 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new CopyWebpackPlugin([
-        { from: './static', to: distPath }
+        { from: './anna_app/static', to: distPath }
       ]),
       new WasmPackPlugin({
-        crateDirectory: ".",
+        crateDirectory: "./anna_app",
         extraArgs: "--no-typescript",
       })
     ],

@@ -36,7 +36,7 @@ impl Component for Home {
         html! {
             <div class=self.style.to_string()>
                 <h1>{"Home Page"}</h1>
-                <p>{"Home Page Content"}</p>
+                <p>{"Home Page Content from external crate"}</p>
             </div>
         }
     }

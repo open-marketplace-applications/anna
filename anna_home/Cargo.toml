@@ -1,0 +1,10 @@
+[package]
+name = "anna_home"
+version = "0.0.1"
+authors = ["huhn <huhn@einfachiota.de"]
+edition = "2018"
+
+
+[dependencies]
+yew = { version = "^0.17", features = ["web_sys"] }
+css-in-rust = { version = "0.4.1", features = ["yew_integration"] }

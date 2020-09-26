@@ -69,6 +69,13 @@ yarn run start:dev
 * [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized
   for small code size.
 
-
 ## Joining the discussion
 If you want to get involved in discussions about this application, or you're looking for support, go to the #anna channel on [our Discord](https://discord.gg/XDQQcJC).
+
+
+
+https://github.com/joselo/rust-crud
+https://github.com/hgzimmerman/yew_patterns
+https://github.com/hgzimmerman/FullstackRustDemo
+https://github.com/dunnock/wasi-worker
+https://github.com/jgpaiva/minesweeper

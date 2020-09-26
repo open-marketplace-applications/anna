@@ -30,6 +30,11 @@ impl Component for OrderForm {
         match msg {
             Msg::SendOrder => {
                 log::info!("order_form::SendOrder {:?}", self);
+                // sign message
+                
+                // encrypt message with app public key
+
+                // send message to address
             },
             Msg::UpdateFirstName(val) => {
                 log::info!("order_form::UpdateFirstName {:?}", val);

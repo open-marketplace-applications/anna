@@ -32,7 +32,9 @@ impl Component for App {
 
     fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
         let cart_products = vec![];
-        js_test();
+        unsafe {
+            js_test();
+        }
         Self {
             state: State { cart_products },
             link,
