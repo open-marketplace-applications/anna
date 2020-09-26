@@ -38,6 +38,12 @@ js-sys = "0.3.39"
 # code size when deploying.
 console_error_panic_hook = { version = "0.1.6", optional = true }
 
+# scanner
+rqrr = "0.2.0"
+image = "0.21.2"
+
+# home 
+
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
 
