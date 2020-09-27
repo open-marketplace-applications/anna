@@ -38,6 +38,8 @@ image = "0.21.2"
 # internal dependencies
 anna_home = { path = "../anna_home" }
 anna_chat = { path = "../anna_chat" }
+anna_profile = { path = "../anna_profile" }
+anna_shop = { path = "../anna_shop" }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"

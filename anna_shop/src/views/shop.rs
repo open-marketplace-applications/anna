@@ -1,10 +1,10 @@
-use crate::api;
-use crate::components::{MyProductCard, CreateProductForm};
-use crate::types::Product;
 use anyhow::Error;
 use yew::format::Json;
 use yew::prelude::*;
 use yew::services::fetch::FetchTask;
+use crate::components::{ProductCard, CreateProductForm};
+
+use crate::models::product::Product;
 
 use yew::services::storage::Area;
 use yew::services::{DialogService, StorageService};
@@ -17,7 +17,7 @@ struct State {
 #[derive(Properties, Clone)]
 pub struct Props {}
 
-pub struct MyProducts {
+pub struct Shop {
     props: Props,
     state: State,
     link: ComponentLink<Self>,
@@ -45,7 +45,7 @@ pub enum Scene {
 /// storage key for the products
 const KEY: &str = "oma.anna.products";
 
-impl Component for MyProducts {
+impl Component for Shop {
     type Message = Msg;
     type Properties = Props;
 
@@ -120,7 +120,7 @@ impl Component for MyProducts {
             .map(|product: &Product| {
                 html! {
 
-                        <MyProductCard product={product} />
+                        <ProductCard product={product} />
                 }
             })
             .collect();

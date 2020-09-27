@@ -1,4 +1,4 @@
-use crate::types::Product;
+use crate::models::product::Product;
 use yew::{html, Callback, Component, ComponentLink, Html, InputData, Properties, ShouldRender};
 
 #[derive(Debug)]

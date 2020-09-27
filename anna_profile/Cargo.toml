@@ -4,7 +4,13 @@ version = "0.0.1"
 authors = ["huhn <huhn@einfachiota.de"]
 edition = "2018"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 yew = { version = "^0.17", features = ["web_sys"] }
 css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
+log = "0.4"
+web_logger = "0.2"
+
+identity_core = { git = "https://github.com/iotaledger/identity.rs", branch = "dev" }

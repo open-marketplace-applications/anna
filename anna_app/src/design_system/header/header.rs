@@ -50,10 +50,10 @@ impl Component for Header {
                         { "Home" }
                     </RouterAnchor<AppRoutes>>
                     <RouterAnchor<AppRoutes> route=AppRoutes::Products>
-                        { "Products" }
+                        { "Marketplace" }
                     </RouterAnchor<AppRoutes>>
-                    <RouterAnchor<AppRoutes> route=AppRoutes::MyProducts>
-                        { "MyProducts" }
+                    <RouterAnchor<AppRoutes> route=AppRoutes::Shop>
+                        { "Shop" }
                     </RouterAnchor<AppRoutes>>
                     <RouterAnchor<AppRoutes> route=AppRoutes::Scanner>
                         { "Scanner" }

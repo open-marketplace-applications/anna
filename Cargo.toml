@@ -3,6 +3,7 @@
 members = [
     "anna_app",
     "anna_chat",
+    "anna_profile",
 ]
 exclude = [
 ]

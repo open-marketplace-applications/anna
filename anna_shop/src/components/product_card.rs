@@ -1,17 +1,9 @@
-use crate::components::AddToCartButton;
-use crate::router::AppRoutes;
-use crate::types::Product;
+
+use crate::models::product::Product;
+
 use yew::prelude::*;
-use yew_router::components::RouterAnchor;
 
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen(module = "/js/ipfs.js")]
-extern "C" {
-    fn write_file();
-}
-
-pub struct MyProductCard {
+pub struct ProductCard {
     props: Props,
     link: ComponentLink<Self>,
 }
@@ -27,7 +19,7 @@ pub struct Props {
     pub on_add_to_cart: Callback<Product>,
 }
 
-impl Component for MyProductCard {
+impl Component for ProductCard {
     type Message = Msg;
     type Properties = Props;
 
@@ -39,9 +31,6 @@ impl Component for MyProductCard {
         match msg {
             Msg::Publish => {
                 log::info!("Publish");
-                unsafe {
-                    write_file();
-                }
             }
 
         }
@@ -53,16 +42,13 @@ impl Component for MyProductCard {
     }
 
     fn view(&self) -> Html {
-        type Anchor = RouterAnchor<AppRoutes>;
         let onclick = self.link.callback(|_| Msg::Publish);
 
         html! {
             <div class="product_card_container">
-                <Anchor route=AppRoutes::ProductDetail(self.props.product.id) classes="product_card_anchor">
                     <img class="product_card_image" src={&self.props.product.image}/>
                     <div class="product_card_name">{&self.props.product.name}</div>
                     <div class="product_card_price">{"$"}{&self.props.product.price}</div>
-                </Anchor>
                 <button onclick = onclick>{"Publish"}</button>
             </div>
         }
