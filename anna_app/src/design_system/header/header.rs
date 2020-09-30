@@ -1,10 +1,12 @@
-use crate::router::AppRoutes;
 use css_in_rust::Style;
-use yew::agent::{Bridge, Bridged};
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 use yew_router::prelude::*;
 
-/// Header with menu and user controls.
+use crate::router::AppRoutes;
+
+// 📚 Design System
+use crate::design_system::atoms::{Logo, Menu};
+
 pub struct Header {
     props: Props,
     style: Style,
@@ -44,8 +46,11 @@ impl Component for Header {
 
     fn view(&self) -> Html {
         html! {
-            <div class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())>
-                <div class="menu">
+            <div
+                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
+            >
+                <Menu>
+                    <Logo />
                     <RouterAnchor<AppRoutes> route=AppRoutes::Home>
                         { "Home" }
                     </RouterAnchor<AppRoutes>>
@@ -67,7 +72,7 @@ impl Component for Header {
                     <RouterAnchor<AppRoutes> route=AppRoutes::ChatModel>
                         { "Chat" }
                     </RouterAnchor<AppRoutes>>
-                </div>
+                </Menu>
             </div>
         }
     }

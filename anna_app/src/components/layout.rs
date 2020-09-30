@@ -4,21 +4,22 @@ use css_in_rust::Style;
 use yew::prelude::*;
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 
-/// Site layout.
+#[derive(Debug)]
 pub struct Layout {
     style: Style,
     props: Props,
 }
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Debug)]
+pub enum Msg {}
+
+#[derive(Properties, Clone, PartialEq, Debug)]
 pub struct Props {
     #[prop_or_default]
     pub children: Children,
     #[prop_or_default]
     pub class: String,
 }
-
-pub enum Msg {}
 
 impl Component for Layout {
     type Message = Msg;
