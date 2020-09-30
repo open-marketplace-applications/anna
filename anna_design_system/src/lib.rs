@@ -3,7 +3,6 @@
 pub mod atoms;
 pub mod button;
 pub mod footer;
-pub mod header;
 
 pub use atoms::*;
 pub use button::Button;
