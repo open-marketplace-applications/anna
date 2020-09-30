@@ -7,7 +7,6 @@ mod agents;
 mod api;
 mod app;
 mod components;
-mod design_system;
 mod pages;
 mod router;
 mod types;

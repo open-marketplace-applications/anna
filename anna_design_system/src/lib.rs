@@ -1,3 +1,5 @@
+#![recursion_limit = "1024"]
+
 pub mod atoms;
 pub mod button;
 pub mod footer;

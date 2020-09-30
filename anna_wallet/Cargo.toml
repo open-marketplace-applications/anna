@@ -1,7 +1,7 @@
 [package]
 name = "anna_wallet"
 version = "0.0.1"
-authors = ["huhn <huhn@einfachiota.de"]
+authors = ["huhn <huhn@einfachiota.de>"]
 edition = "2018"
 
 

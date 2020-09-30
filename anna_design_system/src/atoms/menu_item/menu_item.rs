@@ -2,7 +2,7 @@ use css_in_rust::Style;
 use yew::prelude::*;
 
 #[derive(Debug)]
-pub struct Page {
+pub struct MenuItem {
   link: ComponentLink<Self>,
   style: Style,
   props: Props,
@@ -19,16 +19,13 @@ pub struct Props {
   pub class: String,
 }
 
-impl Component for Page {
+impl Component for MenuItem {
   type Message = Msg;
   type Properties = Props;
 
   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-    log::info!("main");
-    let style = Style::create("page", include_str!("style.scss")).expect("An error occured while creating the style.");
-    log::info!("main");
-    log::info!("öpggoo: {:?}", style);
-    Page {
+    let style = Style::create("item", include_str!("style.scss")).expect("An error occured while creating the style.");
+    MenuItem {
       link,
       style,
       props: props.to_owned(),
@@ -48,7 +45,6 @@ impl Component for Page {
       <div
         class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
       >
-        <h1>{"Hello world"}</h1>
         { self.props.children.clone() }
       </div>
     }

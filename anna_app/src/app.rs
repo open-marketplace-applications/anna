@@ -1,12 +1,13 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
 
-use crate::router::Router;
+use crate::router::{AppRoutes, Router};
 use crate::types::CartProduct;
 
+use crate::components::Nav;
+
 // 📚 Design System
-use crate::design_system::atoms::Page;
-use crate::design_system::Footer;
-use crate::design_system::Header;
+use anna_design_system::{Footer, Header, Page};
 
 struct State {
     cart_products: Vec<CartProduct>,
@@ -52,10 +53,9 @@ impl Component for App {
     fn view(&self) -> Html {
         html! {
             <Page>
-                <Header />
-                <div class="main"></div>
-                <Footer />
+                <Nav></Nav>
                 <Router />
+                <Footer />
             </Page>
         }
     }

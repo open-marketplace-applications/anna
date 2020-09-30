@@ -3,14 +3,17 @@ mod layout;
 
 mod atc_button;
 mod navbar;
+mod order_form;
 mod product_card;
 mod shopping_cart_item;
-mod order_form;
+
+mod nav;
+pub use nav::Nav;
 
 pub use layout::Layout;
 
-pub use order_form::OrderForm;
 pub use atc_button::AddToCartButton;
 pub use navbar::Navbar;
+pub use order_form::OrderForm;
 pub use product_card::ProductCard;
 pub use shopping_cart_item::ShopingCartItem;

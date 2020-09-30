@@ -45,7 +45,7 @@ impl Component for Logo {
       <div
         class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
       >
-        <span>{"ANNA"}</span>
+        { self.props.children.clone() }
       </div>
     }
   }
