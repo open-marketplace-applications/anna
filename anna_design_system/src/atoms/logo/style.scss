@@ -1,0 +1,10 @@
+& {
+  margin-right: 50px;
+  background-color: var(--dark);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+&:hover {
+  background-color: var(--primary);
+}

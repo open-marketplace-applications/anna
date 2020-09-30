@@ -1,24 +1,23 @@
-use crate::design_system::Footer;
-use crate::design_system::Header;
 use css_in_rust::Style;
 use yew::prelude::*;
 use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 
-/// Site layout.
+#[derive(Debug)]
 pub struct Layout {
     style: Style,
     props: Props,
 }
 
-#[derive(Properties, Clone, PartialEq)]
+#[derive(Debug)]
+pub enum Msg {}
+
+#[derive(Properties, Clone, PartialEq, Debug)]
 pub struct Props {
     #[prop_or_default]
     pub children: Children,
     #[prop_or_default]
     pub class: String,
 }
-
-pub enum Msg {}
 
 impl Component for Layout {
     type Message = Msg;
@@ -59,11 +58,9 @@ impl Component for Layout {
     fn view(&self) -> Html {
         html! {
             <div class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())>
-                <Header />
                 <div class="content">
                     { self.props.children.clone() }
                 </div>
-                <Footer />
             </div>
         }
     }

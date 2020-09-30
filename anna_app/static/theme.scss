@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap');
 
 :root {
-  --primary: #4CB6C2;
-  --primary_light: #7FC7BD;
-  --white: #FFFFFF;
-  --light: #EDF7F2;
-  --dark: #193F43;
-  --black: #0F282B;
+  --primary: #4cb6c2;
+  --primary_light: #55cfdd;
+  --white: #ffffff;
+  --light: #eff3f4;
+  --light-grey: #dce4e6;
+  --dark-grey: #29656c;
+  --dark: #1e484d;
+  --black: #0f282b;
 
-  --radius: 16px;
-  --box-shadow: 0 0 6px rgba(0,0,0,.15);
+  --radius: 10px;
+  --box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  --transition: all ease-in-out 300ms;
 }
 
 body {
@@ -23,11 +26,22 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-span, p, blockquote, ul, ol {
+span,
+p,
+blockquote,
+ul,
+ol {
   font-weight: 400;
 }
 
-h1, h2, h3, h4, h5, h6, a, button {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button {
   font-weight: 800;
 }
 

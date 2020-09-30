@@ -45,7 +45,6 @@ impl Component for Button {
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        log::info!("button::update::self {:?}", self);
         match msg {
             Msg::Clicked => {
                 self.onsignal.emit(());
