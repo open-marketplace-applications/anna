@@ -2,6 +2,7 @@
 use crate::models::product::Product;
 
 use yew::prelude::*;
+use serde::{Deserialize, Serialize};
 
 pub struct ProductCard {
     props: Props,
@@ -12,7 +13,8 @@ pub enum Msg {
     Publish,
 }
 
-#[derive(Properties, Clone)]
+
+#[derive(Properties, Clone, Debug)]
 pub struct Props {
     pub product: Product,
     #[prop_or_default]
@@ -30,7 +32,7 @@ impl Component for ProductCard {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::Publish => {
-                log::info!("Publish");
+                Product::publish(self.props.product.to_owned());
             }
 
         }
@@ -48,7 +50,7 @@ impl Component for ProductCard {
             <div class="product_card_container">
                     <img class="product_card_image" src={&self.props.product.image}/>
                     <div class="product_card_name">{&self.props.product.name}</div>
-                    <div class="product_card_price">{"$"}{&self.props.product.price}</div>
+                    <div class="product_card_price">{"€"}{&self.props.product.price.amount}</div>
                 <button onclick = onclick>{"Publish"}</button>
             </div>
         }

@@ -4,6 +4,21 @@
         <meta charset="utf-8" />
         <title>ANNA</title>
         <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="manifest" href="manifest.json" />
+
+
+        <script>
+            // register ServiceWorker
+            window.onload = () => {
+                'use strict';
+    
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker
+                            .register('./sw.js');
+                }
+            }
+        </script>
     </head>
     <body>
         <div class="app"></div>
@@ -12,3 +27,4 @@
         <script src="anna.js"></script>
     </body>
 </html>
+

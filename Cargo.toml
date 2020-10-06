@@ -4,6 +4,7 @@ members = [
     "anna_app",
     "anna_chat",
     "anna_profile",
+    "anna_shop",
     "anna_design_system",
 ]
 

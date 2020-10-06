@@ -12,5 +12,20 @@ yew = { version = "^0.17", features = ["web_sys"] }
 css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
 log = "0.4"
 web_logger = "0.2"
+identity_core = { git = "https://github.com/iotaledger/identity.rs", branch = "feat(comm)--Setup-DIDComm" }
+identity_common = { git = "https://github.com/iotaledger/identity.rs", branch = "feat(comm)--Setup-DIDComm" }
+identity_comm = { git = "https://github.com/iotaledger/identity.rs", branch = "feat(comm)--Setup-DIDComm" }
 
-identity_core = { git = "https://github.com/iotaledger/identity.rs", branch = "dev" }
+# form
+validator = "0.10"
+validator_derive = "0.10"
+yew_form = "0.1.7"
+yew_form_derive = "0.1.7"
+
+lazy_static = "1.4"
+regex = "1"
+wasm-bindgen = "0.2"
+
+# serialization
+serde = "1.0.116"
+serde_json = "1.0"

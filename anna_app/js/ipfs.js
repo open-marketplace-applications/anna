@@ -2,7 +2,7 @@ let IPFS = window.Ipfs;
 
 export async function start_ipfs () {
     let client = await IPFS.create()
-
+    window.ipfs_client = client;
     console.log("IPFS");
     console.log(IPFS);
     console.log("IPFS client");
@@ -26,15 +26,3 @@ export async function start_ipfs () {
     //   console.log(file.name)
     // }
   }
-  export async function write_file(path, content) {
-   
-    const IPFS = window.Ipfs;
-    const client = await IPFS.create()
-    const { id, agentVersion, protocolVersion } = await client.id()
-
-    console.log("id");
-    console.log(id);
-    await client.files.write('/hello-world', new TextEncoder().encode('Hello, world!'), { create: true })
-
-
-  }  

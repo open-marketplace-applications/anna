@@ -1,13 +1,10 @@
+use crate::components::{CreateProductForm, ProductCard, Settings};
 use anyhow::Error;
-use yew::format::Json;
-use yew::prelude::*;
-use yew::services::fetch::FetchTask;
-use crate::components::{ProductCard, CreateProductForm};
+use yew::{format::Json, prelude::*, services::fetch::FetchTask};
 
 use crate::models::product::Product;
 
-use yew::services::storage::Area;
-use yew::services::{DialogService, StorageService};
+use yew::services::{storage::Area, DialogService, StorageService};
 struct State {
     products: Vec<Product>,
     get_products_error: Option<Error>,
@@ -32,7 +29,7 @@ pub enum Msg {
     GetProductsError(Error),
     SwitchTo(Scene),
     AddProduct(Product),
-    Publish(Product)
+    Publish(Product),
 }
 
 #[derive(Debug)]
@@ -45,6 +42,16 @@ pub enum Scene {
 /// storage key for the products
 const KEY: &str = "oma.anna.products";
 
+use wasm_bindgen::prelude::*;
+use web_sys::console;
+
+#[wasm_bindgen(module = "/src/js/ipfs.js")]
+extern "C" {
+    #[wasm_bindgen(catch)]
+    async fn get_published_products() -> Result<JsValue, JsValue>;
+    fn test() -> String;
+}
+
 impl Component for Shop {
     type Message = Msg;
     type Properties = Props;
@@ -53,6 +60,26 @@ impl Component for Shop {
         let products = vec![];
         link.send_message(Msg::GetProducts);
         let storage = StorageService::new(Area::Local).expect("storage was disabled by the user");
+
+        unsafe {
+            async {
+                let published_products = get_published_products().await;
+             
+                // let wwhat = published_products.as_string();
+                // log::info!("wwhat {:?}", wwhat);
+                match published_products {
+                    Ok(res) => {
+                        log::info!("Ok {:?}", res);
+                    }
+                    Err(err) => {
+                        log::info!("Err: {:?}", err);
+                    }
+                }
+            };
+            let test = test();
+
+            log::info!("test {:?}", test);
+        }
 
         Self {
             props,
@@ -100,10 +127,7 @@ impl Component for Shop {
                 self.state.get_products_loaded = true;
                 true
             }
-            Msg::Publish(product) => {
-                
-                true
-            }
+            Msg::Publish(product) => true,
         }
     }
 
@@ -158,6 +182,7 @@ impl Component for Shop {
                 Scene::Settings => html! {
                     <div>
                         <h1>{"Settings"}</h1>
+                        <Settings />
                         // <button onclick=self.link.callback(|_| Msg::ClearProducts)>{ "Remove all clients" }</button>
                         <button onclick=self.link.callback(|_| Msg::SwitchTo(Scene::ProductList))>{ "Go Back" }</button>
                     </div>
