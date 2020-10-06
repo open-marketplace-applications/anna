@@ -1,3 +1,6 @@
+pub mod theme;
+pub use theme::theme::Theme;
+
 pub mod header;
 pub use header::header::Header;
 

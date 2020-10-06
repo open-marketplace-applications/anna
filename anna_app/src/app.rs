@@ -7,7 +7,7 @@ use crate::types::CartProduct;
 use crate::components::Nav;
 
 // 📚 Design System
-use anna_design_system::{Footer, Header, Page};
+use anna_design_system::{Footer, Header, Page, Theme};
 
 struct State {
     cart_products: Vec<CartProduct>,
@@ -52,11 +52,13 @@ impl Component for App {
 
     fn view(&self) -> Html {
         html! {
-            <Page>
-                <Nav></Nav>
-                <Router />
-                <Footer />
-            </Page>
+            <Theme>
+                <Page>
+                    <Nav></Nav>
+                    <Router />
+                    <Footer />
+                </Page>
+            </Theme>
         }
     }
 }
