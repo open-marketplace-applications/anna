@@ -11,6 +11,7 @@
   --radius: 10px;
   --box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   --transition: all ease-in-out 300ms;
+  --transition-cubic: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 200ms;
 }
 
 *,
