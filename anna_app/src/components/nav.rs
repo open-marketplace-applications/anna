@@ -5,7 +5,7 @@ use yew_router::prelude::*;
 use yew_state::{GlobalHandle, SharedStateComponent};
 
 // 📚 Design System
-use anna_design_system::{Header, Logo, Menu, MenuItem};
+use anna_design_system::{Header, Logo, Menu, MenuItem, Tooltip};
 
 pub struct Nav {
   props: Props,
@@ -83,6 +83,7 @@ impl Component for Nav {
                     <path id="Pfad_15432" data-name="Pfad 15432" d="M16.191,18.343H9.02a2.154,2.154,0,0,1-2.151-2.151V9.021A2.154,2.154,0,0,1,9.02,6.869H16.19a2.154,2.154,0,0,1,2.151,2.151v7.171A2.153,2.153,0,0,1,16.191,18.343ZM4.717,8.3a.717.717,0,0,0,.717-.717V6.152a.718.718,0,0,1,.717-.717H7.585A.717.717,0,0,0,7.585,4H6.151A2.154,2.154,0,0,0,4,6.152V7.586A.717.717,0,0,0,4.717,8.3ZM19.059,4H17.625a.717.717,0,1,0,0,1.434h1.434a.718.718,0,0,1,.717.717V7.586a.717.717,0,0,0,1.434,0V6.152A2.154,2.154,0,0,0,19.059,4ZM7.585,19.776H6.151a.718.718,0,0,1-.717-.717V17.625a.717.717,0,1,0-1.434,0v1.434A2.154,2.154,0,0,0,6.151,21.21H7.585a.717.717,0,0,0,0-1.434Zm12.907-2.868a.716.716,0,0,0-.717.717v1.434a.717.717,0,0,1-.717.717H17.625a.717.717,0,1,0,0,1.434h1.434a2.154,2.154,0,0,0,2.151-2.151V17.625A.716.716,0,0,0,20.493,16.908Z" fill="#fff"/>
                   </g>
                 </svg>
+                <Tooltip title={"Scan QR Code"}></Tooltip>
               </RouterAnchor<AppRoutes>>
             </MenuItem>
 
@@ -93,6 +94,7 @@ impl Component for Nav {
                     xmlns="http://www.w3.org/2000/svg" width="17.13" height="15.701" viewBox="0 0 17.13 15.701">
                     <path id="buy" d="M16.981,24.463a.7.7,0,0,0-.555-.271H3.033l-.2-2.218a.7.7,0,0,0-.7-.641H.7a.7.7,0,1,0,0,1.407H1.49l.771,8.591c0,.01,0,.02,0,.03a.708.708,0,0,0,.01.079l.028.314,0,.018A2.708,2.708,0,0,0,3.312,33.59,2.132,2.132,0,1,0,7,34.176h3.851a2.133,2.133,0,1,0,2.006-1.407H5a1.307,1.307,0,0,1-1.2-.792l11.243-.661a.7.7,0,0,0,.641-.532l1.43-5.718A.7.7,0,0,0,16.981,24.463Z" transform="translate(0 -21.334)" fill="#fff"/>
                   </svg>
+                  <Tooltip title={"Cart"}></Tooltip>
               </RouterAnchor<AppRoutes>>
             </MenuItem>
 
@@ -113,6 +115,7 @@ impl Component for Nav {
                       </g>
                     </g>
                   </svg>
+                  <Tooltip title={"Messages"}></Tooltip>
               </RouterAnchor<AppRoutes>>
             </MenuItem>
 

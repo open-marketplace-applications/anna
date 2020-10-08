@@ -21,6 +21,16 @@
   box-sizing: border-box;
 }
 
+* > .tooltip {
+  opacity: 0;
+  top: calc(100% + 15px);
+}
+
+*:hover > .tooltip {
+  top: calc(100% + 5px);
+  opacity: 1;
+}
+
 ul[class],
 ol[class] {
   padding: 0;
