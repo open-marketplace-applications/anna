@@ -16,8 +16,6 @@
 
 <p align="center">
   <a href="https://discord.gg/XDQQcJC" style="text-decoration:none;"><img src="https://img.shields.io/badge/Discord-9cf.svg?logo=discord" alt="Discord"></a>
-  <a href="https://github.com/open-marketplace-applications/anna/blob/master/LICENSE_APACHE" style="text-decoration:none;"><img src="https://img.shields.io/github/license/open-marketplace-applications/anna.svg" alt="Apache 2.0 license"></a>
-  <a href="https://github.com/open-marketplace-applications/anna/blob/master/LICENSE_MIT" style="text-decoration:none;"><img src="https://img.shields.io/github/license/open-marketplace-applications/anna.svg" alt="MIT license"></a>
 </p>
 
 <p align="center">
@@ -79,3 +77,12 @@ https://github.com/hgzimmerman/yew_patterns
 https://github.com/hgzimmerman/FullstackRustDemo
 https://github.com/dunnock/wasi-worker
 https://github.com/jgpaiva/minesweeper
+
+
+# component libs
+https://github.com/alexisfontaine/ocean
+https://github.com/ericandre615/yewi
+
+https://github.com/Terkwood/yew-export-button
+
+https://github.com/steadylearner/Rust-Full-Stack
