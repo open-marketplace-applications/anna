@@ -1,6 +1,3 @@
-pub mod theme;
-pub use theme::theme::Theme;
-
 pub mod header;
 pub use header::header::Header;
 
@@ -15,3 +12,9 @@ pub use menu_item::menu_item::MenuItem;
 
 pub mod page;
 pub use page::page::Page;
+
+pub mod theme;
+pub use theme::theme::Theme;
+
+pub mod tooltip;
+pub use tooltip::tooltip::Tooltip;
