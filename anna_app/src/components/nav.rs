@@ -5,7 +5,7 @@ use yew_router::prelude::*;
 use yew_state::{GlobalHandle, SharedStateComponent};
 
 // 📚 Design System
-use anna_design_system::{Header, Logo, Menu, MenuItem, Tooltip};
+use anna_design_system::{Header, Icon, IconType, Logo, Menu, MenuItem, Tooltip};
 
 pub struct Nav {
   props: Props,
@@ -56,7 +56,9 @@ impl Component for Nav {
                 </svg>
               </RouterAnchor<AppRoutes>>
             </Logo>
-
+            
+            <Icon icon=IconType::Label />
+            
             <MenuItem>
               <RouterAnchor<AppRoutes> route=AppRoutes::Products>
                 <svg

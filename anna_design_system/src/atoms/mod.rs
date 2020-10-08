@@ -1,6 +1,9 @@
 pub mod header;
 pub use header::header::Header;
 
+pub mod icon;
+pub use icon::icon::{Icon, IconType};
+
 pub mod logo;
 pub use logo::logo::Logo;
 
