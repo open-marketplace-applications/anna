@@ -1,3 +1,5 @@
+use css_in_rust::Style;
+use yew::{Classes, Properties};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::*;
@@ -25,6 +27,12 @@ pub enum MessageSender {
     Other,
 }
 
+#[derive(Clone, Properties, PartialEq, Debug)]
+pub struct Props {
+    #[prop_or_default]
+    pub class: String,
+}
+
 #[derive(Clone, Debug)]
 pub struct Message {
     sender: MessageSender,
@@ -50,6 +58,8 @@ pub struct ChatModel {
     web_rtc_manager: Rc<RefCell<WebRTCManager>>,
     messages: Vec<Message>,
     link: ComponentLink<Self>,
+    props: Props,
+    style: Style,
     value: String,
     chat_value: String,
     node_ref: NodeRef,
@@ -75,17 +85,21 @@ pub enum Msg {
 
 impl Component for ChatModel {
     type Message = Msg;
-    type Properties = ();
+    type Properties = Props;
 
-    fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
         let web_rtc_manager = WebRTCManager::create_default(link.clone());
 
         let rc = Rc::new(RefCell::new(web_rtc_manager));
+        let style =
+        Style::create("chat", include_str!("chat.scss")).expect("An error occured while creating the style.");
 
         let model = ChatModel {
             web_rtc_manager: rc.clone(),
             messages: vec![],
             link: link,
+            style: style,
+            props: props,
             value: "".into(),
             chat_value: "".into(),
             node_ref: NodeRef::default(),
@@ -255,7 +269,9 @@ impl Component for ChatModel {
         match &self.web_rtc_manager.borrow().get_state() {
             State::DefaultState => {
                 html! {
-                    <>
+                    <div
+                        class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
+                    >
                         { self.get_chat_header() }
 
                         <main class="msger-chat" id="chat-main" ref=self.node_ref.clone()>
@@ -296,7 +312,7 @@ impl Component for ChatModel {
                         </main>
 
                         { self.get_input_for_chat_message() }
-                    </>
+                    </div>
                 }
             }
 
