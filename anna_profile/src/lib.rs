@@ -17,6 +17,8 @@ extern crate yew_form;
 extern crate yew_form_derive;
 
 
+#[macro_use]
+extern crate serde_json;
 
 pub mod context;
 pub mod job;

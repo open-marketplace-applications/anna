@@ -29,3 +29,6 @@ wasm-bindgen = "0.2"
 # serialization
 serde = "1.0.116"
 serde_json = "1.0"
+
+# error handling
+anyhow = "1.0.31"

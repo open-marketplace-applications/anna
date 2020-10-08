@@ -26,6 +26,7 @@ use yew::services::{DialogService, StorageService};
 use yew::format::Json;
 
 use crate::components::search_did::SearchDID;
+use crate::components::connect_pod::ConnectPod;
 
 #[derive(Debug)]
 pub enum Msg {
@@ -304,6 +305,8 @@ impl Component for Profile {
                 </button>
                 <h1>{"Search did:"}</h1>
                 <SearchDID />
+                <h1>{"Connect to pod:"}</h1>
+                <ConnectPod />
                 <h1>{"Workers:"}</h1>
                 <nav class="menu">
                 <button onclick=self.link.callback(|_| Msg::SendToJob)>{ "Send to Job" }</button>
