@@ -52,8 +52,7 @@ impl Component for Home {
                 <h1>{"Open Marketplace Page"}</h1>
                 <h2>{"Spotlight"}</h2>
                 <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
-                <button>{"Jetzt vorbestellen!"}</button>
-                <a href="/cart">{"sd"}</a>
+                <a href="/cart">{"Jetzt vorbestellen!"}</a>
             </div>
         }
     }
