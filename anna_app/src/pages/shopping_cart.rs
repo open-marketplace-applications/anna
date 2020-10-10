@@ -25,6 +25,7 @@ impl Component for Model {
     type Properties = GlobalHandle<Vec<CartProduct>>;
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        log::info!("log info");
         let style = Style::create(
             String::from("shopping_cart"),
             String::from(
@@ -74,4 +75,4 @@ impl Component for Model {
     }
 }
 
-pub type ShoppingCart = SharedStateComponent<Model>;
+pub type Cart = SharedStateComponent<Model>;
