@@ -8,11 +8,25 @@ pub struct Home {
 
 pub enum Msg {}
 
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/src/js/paypal.js")]
+extern "C" {
+    fn show_button();
+}
+
 impl Component for Home {
     type Message = Msg;
     type Properties = ();
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        
+        log::info!("home create ");
+        
+        unsafe {
+            show_button();
+        }
+
         let style = Style::create(
             String::from("home-page"),
             String::from(
@@ -35,8 +49,11 @@ impl Component for Home {
     fn view(&self) -> Html {
         html! {
             <div class=self.style.to_string()>
-                <h1>{"Home Page"}</h1>
-                <p>{"Home Page Content from external crate"}</p>
+                <h1>{"Open Marketplace Page"}</h1>
+                <h2>{"Spotlight"}</h2>
+                <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
+                <button>{"Jetzt vorbestellen!"}</button>
+                <a href="/cart">{"sd"}</a>
             </div>
         }
     }
