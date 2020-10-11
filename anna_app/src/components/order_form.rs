@@ -6,9 +6,10 @@ use yew::{
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RegisterResponse {
-    message: String,
+    pub id: String,
+    pub final_price: f64,
 }
 
 #[derive(Debug)]
@@ -43,13 +44,19 @@ pub struct OrderForm {
     link: ComponentLink<Self>,
     fetch_task: Option<FetchTask>,
     url: String,
-    order: Order
+    order: Order,
+    onsignal: Callback<RegisterResponse>,
     
+}
+
+#[derive(Clone, PartialEq, Properties)]
+pub struct Props {
+    pub onsignal: Callback<RegisterResponse>,
 }
 
 impl Component for OrderForm {
     type Message = Msg;
-    type Properties = ();
+    type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
         
@@ -62,7 +69,7 @@ impl Component for OrderForm {
             country: "PO".into(),
             email: "john.d@mail.ls".into(),
             amount: "1".into(),
-            final_price: "".into(),
+            final_price: "9.00".into(),
         };
         
         Self { 
@@ -70,6 +77,7 @@ impl Component for OrderForm {
             order,
             fetch_task: None,
             url: "http://localhost:5000/api/orders".to_string(),
+            onsignal: props.onsignal,
 
          }
     }
@@ -107,9 +115,12 @@ impl Component for OrderForm {
             },
             Msg::ReceiveResponse(response) => {
                 match response {
-                    Ok(order) => {
-                        log::info!("order: {:?}", order);
+                    Ok(reg_response) => {
+                        log::info!("reg_response: {:?}", reg_response);
                         // self.iss = Some(location);
+                        self.onsignal.emit(reg_response);
+
+                        // emit response to parent (shopping cart)
                     }
                     Err(error) => {
                         log::info!("error: {:?}", error);
@@ -126,6 +137,7 @@ impl Component for OrderForm {
     }
 
     fn change(&mut self, props: Self::Properties) -> ShouldRender {
+        self.onsignal = props.onsignal;
         true
     }
 

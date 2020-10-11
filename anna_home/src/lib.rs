@@ -24,7 +24,7 @@ impl Component for Home {
         log::info!("home create ");
         
         unsafe {
-            show_button();
+            // show_button();
         }
 
         let style = Style::create(
