@@ -1,7 +1,9 @@
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
-use yew::services::interval::{IntervalService, IntervalTask};
-use yew::worker::{Agent, AgentLink, Context, HandlerId};
+use yew::{
+    services::interval::{IntervalService, IntervalTask},
+    worker::{Agent, AgentLink, Context, HandlerId},
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Request {

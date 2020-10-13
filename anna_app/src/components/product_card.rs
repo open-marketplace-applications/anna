@@ -1,6 +1,4 @@
-use crate::components::AddToCartButton;
-use crate::router::AppRoutes;
-use crate::types::Product;
+use crate::{components::AddToCartButton, router::AppRoutes, types::Product};
 use yew::prelude::*;
 use yew_router::components::RouterAnchor;
 

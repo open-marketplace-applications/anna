@@ -6,8 +6,10 @@ use yew::{
     services::{fetch::FetchTask, storage::Area, StorageService},
 };
 
-use crate::components::{CreateProductForm, ProductCard, Settings};
-use crate::models::product::Product;
+use crate::{
+    components::{CreateProductForm, ProductCard, Settings},
+    models::product::Product,
+};
 
 #[derive(Properties, Clone)]
 pub struct Props {}
@@ -49,7 +51,7 @@ const KEY: &str = "oma.anna.products";
 #[wasm_bindgen(module = "/src/js/ipfs.js")]
 extern "C" {
     #[wasm_bindgen(catch)]
-    fn get_published_products() -> Result<JsValue, JsValue>;
+    async fn get_published_products() -> Result<JsValue, JsValue>;
 }
 
 impl Component for Shop {

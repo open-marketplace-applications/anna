@@ -4,8 +4,7 @@ use yew::{html, Component, ComponentLink, Html, InputData, ShouldRender};
 use yew_state::{GlobalHandle, SharedStateComponent};
 use yewtil::NeqAssign;
 
-use crate::components::ShopingCartItem;
-use crate::components::{OrderForm, PayWithPaypalResponse, PaymentForm, RegisterResponse};
+use crate::components::{OrderForm, PayWithPaypalResponse, PaymentForm, RegisterResponse, ShopingCartItem};
 
 pub struct Model {
     style: Style,

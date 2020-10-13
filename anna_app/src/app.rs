@@ -3,9 +3,11 @@ use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::components::Nav;
-use crate::router::{AppRoutes, Router};
-use crate::types::CartProduct;
+use crate::{
+    components::Nav,
+    router::{AppRoutes, Router},
+    types::CartProduct,
+};
 
 #[wasm_bindgen(module = "/js/wasm_bridge.js")]
 extern "C" {

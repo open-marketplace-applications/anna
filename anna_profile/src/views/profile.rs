@@ -6,9 +6,7 @@ use yew_form::{Field, Form};
 
 use regex::Regex;
 
-use identity_comm::did_comm::TrustPing;
-use identity_comm::types::TRUSTPING;
-use identity_comm::DIDComm_message;
+use identity_comm::{did_comm::TrustPing, types::TRUSTPING, DIDComm_message};
 use identity_common::Timestamp;
 use identity_core::did::{Param, DID};
 
@@ -16,17 +14,14 @@ use serde::{Deserialize, Serialize};
 
 use yew::worker::{Bridge, Bridged};
 
-use crate::context;
-use crate::job;
+use crate::{context, job};
 
 // local storage
-use yew::services::storage::Area;
-use yew::services::{DialogService, StorageService};
+use yew::services::{storage::Area, DialogService, StorageService};
 
 use yew::format::Json;
 
-use crate::components::connect_pod::ConnectPod;
-use crate::components::search_did::SearchDID;
+use crate::components::{connect_pod::ConnectPod, search_did::SearchDID};
 
 #[derive(Debug)]
 pub enum Msg {

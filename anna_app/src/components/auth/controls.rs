@@ -1,5 +1,7 @@
-use crate::agents::auth::{AuthEventBus, Request as AuthEventBusRequest};
-use crate::types::Auth;
+use crate::{
+    agents::auth::{AuthEventBus, Request as AuthEventBusRequest},
+    types::Auth,
+};
 use anyhow::Error;
 use css_in_rust::Style;
 use yew::{

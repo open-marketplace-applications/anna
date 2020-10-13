@@ -1,5 +1,7 @@
-use crate::router::{AppRoutes, Router};
-use crate::types::CartProduct;
+use crate::{
+    router::{AppRoutes, Router},
+    types::CartProduct,
+};
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew_state::{GlobalHandle, SharedStateComponent};

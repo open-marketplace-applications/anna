@@ -6,9 +6,7 @@ use yew::{Classes, Properties};
 
 use crate::web_rtc_manager::*;
 
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::str;
+use std::{cell::RefCell, rc::Rc, str};
 
 use base64;
 #[allow(unused_imports)]

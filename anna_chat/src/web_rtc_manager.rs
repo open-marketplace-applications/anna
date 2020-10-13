@@ -1,13 +1,10 @@
 use js_sys::*;
-use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
+use wasm_bindgen::{prelude::*, JsCast};
 use web_sys::*;
 
 use crate::chat::*;
 
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::str;
+use std::{cell::RefCell, rc::Rc, str};
 
 use base64;
 #[allow(unused_imports)]
