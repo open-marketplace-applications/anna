@@ -20,34 +20,33 @@ pub struct Props {
 }
 
 impl Component for Logo {
-    type Message = Msg;
-    type Properties = Props;
+  type Message = Msg;
+  type Properties = Props;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style =
-            Style::create("logo", include_str!("style.scss")).expect("An error occured while creating the style.");
-        Logo {
-            link,
-            style,
-            props: props.to_owned(),
-        }
+  fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+    let style = Style::create("logo", include_str!("logo.scss")).expect("An error occured while creating the style.");
+    Logo {
+      link,
+      style,
+      props: props.to_owned(),
     }
+  }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-        true
-    }
+  fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+    true
+  }
 
-    fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        true
-    }
+  fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+    true
+  }
 
-    fn view(&self) -> Html {
-        html! {
-          <div
-            class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
-          >
-            { self.props.children.clone() }
-          </div>
-        }
+  fn view(&self) -> Html {
+    html! {
+      <div
+        class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
+      >
+        <img src="/logo.svg" />
+        { self.props.children.clone() }
+      </div>
     }
 }
