@@ -1,6 +1,5 @@
 use css_in_rust::Style;
-use yew::prelude::*;
-use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
+use yew::{html, prelude::*, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
 
 #[derive(Debug)]
 pub struct Layout {

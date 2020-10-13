@@ -1,18 +1,13 @@
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
-use yew_router::switch::Permissive;
-use yew_router::{route::Route, router::Router as YewRouter};
+use yew_router::{route::Route, router::Router as YewRouter, switch::Permissive, Switch};
 
-use yew_router::Switch;
-// use yew_router::matcher::MatcherToken;
+use crate::pages::{Cart, ProductDetail, Products, Scanner};
 
-use crate::pages::{ ProductDetail, Products, Scanner, Cart };
-
-use anna_home::Home;
 use anna_chat::chat::ChatModel;
+use anna_home::Home;
 use anna_profile::views::profile::Profile;
 use anna_shop::views::shop::Shop;
 
-/// App routes
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoutes {
     #[to = "/profile"]
@@ -33,10 +28,6 @@ pub enum AppRoutes {
     NotFound(Permissive<String>),
     #[to = "/"]
     Home,
-    // #[to = MatcherToken::Exact("/")]
-    // // Home,
-    // #[to = "/{*:any}"]
-    // NotFound(Permissive<String>),
 }
 
 pub struct Router {

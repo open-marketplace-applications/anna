@@ -1,32 +1,27 @@
 use css_in_rust::Style;
-use yew::{html, Component, ComponentLink, Html, ShouldRender, InputData, MouseEvent};
+use yew::{html, Component, ComponentLink, Html, InputData, MouseEvent, ShouldRender};
 
 use validator::{Validate, ValidationError};
 use yew_form::{Field, Form};
 
 use regex::Regex;
 
-use identity_core::did::{Param, DID};
+use identity_comm::{did_comm::TrustPing, types::TRUSTPING, DIDComm_message};
 use identity_common::Timestamp;
-use identity_comm::did_comm::{TrustPing};
-use identity_comm::types::{TRUSTPING};
-use identity_comm::DIDComm_message;
+use identity_core::did::{Param, DID};
 
 use serde::{Deserialize, Serialize};
 
 use yew::worker::{Bridge, Bridged};
 
-use crate::context;
-use crate::job;
+use crate::{context, job};
 
 // local storage
-use yew::services::storage::Area;
-use yew::services::{DialogService, StorageService};
+use yew::services::{storage::Area, DialogService, StorageService};
 
 use yew::format::Json;
 
-use crate::components::search_did::SearchDID;
-use crate::components::connect_pod::ConnectPod;
+use crate::components::{connect_pod::ConnectPod, search_did::SearchDID};
 
 #[derive(Debug)]
 pub enum Msg {
@@ -79,14 +74,13 @@ struct Registration {
     #[validate(length(min = 1, message = "Last name is required"))]
     last_name: String,
     #[validate]
-    address: Address
+    address: Address,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ProfileModel {
-    did: DID
+    did: DID,
 }
-
 
 /// Profile.
 pub struct Profile {
@@ -99,17 +93,15 @@ pub struct Profile {
     // worker
     job: Box<dyn Bridge<job::Worker>>,
     context: Box<dyn Bridge<context::Worker>>,
-    context_2: Box<dyn Bridge<context::Worker>>,    
+    context_2: Box<dyn Bridge<context::Worker>>,
     storage: StorageService,
 }
-
 
 impl Component for Profile {
     type Message = Msg;
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        
         // get profile from local storage
         let profil = ProfileModel {
             did: DID {
@@ -121,7 +113,6 @@ impl Component for Profile {
         link.send_message(Msg::GetProfile);
         let storage = StorageService::new(Area::Local).expect("storage was disabled by the user");
 
-        
         // Create model initial state
         let model = Registration {
             first_name: String::from("Alice"),
@@ -132,7 +123,7 @@ impl Component for Profile {
                 province: String::from("ONT"),
                 postal_code: String::from("K2P 0A4"),
                 country: String::new(),
-            }
+            },
         };
 
         let style = Style::create(
@@ -155,7 +146,6 @@ impl Component for Profile {
         let callback = link.callback(|_| Msg::DataReceived);
         let context_2 = context::Worker::bridge(callback);
 
-
         Self {
             link: link,
             style,
@@ -173,7 +163,7 @@ impl Component for Profile {
             context,
             context_2,
             // local
-            storage
+            storage,
         }
     }
 
@@ -185,7 +175,7 @@ impl Component for Profile {
                     self.submitted = true;
                 }
                 true
-            },
+            }
             Msg::CreateDid => {
                 self.did = DID {
                     method_name: "iota".into(),
@@ -194,7 +184,7 @@ impl Component for Profile {
                 }
                 .init()
                 .unwrap();
-        
+
                 log::info!("starting up: DID {}", self.did.to_string());
 
                 let profile = ProfileModel {
@@ -202,31 +192,33 @@ impl Component for Profile {
                         method_name: "iota".into(),
                         id_segments: vec![self.id.to_owned()],
                         ..Default::default()
-                    }
+                    },
                 };
 
                 self.link.send_message(Msg::SaveProfile(profile));
 
                 true
-            },
+            }
             Msg::SendDIDCommMessage => {
                 log::info!("SendDIDCommMessage from: {}", self.did.to_string());
                 let mut did_comm_message: DIDComm_message = DIDComm_message::new();
                 did_comm_message.set_id("123".to_string());
-                
+
                 did_comm_message.set_from(self.did.to_string());
-                
+
                 did_comm_message.set_type(TRUSTPING); // https:://didcomm.org/v1/messages/TrustPing
-                
-                let ping = TrustPing { response_requested: true };                    
+
+                let ping = TrustPing {
+                    response_requested: true,
+                };
                 let value = serde_json::to_value(ping).unwrap();
                 let object = value.as_object().unwrap();
                 did_comm_message.set_body(object.clone());
-                
+
                 // TODO: sign message
-                
+
                 log::info!("did_comm_message from: {:?}", did_comm_message);
-                
+
                 let did_comm_message_string = serde_json::to_string(&did_comm_message).unwrap();
                 log::info!("did_comm_message_string from:{:?}", did_comm_message_string);
 
@@ -235,45 +227,45 @@ impl Component for Profile {
             Msg::UpdateId(value) => {
                 self.id = value;
                 true
-            },
+            }
             Msg::SendToJob => {
                 self.job.send(job::Request::GetDataFromServer);
                 false
-            },
+            }
             Msg::SendToContext => {
                 self.context.send(context::Request::GetDataFromServer);
                 self.context_2.send(context::Request::GetDataFromServer);
                 false
-            },
+            }
             Msg::DataReceived => {
                 log::info!("DataReceived");
                 false
-            },
+            }
             Msg::GetProfile => {
                 log::info!("GetProfile");
                 let Json(profile) = self.storage.restore(KEY);
-                let profile: ProfileModel = profile.ok().unwrap_or(ProfileModel{
+                let profile: ProfileModel = profile.ok().unwrap_or(ProfileModel {
                     did: DID {
                         method_name: "iota".into(),
                         id_segments: vec![self.id.to_owned()],
                         ..Default::default()
-                    }
+                    },
                 });
                 log::info!("GetProfile::profile {:?}", profile);
                 self.link.send_message(Msg::GetProfileSuccess(profile));
                 true
-            },
+            }
             Msg::GetProfileSuccess(profile) => {
                 log::info!("GetProfileSuccess profile: {:?}", profile);
                 self.did = profile.did.to_owned();
                 self.id = profile.did.id_segments.first().unwrap().into();
                 true
-            },
+            }
             Msg::SaveProfile(profile) => {
                 log::info!("SaveProfile profile: {:?}", profile);
                 self.storage.store(KEY, Json(&profile));
                 false
-            },
+            }
         }
     }
 
@@ -290,7 +282,7 @@ impl Component for Profile {
                     value=&self.id
                     oninput=self.link.callback(|e: InputData| Msg::UpdateId(e.value))
                 />
-                
+
                 <button
                     disabled=self.id.is_empty()
                     onclick=self.link.callback(|_| Msg::CreateDid)
@@ -392,7 +384,7 @@ mod tests {
             city: "city_i".to_string(),
             province: "prov_i".to_string(),
             postal_code: "po_i".to_string(),
-            country: "country_i".to_string()
+            country: "country_i".to_string(),
         };
 
         let mut fields = vec![];
@@ -418,8 +410,8 @@ mod tests {
                 city: "city_i".to_string(),
                 province: "prov_i".to_string(),
                 postal_code: "po_i".to_string(),
-                country: "country_i".to_string()
-            }
+                country: "country_i".to_string(),
+            },
         };
 
         let mut fields = vec![];
@@ -438,8 +430,10 @@ mod tests {
         assert!(result.is_ok());
         assert_eq!(&registration.value("quantity"), "12");
 
-
-        assert_eq!(registration.value("address.street"), String::from(registration.address.street.clone()));
+        assert_eq!(
+            registration.value("address.street"),
+            String::from(registration.address.street.clone())
+        );
 
         registration.set_value("address.street", "street_o");
 
@@ -454,7 +448,7 @@ mod tests {
             city: "city_i".to_string(),
             province: "prov_i".to_string(),
             postal_code: "po_i".to_string(),
-            country: "country_i".to_string()
+            country: "country_i".to_string(),
         };
 
         address.value("not_exist");

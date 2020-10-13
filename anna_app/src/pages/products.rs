@@ -1,10 +1,6 @@
-use crate::api;
-use crate::components::ProductCard;
-use crate::types::Product;
+use crate::{api, components::ProductCard, types::Product};
 use anyhow::Error;
-use yew::format::Json;
-use yew::prelude::*;
-use yew::services::fetch::FetchTask;
+use yew::{format::Json, prelude::*, services::fetch::FetchTask};
 
 struct State {
     products: Vec<Product>,

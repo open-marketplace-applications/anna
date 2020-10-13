@@ -1,5 +1,3 @@
-use crate::models::product::Product;
-
 use yew::prelude::*;
 
 pub struct ShopModel {

@@ -1,10 +1,6 @@
-use crate::api;
-use crate::components::AddToCartButton;
-use crate::types::Product;
+use crate::{api, components::AddToCartButton, types::Product};
 use anyhow::Error;
-use yew::format::Json;
-use yew::prelude::*;
-use yew::services::fetch::FetchTask;
+use yew::{format::Json, prelude::*, services::fetch::FetchTask};
 
 struct State {
     product: Option<Product>,
