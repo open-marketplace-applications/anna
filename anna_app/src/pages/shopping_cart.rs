@@ -5,7 +5,7 @@ use yew_state::{GlobalHandle, SharedStateComponent};
 use yewtil::NeqAssign;
 
 use crate::components::ShopingCartItem;
-use crate::components::{OrderForm, RegisterResponse, PaymentForm};
+use crate::components::{OrderForm, RegisterResponse, PaymentForm, PayWithPaypalResponse};
 
 
 pub struct Model {
@@ -20,13 +20,14 @@ pub struct Model {
 
 pub enum Msg {
     HandleOrder(RegisterResponse),
-    HandlePayment,
+    HandlePayment(PayWithPaypalResponse),
 }
 
 #[derive(Debug)]
 pub enum Scene {
     ShippingForm,
     PaymentForm,
+    PaymentSuccess
 }
 
 
@@ -65,9 +66,9 @@ impl Component for Model {
                 self.scene = Scene::PaymentForm;
                 true
             },
-            Msg::HandlePayment => {
+            Msg::HandlePayment(response) => {
                 log::info!("HandlePayment: ");
-
+                self.scene = Scene::PaymentSuccess;
                 true
             }
         }
@@ -104,7 +105,13 @@ impl Component for Model {
                 <div class=self.style.to_string()>
                     <h1>{"shopping_cart"}</h1>
                     <p>{"payment form"}</p>
-                    <PaymentForm order=&self.order onsignal=self.link.callback(|response| Msg::HandlePayment) />
+                    <PaymentForm order=&self.order onsignal=self.link.callback(|response| Msg::HandlePayment(response)) />
+                </div>
+            },
+            Scene::PaymentSuccess => html! {
+                <div class=self.style.to_string()>
+                    <h1>{"shopping_cart"}</h1>
+                    <p>{"thanks for your payment!"}</p>
                 </div>
             },
         }

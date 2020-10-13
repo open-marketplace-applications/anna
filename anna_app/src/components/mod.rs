@@ -19,6 +19,8 @@ pub use product_card::ProductCard;
 pub use shopping_cart_item::ShopingCartItem;
 
 pub use order_form::RegisterResponse;
+pub use payment_form::PayWithPaypalResponse;
+
 
 mod payment_form;
 pub use payment_form::PaymentForm;

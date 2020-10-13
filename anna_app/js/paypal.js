@@ -6,7 +6,7 @@ export function show_button(order) {
         // Configure environment
         env: 'sandbox',
         client: {
-          sandbox: 'demo_sandbox_client_id',
+          sandbox: 'ASdqo5xgUZOW_YrjgR0XnepLOLbJBCPhJK9N5TMVx0YRj1e3mM3jICi80CDorJZNtwnrC2uUQxSmFhTK',
           production: 'demo_production_client_id'
         },
         // Customize button (optional)
@@ -29,7 +29,8 @@ export function show_button(order) {
               amount: {
                 total: order.final_price,
                 currency: 'EUR'
-              }
+              },
+              invoice_number: order.id
             }]
           });
         },
@@ -45,11 +46,19 @@ export function show_button(order) {
             console.log("resp")
             console.log(resp)
             window.wasm.handlePayPalPayment(resp)
-            // var hangoutButton = document.getElementById("hangoutButtonId");
-            // console.log(hangoutButton)
-            // hangoutButton.click(); // this will trigger the click event
+            
+            var field = document.getElementById("paypal-id");
+            console.log(field);
+            console.log("resp.id")
+            console.log(resp.id)
+            field.innerHTML = resp.id;
 
-            window.alert('Thank you for your purchase!');
+
+            var hangoutButton = document.getElementById("hangoutButtonId");
+            console.log(hangoutButton)
+            hangoutButton.click(); // this will trigger the click event
+
+            // window.alert('Thank you for your purchase!');
           });
         },
         // onCancel
