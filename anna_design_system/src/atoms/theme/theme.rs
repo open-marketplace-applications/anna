@@ -1,6 +1,6 @@
 use css_in_rust::Style;
 use yew::prelude::*;
-use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
+use yew::{html, Component, ComponentLink, Html, Properties, ShouldRender};
 
 #[derive(Debug)]
 pub struct Theme {
@@ -23,12 +23,12 @@ impl Component for Theme {
   type Message = Msg;
   type Properties = Props;
 
-  fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
+  fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
     let style = Style::create("theme", include_str!("theme.scss")).expect("An error occured while creating the style.");
     Self { props, style }
   }
 
-  fn update(&mut self, msg: Self::Message) -> ShouldRender {
+  fn update(&mut self, _msg: Self::Message) -> ShouldRender {
     true
   }
 

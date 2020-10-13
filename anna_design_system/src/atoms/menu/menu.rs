@@ -24,7 +24,7 @@ impl Component for Menu {
   type Properties = Props;
 
   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-    let style = Style::create("menu", include_str!("style.scss")).expect("An error occured while creating the style.");
+    let style = Style::create("menu", include_str!("menu.scss")).expect("An error occured while creating the style.");
     Menu {
       link,
       style,
@@ -32,11 +32,11 @@ impl Component for Menu {
     }
   }
 
-  fn update(&mut self, msg: Self::Message) -> ShouldRender {
+  fn update(&mut self, _msg: Self::Message) -> ShouldRender {
     true
   }
 
-  fn change(&mut self, props: Self::Properties) -> ShouldRender {
+  fn change(&mut self, _props: Self::Properties) -> ShouldRender {
     true
   }
 

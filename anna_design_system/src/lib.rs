@@ -8,3 +8,7 @@ pub use atoms::*;
 pub use button::Button;
 pub use footer::Footer;
 pub use header::Header;
+
+#[macro_use]
+extern crate log;
+extern crate web_logger;

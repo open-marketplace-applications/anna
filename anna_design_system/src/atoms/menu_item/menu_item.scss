@@ -4,10 +4,8 @@
   transition: var(--transition-cubic);
   margin-right: 20px;
   position: relative;
-}
-
-a {
-  padding: 12px;
+  padding: 0 12px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;

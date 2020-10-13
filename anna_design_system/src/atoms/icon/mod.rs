@@ -1,3 +1,3 @@
 pub mod icon;
 
-pub use icon::{Icon, IconType};
+pub use icon::Icon;

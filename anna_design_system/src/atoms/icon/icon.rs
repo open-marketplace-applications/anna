@@ -1,26 +1,15 @@
 use css_in_rust::Style;
 use yew::prelude::*;
-use yew::{html, Classes, Component, ComponentLink, Html, Properties, ShouldRender};
+use yew::{NodeRef, html, Component, ComponentLink, Html, Properties, ShouldRender};
 
-#[derive(PartialEq, Debug, Clone)]
-pub enum IconType {
-    Label,
-    Scan,
-}
-
-fn inspect(event: IconType) -> String {
-    match event {
-        IconType::Label => "label.svg".to_string(),
-        IconType::Scan => "scan.svg".to_string(),
-    } 
-}
+use web_sys::Element;
 
 #[derive(Debug)]
 pub struct Icon {
-    props: Props,
     style: Style,
-    url: String,
-} 
+    props: Props,
+    node_ref: NodeRef,
+}
 
 #[derive(Clone, PartialEq, Properties, Debug)]
 pub struct Props {
@@ -28,7 +17,8 @@ pub struct Props {
     pub class: String,
     #[prop_or_default]
     pub children: Children,
-    pub icon: IconType,
+    #[prop_or_default]
+    pub name: &'static str,
 }
 
 #[derive(PartialEq, Debug)]
@@ -38,16 +28,14 @@ impl Component for Icon {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        let style =
-            Style::create("icon", include_str!("icon.scss")).expect("An error occured while creating the style.");
+    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
+        let style = Style::create("icon", include_str!("icon.scss")).expect("An error occured while creating the style.");
 
-        let url = inspect(props.icon.clone());
 
-        Self { props, style, url }
+        Self { style, props, node_ref: NodeRef::default() }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
         true
     }
 
@@ -62,13 +50,26 @@ impl Component for Icon {
 
     fn view(&self) -> Html {
         html! {
-            <div
-                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string())
-            >
-              
-              { self.url.clone() } 
-              { self.props.children.clone() }
-            </div>
+            <div 
+                class=Classes::from(self.props.class.to_string()).extend(self.style.to_string()) 
+                ref=self.node_ref.clone()
+            />
         }
+    }
+    
+    fn rendered(&mut self, _first_render: bool) {
+        let mut svg = "";
+
+        match self.props.name {
+            "label" => svg = include_str!("icons/label.svg"),
+            "scan" => svg = include_str!("icons/scan.svg"),
+            "chat" => svg = include_str!("icons/chat.svg"),
+            "cart" => svg = include_str!("icons/cart.svg"),
+            // TODO: ADD Default icon
+            _ => println!("Ain't special"),
+        }
+
+        let el = self.node_ref.cast::<Element>().unwrap();
+        el.set_inner_html(&svg);
     }
 }

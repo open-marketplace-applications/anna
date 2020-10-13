@@ -10,3 +10,17 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 yew = { version = "^0.17", features = ["web_sys"] }
 css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
+log = "0.4"
+web_logger = "0.2"
+
+anyhow = "1.0.31"
+
+[dependencies.web-sys]
+version = "0.3.4"
+features = [
+  'KeyboardEvent',
+ "console",
+  'Document',
+  'Element',
+
+]
