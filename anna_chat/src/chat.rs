@@ -120,7 +120,7 @@ impl Component for ChatModel {
 
             Msg::UpdateWebRTCState(web_rtc_state) => {
                 self.value = "".into();
-                let debug = ChatModel::get_debug_state_string(&web_rtc_state);
+                let _debug = ChatModel::get_debug_state_string(&web_rtc_state);
                 // console::log_1(&debug.into());
 
                 // let debug = self.get_serialized_offer_and_candidates();

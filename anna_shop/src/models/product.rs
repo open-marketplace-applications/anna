@@ -28,7 +28,6 @@ pub struct Product {
 }
 
 use wasm_bindgen::prelude::*;
-use web_sys::console;
 
 #[wasm_bindgen(module = "/src//js/ipfs.js")]
 extern "C" {

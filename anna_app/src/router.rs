@@ -5,7 +5,6 @@ use yew::{
     Html,
     ShouldRender,
 };
-
 use yew_router::{
     route::Route,
     router::Router as YewRouter,
@@ -13,17 +12,17 @@ use yew_router::{
     Switch,
 };
 
+use anna_home::Home;
+use anna_chat::chat::ChatModel;
+use anna_profile::views::profile::Profile;
+use anna_shop::views::shop::Shop;
+
 use crate::pages::{
     ProductDetail,
     Products,
     Scanner,
     ShoppingCart,
 };
-
-use anna_home::Home;
-use anna_chat::chat::ChatModel;
-use anna_profile::views::profile::Profile;
-use anna_shop::views::shop::Shop;
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoutes {

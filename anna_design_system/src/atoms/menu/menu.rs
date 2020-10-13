@@ -32,11 +32,11 @@ impl Component for Menu {
     }
   }
 
-  fn update(&mut self, msg: Self::Message) -> ShouldRender {
+  fn update(&mut self, _msg: Self::Message) -> ShouldRender {
     true
   }
 
-  fn change(&mut self, props: Self::Properties) -> ShouldRender {
+  fn change(&mut self, _props: Self::Properties) -> ShouldRender {
     true
   }
 

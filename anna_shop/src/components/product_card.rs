@@ -2,7 +2,6 @@
 use crate::models::product::Product;
 
 use yew::prelude::*;
-use serde::{Deserialize, Serialize};
 
 pub struct ProductCard {
     props: Props,

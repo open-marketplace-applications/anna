@@ -1,15 +1,21 @@
-use crate::components::{CreateProductForm, ProductCard, Settings};
 use anyhow::Error;
-use yew::{format::Json, prelude::*, services::fetch::FetchTask};
+use yew::{
+    format::Json,
+    prelude::*,
+    services::{
+        storage::Area,
+        fetch::FetchTask,
+        StorageService
+    }
+};
+use wasm_bindgen::prelude::*;
 
+use crate::components::{
+    CreateProductForm,
+    ProductCard,
+    Settings
+};
 use crate::models::product::Product;
-
-use yew::services::{storage::Area, DialogService, StorageService};
-struct State {
-    products: Vec<Product>,
-    get_products_error: Option<Error>,
-    get_products_loaded: bool,
-}
 
 #[derive(Properties, Clone)]
 pub struct Props {}
@@ -39,17 +45,19 @@ pub enum Scene {
     Settings,
 }
 
+struct State {
+    products: Vec<Product>,
+    get_products_error: Option<Error>,
+    get_products_loaded: bool,
+}
+
 /// storage key for the products
 const KEY: &str = "oma.anna.products";
-
-use wasm_bindgen::prelude::*;
-use web_sys::console;
 
 #[wasm_bindgen(module = "/src/js/ipfs.js")]
 extern "C" {
     #[wasm_bindgen(catch)]
     async fn get_published_products() -> Result<JsValue, JsValue>;
-    fn test() -> String;
 }
 
 impl Component for Shop {
@@ -64,7 +72,7 @@ impl Component for Shop {
         unsafe {
             async {
                 let published_products = get_published_products().await;
-             
+            
                 // let wwhat = published_products.as_string();
                 // log::info!("wwhat {:?}", wwhat);
                 match published_products {
@@ -75,11 +83,8 @@ impl Component for Shop {
                         log::info!("Err: {:?}", err);
                     }
                 }
-            };
-            let test = test();
-
-            log::info!("test {:?}", test);
-        }
+            }
+        };
 
         Self {
             props,
@@ -127,7 +132,7 @@ impl Component for Shop {
                 self.state.get_products_loaded = true;
                 true
             }
-            Msg::Publish(product) => true,
+            Msg::Publish(_product) => true,
         }
     }
 
