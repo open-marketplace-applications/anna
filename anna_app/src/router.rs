@@ -12,17 +12,17 @@ use yew_router::{
     Switch,
 };
 
+use crate::pages::{ 
+    ProductDetail,
+    Products,
+    Scanner,
+    Cart
+};
+
 use anna_home::Home;
 use anna_chat::chat::ChatModel;
 use anna_profile::views::profile::Profile;
 use anna_shop::views::shop::Shop;
-
-use crate::pages::{
-    ProductDetail,
-    Products,
-    Scanner,
-    ShoppingCart,
-};
 
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoutes {
@@ -38,8 +38,8 @@ pub enum AppRoutes {
     Shop,
     #[to = "/product/{id}"]
     ProductDetail(i32),
-    #[to = "/shopping_cart"]
-    ShoppingCart,
+    #[to = "/cart"]
+    Cart,
     #[to = "/404"]
     NotFound(Permissive<String>),
     #[to = "/"]
@@ -78,7 +78,7 @@ impl Component for Router {
                         AppRoutes::Products => html! {<Products />},
                         AppRoutes::Shop => html! {<Shop />},
                         AppRoutes::ChatModel => html! {<ChatModel />},
-                        AppRoutes::ShoppingCart => html! {<ShoppingCart />},
+                        AppRoutes::Cart => html! {<Cart />},
                         AppRoutes::NotFound(Permissive(None)) => html!{"Page not found"},
                         AppRoutes::NotFound(Permissive(Some(missed_route))) => html!{format!("Page '{}' not found", missed_route)}
                     }
