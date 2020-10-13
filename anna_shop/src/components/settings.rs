@@ -4,7 +4,7 @@ pub struct ShopModel {
     name: String,
 }
 pub struct Settings {
-    props: Props, 
+    props: Props,
     link: ComponentLink<Self>,
     shop: ShopModel,
 }

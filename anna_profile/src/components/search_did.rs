@@ -1,20 +1,19 @@
-use yew::{html, Callback, Component, ComponentLink, Html, InputData, Properties, ShouldRender};
 use identity_core::did::{Param, DID};
+use yew::{html, Callback, Component, ComponentLink, Html, InputData, Properties, ShouldRender};
 
 #[derive(Debug)]
 pub enum Msg {
     Search,
-    UpdateDID(String)
+    UpdateDID(String),
 }
 
 #[derive(Clone, Debug, PartialEq, Properties)]
-pub struct Props {
-}
+pub struct Props {}
 
 pub struct SearchDID {
     props: Props,
     link: ComponentLink<Self>,
-    did: DID
+    did: DID,
 }
 impl Component for SearchDID {
     type Message = Msg;
@@ -27,11 +26,7 @@ impl Component for SearchDID {
             ..Default::default()
         };
 
-        Self {
-            props,
-            link,
-            did
-        }
+        Self { props, link, did }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
@@ -39,7 +34,7 @@ impl Component for SearchDID {
             Msg::Search => {
                 log::info!("Search");
                 true
-            },
+            }
             Msg::UpdateDID(value) => {
                 let did = DID {
                     method_name: "iota".into(),

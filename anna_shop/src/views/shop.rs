@@ -1,20 +1,12 @@
 use anyhow::Error;
+use wasm_bindgen::prelude::*;
 use yew::{
     format::Json,
     prelude::*,
-    services::{
-        storage::Area,
-        fetch::FetchTask,
-        StorageService
-    }
+    services::{fetch::FetchTask, storage::Area, StorageService},
 };
-use wasm_bindgen::prelude::*;
 
-use crate::components::{
-    CreateProductForm,
-    ProductCard,
-    Settings
-};
+use crate::components::{CreateProductForm, ProductCard, Settings};
 use crate::models::product::Product;
 
 #[derive(Properties, Clone)]
@@ -57,7 +49,7 @@ const KEY: &str = "oma.anna.products";
 #[wasm_bindgen(module = "/src/js/ipfs.js")]
 extern "C" {
     #[wasm_bindgen(catch)]
-    async fn get_published_products() -> Result<JsValue, JsValue>;
+    fn get_published_products() -> Result<JsValue, JsValue>;
 }
 
 impl Component for Shop {
@@ -72,7 +64,7 @@ impl Component for Shop {
         unsafe {
             async {
                 let published_products = get_published_products().await;
-            
+
                 // let wwhat = published_products.as_string();
                 // log::info!("wwhat {:?}", wwhat);
                 match published_products {

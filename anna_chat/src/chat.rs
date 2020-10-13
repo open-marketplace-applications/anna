@@ -1,8 +1,8 @@
 use css_in_rust::Style;
-use yew::{Classes, Properties};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::*;
+use yew::{Classes, Properties};
 
 use crate::web_rtc_manager::*;
 
@@ -16,10 +16,7 @@ use serde::{Deserialize, Serialize};
 #[allow(unused_imports)]
 use yew::services::{ConsoleService, IntervalService, Task, TimeoutService};
 #[allow(unused_imports)]
-use yew::{
-    html, html::NodeRef, App, Callback, Component, ComponentLink, Html, InputData, KeyboardEvent,
-    ShouldRender,
-};
+use yew::{html, html::NodeRef, App, Callback, Component, ComponentLink, Html, InputData, KeyboardEvent, ShouldRender};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum MessageSender {
@@ -92,7 +89,7 @@ impl Component for ChatModel {
 
         let rc = Rc::new(RefCell::new(web_rtc_manager));
         let style =
-        Style::create("chat", include_str!("chat.scss")).expect("An error occured while creating the style.");
+            Style::create("chat", include_str!("chat.scss")).expect("An error occured while creating the style.");
 
         let model = ChatModel {
             web_rtc_manager: rc.clone(),
@@ -175,35 +172,23 @@ impl Component for ChatModel {
 
                 match state {
                     State::Server(_connection_state) => {
-                        let result = WebRTCManager::validate_answer(
-                            self.web_rtc_manager.clone(),
-                            &self.value,
-                        );
+                        let result = WebRTCManager::validate_answer(self.web_rtc_manager.clone(), &self.value);
 
                         if result.is_err() {
                             web_sys::Window::alert_with_message(
                                 &web_sys::window().unwrap(),
-                                &format!(
-                                    "Cannot use answer. Failure reason: {:?}",
-                                    result.err().unwrap()
-                                ),
+                                &format!("Cannot use answer. Failure reason: {:?}", result.err().unwrap()),
                             )
                             .expect("alert should work");
                         }
                     }
                     _ => {
-                        let result = WebRTCManager::validate_offer(
-                            self.web_rtc_manager.clone(),
-                            &self.value,
-                        );
+                        let result = WebRTCManager::validate_offer(self.web_rtc_manager.clone(), &self.value);
 
                         if result.is_err() {
                             web_sys::Window::alert_with_message(
                                 &web_sys::window().unwrap(),
-                                &format!(
-                                    "Cannot use offer. Failure reason: {:?}",
-                                    result.err().unwrap()
-                                ),
+                                &format!("Cannot use offer. Failure reason: {:?}", result.err().unwrap()),
                             )
                             .expect("alert should work");
                         }
@@ -247,9 +232,7 @@ impl Component for ChatModel {
                 if event.key_code() == 13 && !self.chat_value.is_empty() {
                     let my_message = Message::new(self.chat_value.clone(), MessageSender::Me);
                     self.messages.push(my_message);
-                    self.web_rtc_manager
-                        .borrow()
-                        .send_message(self.chat_value.clone());
+                    self.web_rtc_manager.borrow().send_message(self.chat_value.clone());
                     self.chat_value = "".into();
                     self.scroll_top();
                 }
@@ -461,8 +444,7 @@ impl ChatModel {
     }
 
     fn get_chat_header(&self) -> Html {
-        let is_disconnect_button_visible =
-            self.web_rtc_manager.borrow().get_state() != State::DefaultState;
+        let is_disconnect_button_visible = self.web_rtc_manager.borrow().get_state() != State::DefaultState;
         html! {
             <header class="msger-header">
                 <div style="font-size:25">
@@ -662,10 +644,7 @@ impl ChatModel {
         let document = window.document().unwrap();
         let aux = document.create_element("input").unwrap();
         let aux = aux.dyn_into::<web_sys::HtmlInputElement>().unwrap();
-        let content: String = document
-            .get_element_by_id("copy-elem".into())
-            .unwrap()
-            .inner_html();
+        let content: String = document.get_element_by_id("copy-elem".into()).unwrap().inner_html();
         let _result = aux.set_attribute("value", &content);
         let document = window.document().unwrap();
         let _result = document.body().unwrap().append_child(&aux);

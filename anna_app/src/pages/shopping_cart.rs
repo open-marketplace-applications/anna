@@ -1,12 +1,11 @@
 use crate::types::CartProduct;
 use css_in_rust::Style;
-use yew::{html, Component, ComponentLink, Html, ShouldRender, InputData};
+use yew::{html, Component, ComponentLink, Html, InputData, ShouldRender};
 use yew_state::{GlobalHandle, SharedStateComponent};
 use yewtil::NeqAssign;
 
 use crate::components::ShopingCartItem;
-use crate::components::{OrderForm, RegisterResponse, PaymentForm, PayWithPaypalResponse};
-
+use crate::components::{OrderForm, PayWithPaypalResponse, PaymentForm, RegisterResponse};
 
 pub struct Model {
     style: Style,
@@ -14,9 +13,8 @@ pub struct Model {
     link: ComponentLink<Self>,
     value: String,
     scene: Scene,
-    order: RegisterResponse
+    order: RegisterResponse,
 }
-
 
 pub enum Msg {
     HandleOrder(RegisterResponse),
@@ -27,9 +25,8 @@ pub enum Msg {
 pub enum Scene {
     ShippingForm,
     PaymentForm,
-    PaymentSuccess
+    PaymentSuccess,
 }
-
 
 impl Component for Model {
     type Message = Msg;
@@ -54,7 +51,7 @@ impl Component for Model {
             order: RegisterResponse {
                 id: "".into(),
                 final_price: 0.0,
-            }
+            },
         }
     }
 
@@ -65,7 +62,7 @@ impl Component for Model {
                 self.order = response;
                 self.scene = Scene::PaymentForm;
                 true
-            },
+            }
             Msg::HandlePayment(response) => {
                 log::info!("HandlePayment: ");
                 self.scene = Scene::PaymentSuccess;
@@ -97,7 +94,7 @@ impl Component for Model {
                 <h1>{"shopping_cart"}</h1>
                 <div class="product_card_list">{products}</div>
 
-   
+
                 <OrderForm onsignal=self.link.callback(|response| Msg::HandleOrder(response))  />
             </div>
             },

@@ -1,4 +1,3 @@
-
 use crate::models::product::Product;
 
 use yew::prelude::*;
@@ -11,7 +10,6 @@ pub struct ProductCard {
 pub enum Msg {
     Publish,
 }
-
 
 #[derive(Properties, Clone, Debug)]
 pub struct Props {
@@ -33,7 +31,6 @@ impl Component for ProductCard {
             Msg::Publish => {
                 Product::publish(self.props.product.to_owned());
             }
-
         }
         true
     }

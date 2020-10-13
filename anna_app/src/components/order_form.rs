@@ -1,10 +1,10 @@
 use yew::{html, Callback, Component, ComponentLink, Html, InputData, Properties, ShouldRender};
 
+use serde::{Deserialize, Serialize};
 use yew::{
     format::{Json, Nothing},
     services::fetch::{FetchService, FetchTask, Request, Response},
 };
-use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RegisterResponse {
@@ -20,24 +20,23 @@ pub enum Msg {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Order {
-     // user
-     first_name: String,
-     last_name: String,
-     email: String,
-     
-     // address
-     address: String,
-     zip_code: String,
-     city: String,
-     country: String,
- 
-     // product
-     amount: String,
-     
-     // TODO: remove this
-     final_price: String,
-}
+    // user
+    first_name: String,
+    last_name: String,
+    email: String,
 
+    // address
+    address: String,
+    zip_code: String,
+    city: String,
+    country: String,
+
+    // product
+    amount: String,
+
+    // TODO: remove this
+    final_price: String,
+}
 
 #[derive(Debug)]
 pub struct OrderForm {
@@ -46,7 +45,6 @@ pub struct OrderForm {
     url: String,
     order: Order,
     onsignal: Callback<RegisterResponse>,
-    
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -59,7 +57,6 @@ impl Component for OrderForm {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        
         let order = Order {
             first_name: "John".into(),
             last_name: "Doe".into(),
@@ -71,15 +68,14 @@ impl Component for OrderForm {
             amount: "1".into(),
             final_price: "9.00".into(),
         };
-        
-        Self { 
+
+        Self {
             link,
             order,
             fetch_task: None,
             url: "http://localhost:5000/api/orders".to_string(),
             onsignal: props.onsignal,
-
-         }
+        }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
@@ -87,32 +83,31 @@ impl Component for OrderForm {
             Msg::SendOrder => {
                 log::info!("order_form::SendOrder {:?}", self);
                 // sign message
-                
+
                 // encrypt message with app public key
 
                 // send message to address
-                
-                 // 1. build the request
-                 let request = Request::post(self.url.clone())
-                 .header("Content-Type", "application/json")
-                 .body(Json(&self.order))
-                 .expect("Could not build request.");
-             
+
+                // 1. build the request
+                let request = Request::post(self.url.clone())
+                    .header("Content-Type", "application/json")
+                    .body(Json(&self.order))
+                    .expect("Could not build request.");
+
                 // 2. construct a callback
-                let callback = self
-                .link
-                .callback(|response: Response<Json<Result<RegisterResponse, anyhow::Error>>>| {
-                    log::info!("response: {:?}", response);
-                    let Json(data) = response.into_body();
-                    Msg::ReceiveResponse(data)
-                });
+                let callback =
+                    self.link
+                        .callback(|response: Response<Json<Result<RegisterResponse, anyhow::Error>>>| {
+                            log::info!("response: {:?}", response);
+                            let Json(data) = response.into_body();
+                            Msg::ReceiveResponse(data)
+                        });
                 // 3. pass the request and callback to the fetch service
                 let task = FetchService::fetch(request, callback).expect("failed to start request");
                 log::info!("task: {:?}", task);
                 // 4. store the task so it isn't canceled immediately
                 self.fetch_task = Some(task);
-                
-            },
+            }
             Msg::ReceiveResponse(response) => {
                 match response {
                     Ok(reg_response) => {
@@ -130,7 +125,6 @@ impl Component for OrderForm {
                 self.fetch_task = None;
                 // we want to redraw so that the page displays the location of the ISS instead of
                 // 'fetching...'
-                
             }
         }
         true
@@ -147,27 +141,27 @@ impl Component for OrderForm {
                 <input class="firstname"
                     placeholder="First name"
                     value=&self.order.first_name />
-                <input 
+                <input
                     class="lastname"
                     placeholder="Last name"
                     value=&self.order.last_name />
-                <input 
+                <input
                     class="address"
                     placeholder="address"
                     value=&self.order.address />
-                <input 
+                <input
                     class="zip_code"
                     placeholder="zip_code"
                     value=&self.order.zip_code />
-                <input 
+                <input
                     class="country"
                     placeholder="country"
                     value=&self.order.country />
-                <input 
+                <input
                     class="email"
                     placeholder="email"
                     value=&self.order.email />
-                <input 
+                <input
                     class="amount"
                     placeholder="amount"
                     value=&self.order.amount />
@@ -177,5 +171,3 @@ impl Component for OrderForm {
         }
     }
 }
-
-

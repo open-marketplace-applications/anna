@@ -20,9 +20,8 @@ impl Component for Home {
     type Properties = ();
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        
         log::info!("home create ");
-        
+
         unsafe {
             // show_button();
         }

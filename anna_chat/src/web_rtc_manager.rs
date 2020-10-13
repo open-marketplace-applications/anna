@@ -141,10 +141,7 @@ impl WebRTCManager {
     }
 
     // TODO : handle error when adding ice_candidate
-    pub fn set_candidates(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-        connection_string: &ConnectionString,
-    ) {
+    pub fn set_candidates(web_rtc_manager: Rc<RefCell<WebRTCManager>>, connection_string: &ConnectionString) {
         if web_rtc_manager.borrow().exit_offer_or_answer_early {
             return;
         }
@@ -191,11 +188,9 @@ impl WebRTCManager {
             }
         });
 
-        let connection_string: Result<ConnectionString, OfferError> =
-            decoded_str.and_then(|a_str| {
-                serde_json::from_str::<ConnectionString>(&a_str)
-                    .map_err(|_| OfferError::SerializationError)
-            });
+        let connection_string: Result<ConnectionString, OfferError> = decoded_str.and_then(|a_str| {
+            serde_json::from_str::<ConnectionString>(&a_str).map_err(|_| OfferError::SerializationError)
+        });
 
         let connection_string = match connection_string {
             Ok(a) => {
@@ -204,7 +199,7 @@ impl WebRTCManager {
                     // TODO : additional check
                     return Err(OfferError::InvalidOffer);
                 }
-                    
+
                 // TODO : additional check
                 Ok(a)
             }
@@ -214,10 +209,7 @@ impl WebRTCManager {
         connection_string
     }
 
-    pub fn validate_answer(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-        str: &String,
-    ) -> Result<(), OfferError> {
+    pub fn validate_answer(web_rtc_manager: Rc<RefCell<WebRTCManager>>, str: &String) -> Result<(), OfferError> {
         let connection_string = WebRTCManager::parse_base64_str_to_connection(str);
 
         if connection_string.is_err() {
@@ -226,18 +218,14 @@ impl WebRTCManager {
 
         let connection_string = connection_string.ok().unwrap();
 
-        let remote_description_js_value: JsValue =
-            JSON::parse(&connection_string.offer).expect("Expected valid json");
+        let remote_description_js_value: JsValue = JSON::parse(&connection_string.offer).expect("Expected valid json");
 
-        let remote_description =
-            remote_description_js_value.unchecked_into::<RtcSessionDescriptionInit>();
-    
+        let remote_description = remote_description_js_value.unchecked_into::<RtcSessionDescriptionInit>();
+
         let web_rtc_manager_rc_clone = web_rtc_manager.clone();
 
         let set_remote_description_exception_handler = Closure::wrap(Box::new(move |_a: JsValue| {
-            web_rtc_manager_rc_clone
-                .borrow_mut()
-                .exit_offer_or_answer_early = true;
+            web_rtc_manager_rc_clone.borrow_mut().exit_offer_or_answer_early = true;
 
             // console::log_1(&"Exception handler !".into());
             // console::log_1(&a);
@@ -280,10 +268,7 @@ impl WebRTCManager {
         Ok(())
     }
 
-    pub fn validate_offer(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-        str: &String,
-    ) -> Result<(), OfferError> {
+    pub fn validate_offer(web_rtc_manager: Rc<RefCell<WebRTCManager>>, str: &String) -> Result<(), OfferError> {
         let connection_string = WebRTCManager::parse_base64_str_to_connection(str);
 
         if connection_string.is_err() {
@@ -291,11 +276,9 @@ impl WebRTCManager {
         }
         let connection_string = connection_string.ok().unwrap();
 
-        let remote_description_js_value: JsValue =
-            JSON::parse(&connection_string.offer).expect("Expected valid json");
+        let remote_description_js_value: JsValue = JSON::parse(&connection_string.offer).expect("Expected valid json");
 
-        let remote_description =
-            remote_description_js_value.unchecked_into::<RtcSessionDescriptionInit>();
+        let remote_description = remote_description_js_value.unchecked_into::<RtcSessionDescriptionInit>();
 
         let web_rtc_manager_rc_clone = web_rtc_manager.clone();
 
@@ -324,8 +307,7 @@ impl WebRTCManager {
 
             console::log_1(&answer.clone().into());
 
-            web_rtc_manager_rc_clone.borrow_mut().offer =
-                String::from(JSON::stringify(&answer).unwrap());
+            web_rtc_manager_rc_clone.borrow_mut().offer = String::from(JSON::stringify(&answer).unwrap());
         });
 
         let set_local_description_closure = Closure::wrap(set_local_description_function);
@@ -342,22 +324,20 @@ impl WebRTCManager {
             let set_candidates_closure = Closure::wrap(set_candidates_function);
             let web_rtc_manager_rc_clone_for_error_handler = web_rtc_manager_rc_clone.clone();
 
-            let create_answer_exception_handler = Closure::wrap(Box::new(
-                move |_send_channel: JsValue| {
-                    web_rtc_manager_rc_clone_for_error_handler
-                        .borrow_mut()
-                        .exit_offer_or_answer_early = true;
+            let create_answer_exception_handler = Closure::wrap(Box::new(move |_send_channel: JsValue| {
+                web_rtc_manager_rc_clone_for_error_handler
+                    .borrow_mut()
+                    .exit_offer_or_answer_early = true;
 
-                    console::log_1(&"Exception handler !".into());
-                    console::log_1(&a);
+                console::log_1(&"Exception handler !".into());
+                console::log_1(&a);
 
-                    web_sys::Window::alert_with_message(
+                web_sys::Window::alert_with_message(
                     &web_sys::window().unwrap(),
                     &format!("Promise create_answer encountered an exception. See console for details"),
                 )
                 .expect("alert should work");
-                },
-            ) as SingleArgJsFn);
+            }) as SingleArgJsFn);
 
             let _promise = web_rtc_manager_rc_clone
                 .borrow()
@@ -374,20 +354,15 @@ impl WebRTCManager {
                 .promise_exception_handlers
                 .push(create_answer_exception_handler);
 
-            web_rtc_manager_rc_clone.borrow_mut().set_candidate_closure =
-                Some(set_candidates_closure);
-        
+            web_rtc_manager_rc_clone.borrow_mut().set_candidate_closure = Some(set_candidates_closure);
         });
 
         let create_answer_closure = Closure::wrap(create_answer_function);
 
         let web_rtc_manager_rc_clone = web_rtc_manager.clone();
-        let set_remote_description_exception_handler =
-            Closure::wrap(Box::new(move |_send_channel: JsValue| {
-                web_rtc_manager_rc_clone
-                    .borrow_mut()
-                    .exit_offer_or_answer_early = true;
-            }) as SingleArgJsFn);
+        let set_remote_description_exception_handler = Closure::wrap(Box::new(move |_send_channel: JsValue| {
+            web_rtc_manager_rc_clone.borrow_mut().exit_offer_or_answer_early = true;
+        }) as SingleArgJsFn);
 
         let _promise = web_rtc_manager
             .borrow()
@@ -408,16 +383,9 @@ impl WebRTCManager {
         Ok(())
     }
 
-    fn get_channel_status_change_closure(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-    ) -> SingleArgClosure {
+    fn get_channel_status_change_closure(web_rtc_manager: Rc<RefCell<WebRTCManager>>) -> SingleArgClosure {
         let channel_status_change_closure = Closure::wrap(Box::new(move |_send_channel: JsValue| {
-            let state = web_rtc_manager
-                .borrow()
-                .data_channel
-                .as_ref()
-                .unwrap()
-                .ready_state();
+            let state = web_rtc_manager.borrow().data_channel.as_ref().unwrap().ready_state();
 
             let self_state = web_rtc_manager.borrow().get_state();
 
@@ -453,129 +421,109 @@ impl WebRTCManager {
             let msg_content: String = message_event.data().as_string().unwrap();
             let msg = Message::new(msg_content, MessageSender::Other);
 
-            web_rtc_manager
-                .borrow()
-                .parent_link
-                .send_message(Msg::NewMessage(msg));
+            web_rtc_manager.borrow().parent_link.send_message(Msg::NewMessage(msg));
         }) as SingleArgJsFn);
 
         on_data
     }
 
-    fn get_on_ice_candidate_closure(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-    ) -> SingleArgClosure {
-        let on_ice_candidate_closure =
-            Closure::wrap(Box::new(move |ice_connection_event: JsValue| {
-                // console::log_1(&ice_connection_event.clone().into());
+    fn get_on_ice_candidate_closure(web_rtc_manager: Rc<RefCell<WebRTCManager>>) -> SingleArgClosure {
+        let on_ice_candidate_closure = Closure::wrap(Box::new(move |ice_connection_event: JsValue| {
+            // console::log_1(&ice_connection_event.clone().into());
 
-                let ice_connection_event_obj: RtcPeerConnectionIceEvent =
-                    ice_connection_event.unchecked_into::<RtcPeerConnectionIceEvent>();
+            let ice_connection_event_obj: RtcPeerConnectionIceEvent =
+                ice_connection_event.unchecked_into::<RtcPeerConnectionIceEvent>();
 
-                if let Some(candidate) = ice_connection_event_obj.candidate() {
-                    let candidate_str = candidate.candidate();
+            if let Some(candidate) = ice_connection_event_obj.candidate() {
+                let candidate_str = candidate.candidate();
 
-                    if !candidate_str.is_empty() {
-                        // console::log_1(&candidate_str.clone().into());
+                if !candidate_str.is_empty() {
+                    // console::log_1(&candidate_str.clone().into());
 
-                        let saved_candidate = IceCandidate {
-                            candidate: candidate_str,
-                            sdp_mid: candidate.sdp_mid().unwrap(),
-                            sdp_m_line_index: candidate.sdp_m_line_index().unwrap(),
-                        };
+                    let saved_candidate = IceCandidate {
+                        candidate: candidate_str,
+                        sdp_mid: candidate.sdp_mid().unwrap(),
+                        sdp_m_line_index: candidate.sdp_m_line_index().unwrap(),
+                    };
 
-                        web_rtc_manager
-                            .borrow_mut()
-                            .ice_candidates
-                            .push(saved_candidate);
-                    }
+                    web_rtc_manager.borrow_mut().ice_candidates.push(saved_candidate);
                 }
-            }) as SingleArgJsFn);
+            }
+        }) as SingleArgJsFn);
 
         on_ice_candidate_closure
     }
 
-    fn get_on_ice_connection_state_change_closure(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-    ) -> SingleArgClosure {
-        let on_ice_connection_state_change =
-            Closure::wrap(Box::new(move |_ice_connection_state_event: JsValue| {
-                let ice_new_state: RtcIceConnectionState = {
-                    let inner = web_rtc_manager.borrow();
-                    let connection: &RtcPeerConnection =
-                        inner.rtc_peer_connection.as_ref().unwrap();
-                    connection.ice_connection_state()
-                };
+    fn get_on_ice_connection_state_change_closure(web_rtc_manager: Rc<RefCell<WebRTCManager>>) -> SingleArgClosure {
+        let on_ice_connection_state_change = Closure::wrap(Box::new(move |_ice_connection_state_event: JsValue| {
+            let ice_new_state: RtcIceConnectionState = {
+                let inner = web_rtc_manager.borrow();
+                let connection: &RtcPeerConnection = inner.rtc_peer_connection.as_ref().unwrap();
+                connection.ice_connection_state()
+            };
 
-                let self_state = web_rtc_manager.borrow().get_state();
+            let self_state = web_rtc_manager.borrow().get_state();
 
-                let new_state = match self_state {
-                    State::Server(mut connection_state) => {
-                        connection_state.ice_connection_state = Some(ice_new_state);
-                        State::Server(connection_state)
-                    }
-                    State::Client(mut connection_state) => {
-                        connection_state.ice_connection_state = Some(ice_new_state);
-                        State::Client(connection_state)
-                    }
-                    a => a,
-                };
+            let new_state = match self_state {
+                State::Server(mut connection_state) => {
+                    connection_state.ice_connection_state = Some(ice_new_state);
+                    State::Server(connection_state)
+                }
+                State::Client(mut connection_state) => {
+                    connection_state.ice_connection_state = Some(ice_new_state);
+                    State::Client(connection_state)
+                }
+                a => a,
+            };
 
-                web_rtc_manager.borrow_mut().set_state(new_state);
+            web_rtc_manager.borrow_mut().set_state(new_state);
 
-                let web_rtc_state = web_rtc_manager.borrow().get_state();
+            let web_rtc_state = web_rtc_manager.borrow().get_state();
 
-                web_rtc_manager
-                    .borrow()
-                    .parent_link
-                    .send_message(Msg::UpdateWebRTCState(web_rtc_state));
-            }) as SingleArgJsFn);
+            web_rtc_manager
+                .borrow()
+                .parent_link
+                .send_message(Msg::UpdateWebRTCState(web_rtc_state));
+        }) as SingleArgJsFn);
 
         on_ice_connection_state_change
     }
 
-    fn get_on_ice_gathering_state_change_closure(
-        web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-    ) -> SingleArgClosure {
-        let on_ice_gathering_state_change =
-            Closure::wrap(Box::new(move |_ice_gathering_state: JsValue| {
-                let ice_new_state: RtcIceGatheringState = {
-                    let inner = web_rtc_manager.borrow();
-                    let connection: &RtcPeerConnection =
-                        inner.rtc_peer_connection.as_ref().unwrap();
-                    connection.ice_gathering_state()
-                };
+    fn get_on_ice_gathering_state_change_closure(web_rtc_manager: Rc<RefCell<WebRTCManager>>) -> SingleArgClosure {
+        let on_ice_gathering_state_change = Closure::wrap(Box::new(move |_ice_gathering_state: JsValue| {
+            let ice_new_state: RtcIceGatheringState = {
+                let inner = web_rtc_manager.borrow();
+                let connection: &RtcPeerConnection = inner.rtc_peer_connection.as_ref().unwrap();
+                connection.ice_gathering_state()
+            };
 
-                let self_state = web_rtc_manager.borrow().get_state();
+            let self_state = web_rtc_manager.borrow().get_state();
 
-                let new_state = match self_state {
-                    State::Server(mut connection_state) => {
-                        connection_state.ice_gathering_state = Some(ice_new_state);
-                        State::Server(connection_state)
-                    }
-                    State::Client(mut connection_state) => {
-                        connection_state.ice_gathering_state = Some(ice_new_state);
-                        State::Client(connection_state)
-                    }
-                    a => a,
-                };
+            let new_state = match self_state {
+                State::Server(mut connection_state) => {
+                    connection_state.ice_gathering_state = Some(ice_new_state);
+                    State::Server(connection_state)
+                }
+                State::Client(mut connection_state) => {
+                    connection_state.ice_gathering_state = Some(ice_new_state);
+                    State::Client(connection_state)
+                }
+                a => a,
+            };
 
-                web_rtc_manager.borrow_mut().set_state(new_state);
-                let web_rtc_state = web_rtc_manager.borrow().get_state();
+            web_rtc_manager.borrow_mut().set_state(new_state);
+            let web_rtc_state = web_rtc_manager.borrow().get_state();
 
-                web_rtc_manager
-                    .borrow()
-                    .parent_link
-                    .send_message(Msg::UpdateWebRTCState(web_rtc_state));
-            }) as SingleArgJsFn);
+            web_rtc_manager
+                .borrow()
+                .parent_link
+                .send_message(Msg::UpdateWebRTCState(web_rtc_state));
+        }) as SingleArgJsFn);
 
         on_ice_gathering_state_change
     }
 
-    fn get_exception_handler(
-        _web_rtc_manager: Rc<RefCell<WebRTCManager>>,
-        _message: String,
-    ) -> SingleArgClosure {
+    fn get_exception_handler(_web_rtc_manager: Rc<RefCell<WebRTCManager>>, _message: String) -> SingleArgClosure {
         let exception_handler = Closure::wrap(Box::new(move |_a: JsValue| {
             // TODO
             // console::log_1(&"Exception handler !".into());
@@ -593,14 +541,12 @@ impl WebRTCManager {
     }
 
     fn set_data_channel(web_rtc_manager: Rc<RefCell<WebRTCManager>>, data_channel: RtcDataChannel) {
-        let channel_status_change_closure =
-            WebRTCManager::get_channel_status_change_closure(web_rtc_manager.clone());
+        let channel_status_change_closure = WebRTCManager::get_channel_status_change_closure(web_rtc_manager.clone());
 
         data_channel.set_onopen(Some(channel_status_change_closure.as_ref().unchecked_ref()));
         data_channel.set_onclose(Some(channel_status_change_closure.as_ref().unchecked_ref()));
 
-        web_rtc_manager.borrow_mut().channel_status_change_closure =
-            Some(channel_status_change_closure);
+        web_rtc_manager.borrow_mut().channel_status_change_closure = Some(channel_status_change_closure);
 
         let on_data_closure = WebRTCManager::get_on_data_closure(web_rtc_manager.clone());
         data_channel.set_onmessage(Some(on_data_closure.as_ref().unchecked_ref()));
@@ -613,11 +559,7 @@ impl WebRTCManager {
         let ice_servers = Array::new();
         {
             let server_entry = Object::new();
-            let _ = Reflect::set(
-                &server_entry,
-                &"urls".into(),
-                &"stun:stun.l.google.com:19302".into(),
-            );
+            let _ = Reflect::set(&server_entry, &"urls".into(), &"stun:stun.l.google.com:19302".into());
 
             ice_servers.push(&*server_entry);
         }
@@ -642,23 +584,22 @@ impl WebRTCManager {
                 let mut data_channel_init = RtcDataChannelInit::new();
                 data_channel_init.ordered(true);
 
-                let data_channel: RtcDataChannel = rtc_peer_connection
-                    .create_data_channel_with_data_channel_dict("sendChannel", &data_channel_init);
+                let data_channel: RtcDataChannel =
+                    rtc_peer_connection.create_data_channel_with_data_channel_dict("sendChannel", &data_channel_init);
 
                 WebRTCManager::set_data_channel(web_rtc_manager.clone(), data_channel);
 
                 let create_offer_function: SingleArgJsFn = Box::new(move |offer: JsValue| {
                     let rtc_session_description: RtcSessionDescriptionInit =
-                    offer.unchecked_into::<RtcSessionDescriptionInit>();
+                        offer.unchecked_into::<RtcSessionDescriptionInit>();
 
                     web_rtc_manager_rc_clone.borrow_mut().offer =
                         String::from(JSON::stringify(&rtc_session_description).unwrap());
 
-                    let set_local_description_exception_handler =
-                        WebRTCManager::get_exception_handler(
-                            web_rtc_manager_rc_clone.clone(),
-                            "set_local_description closure has encountered an exception".into(),
-                        );
+                    let set_local_description_exception_handler = WebRTCManager::get_exception_handler(
+                        web_rtc_manager_rc_clone.clone(),
+                        "set_local_description closure has encountered an exception".into(),
+                    );
 
                     let _promise = web_rtc_manager_rc_clone
                         .borrow_mut()
@@ -682,25 +623,20 @@ impl WebRTCManager {
                     .catch(&create_offer_exception_handler);
 
                 web_rtc_manager.borrow_mut().create_offer_closure = Some(create_offer_closure);
-                
             }
 
             State::Client(_connection_state) => {
                 let clone = web_rtc_manager.clone();
 
-                let on_data_channel_closure =
-                    Closure::wrap(Box::new(move |data_channel_event: JsValue| {
-                        let data_channel_event =
-                            data_channel_event.unchecked_into::<RtcDataChannelEvent>();
-                        let data_channel = data_channel_event.channel();
-                        WebRTCManager::set_data_channel(clone.clone(), data_channel);
-                    }) as SingleArgJsFn);
+                let on_data_channel_closure = Closure::wrap(Box::new(move |data_channel_event: JsValue| {
+                    let data_channel_event = data_channel_event.unchecked_into::<RtcDataChannelEvent>();
+                    let data_channel = data_channel_event.channel();
+                    WebRTCManager::set_data_channel(clone.clone(), data_channel);
+                }) as SingleArgJsFn);
 
-                rtc_peer_connection
-                    .set_ondatachannel(Some(on_data_channel_closure.as_ref().unchecked_ref()));
+                rtc_peer_connection.set_ondatachannel(Some(on_data_channel_closure.as_ref().unchecked_ref()));
 
-                web_rtc_manager.borrow_mut().on_data_channel_closure =
-                    Some(on_data_channel_closure);
+                web_rtc_manager.borrow_mut().on_data_channel_closure = Some(on_data_channel_closure);
             }
 
             _ => {
@@ -708,8 +644,7 @@ impl WebRTCManager {
             }
         };
 
-        let on_ice_candidate_closure =
-            WebRTCManager::get_on_ice_candidate_closure(web_rtc_manager.clone());
+        let on_ice_candidate_closure = WebRTCManager::get_on_ice_candidate_closure(web_rtc_manager.clone());
 
         let on_ice_connection_state_change_closure =
             WebRTCManager::get_on_ice_connection_state_change_closure(web_rtc_manager.clone());
@@ -717,20 +652,13 @@ impl WebRTCManager {
         let on_ice_gathering_state_change_closure =
             WebRTCManager::get_on_ice_gathering_state_change_closure(web_rtc_manager.clone());
 
+        rtc_peer_connection.set_onicecandidate(Some(on_ice_candidate_closure.as_ref().unchecked_ref()));
+
         rtc_peer_connection
-            .set_onicecandidate(Some(on_ice_candidate_closure.as_ref().unchecked_ref()));
+            .set_oniceconnectionstatechange(Some(on_ice_connection_state_change_closure.as_ref().unchecked_ref()));
 
-        rtc_peer_connection.set_oniceconnectionstatechange(Some(
-            on_ice_connection_state_change_closure
-                .as_ref()
-                .unchecked_ref(),
-        ));
-
-        rtc_peer_connection.set_onicegatheringstatechange(Some(
-            on_ice_gathering_state_change_closure
-                .as_ref()
-                .unchecked_ref(),
-        ));
+        rtc_peer_connection
+            .set_onicegatheringstatechange(Some(on_ice_gathering_state_change_closure.as_ref().unchecked_ref()));
 
         web_rtc_manager.borrow_mut().rtc_peer_connection = Some(rtc_peer_connection);
 
@@ -741,12 +669,10 @@ impl WebRTCManager {
 
         web_rtc_manager.borrow_mut().on_ice_candidate_closure = Some(on_ice_candidate_closure);
 
-        web_rtc_manager
-            .borrow_mut()
-            .on_ice_connection_state_change_closure = Some(on_ice_connection_state_change_closure);
+        web_rtc_manager.borrow_mut().on_ice_connection_state_change_closure =
+            Some(on_ice_connection_state_change_closure);
 
-        web_rtc_manager
-            .borrow_mut()
-            .on_ice_gathering_state_change_closure = Some(on_ice_gathering_state_change_closure);
+        web_rtc_manager.borrow_mut().on_ice_gathering_state_change_closure =
+            Some(on_ice_gathering_state_change_closure);
     }
 }

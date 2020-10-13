@@ -1,25 +1,15 @@
 use crate::router::AppRoutes;
-use yew::{
-    NodeRef, 
-    html, 
-    Callback, 
-    Component, 
-    ComponentLink, 
-    Html, 
-    InputData, 
-    Properties, 
-    ShouldRender,
-};
+use yew::{html, Callback, Component, ComponentLink, Html, InputData, NodeRef, Properties, ShouldRender};
 
 use yew::{
     format::{Json, Nothing},
     services::fetch::{FetchService, FetchTask, Request, Response},
-};use yew_router::components::RouterAnchor;
+};
+use yew_router::components::RouterAnchor;
 
 use crate::components::RegisterResponse;
 
 use serde::{Deserialize, Serialize};
-
 
 #[derive(Debug)]
 pub struct PaymentForm {
@@ -52,8 +42,7 @@ pub enum Msg {
 }
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PayWithPaypalRequestBody {
-    id: String
-
+    id: String,
 }
 use std::fmt;
 
@@ -72,12 +61,12 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/js/paypal.js")]
 extern "C" {
     fn show_button(val: &JsValue);
-    // pub fn handlePayPalPayment(val: &JsValue);
+// pub fn handlePayPalPayment(val: &JsValue);
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PayPalPaymentObject {
-    id: String
+    id: String,
 }
 
 #[wasm_bindgen]
@@ -93,14 +82,12 @@ impl Component for PaymentForm {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { 
+        Self {
             props: props.clone(),
             link,
-            fetch_task: None, 
+            fetch_task: None,
             url: "http://localhost:5000/api/pay_with_paypal".to_string(),
-            content: PayWithPaypalRequestBody {
-                id: "".into()
-            },
+            content: PayWithPaypalRequestBody { id: "".into() },
             node_ref: NodeRef::default(),
             paypay_id: "".into(),
             onsignal: props.onsignal,
@@ -127,29 +114,28 @@ impl Component for PaymentForm {
                 log::info!("self.paypal_id_el iinner: {:?}", paypal_id_el.inner_html());
 
                 let obj = PayWithPaypalRequestBody {
-                    id: paypal_id_el.inner_html()
+                    id: paypal_id_el.inner_html(),
                 };
-                 // 1. build the request
-                 let request = Request::post(self.url.clone() + "?id=".into() + &*self.props.order.id)
-                 .header("Content-Type", "application/json")
-                 .body(Json(&obj))
-                 .expect("Could not build request.");
-             
+                // 1. build the request
+                let request = Request::post(self.url.clone() + "?id=".into() + &*self.props.order.id)
+                    .header("Content-Type", "application/json")
+                    .body(Json(&obj))
+                    .expect("Could not build request.");
+
                 // 2. construct a callback
-                let callback = self
-                .link
-                .callback(|response: Response<Json<Result<PayWithPaypalResponse, anyhow::Error>>>| {
-                    log::info!("response: {:?}", response);
-                    let Json(data) = response.into_body();
-                    Msg::ReceiveResponse(data)
-                });
+                let callback = self.link.callback(
+                    |response: Response<Json<Result<PayWithPaypalResponse, anyhow::Error>>>| {
+                        log::info!("response: {:?}", response);
+                        let Json(data) = response.into_body();
+                        Msg::ReceiveResponse(data)
+                    },
+                );
                 // 3. pass the request and callback to the fetch service
                 let task = FetchService::fetch(request, callback).expect("failed to start request");
                 log::info!("task: {:?}", task);
                 // 4. store the task so it isn't canceled immediately
                 self.fetch_task = Some(task);
-                
-            },
+            }
             Msg::ReceiveResponse(response) => {
                 match response {
                     Ok(reg_response) => {
@@ -157,7 +143,6 @@ impl Component for PaymentForm {
                         self.onsignal.emit(reg_response);
                         // emit response to parent (shopping cart)
                         // self.onsignal.emit(reg_response);
-
                     }
                     Err(error) => {
                         log::info!("error: {:?}", error);
@@ -166,7 +151,6 @@ impl Component for PaymentForm {
                 }
                 self.fetch_task = None;
             }
-
         }
         true
     }
@@ -186,7 +170,7 @@ impl Component for PaymentForm {
                 <div>{&self.props.order.id}</div>
                 <div>{&self.content}</div>
                 <div id="paypal-id">{&self.paypay_id}</div>
-                
+
                 <button id="hangoutButtonId" onclick=onclick_paypay_id>{ "PayWithPaypal" }</button>
                 <div ref=self.node_ref.clone()></div>
 

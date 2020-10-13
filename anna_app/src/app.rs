@@ -1,15 +1,11 @@
+use anna_design_system::{Footer, Page, Theme};
+use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use wasm_bindgen::prelude::*;
-use anna_design_system::{
-    Footer,
-    Page,
-    Theme,
-};
 
+use crate::components::Nav;
 use crate::router::{AppRoutes, Router};
 use crate::types::CartProduct;
-use crate::components::Nav;
 
 #[wasm_bindgen(module = "/js/wasm_bridge.js")]
 extern "C" {
