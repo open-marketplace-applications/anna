@@ -48,4 +48,5 @@ impl Component for Menu {
         { self.props.children.clone() }
       </div>
     }
+  }
 }
