@@ -4,19 +4,21 @@ pub enum Currency {
     EUR,
 }
 impl Default for Currency {
-    fn default() -> Self { Currency::EUR }
+    fn default() -> Self {
+        Currency::EUR
+    }
 }
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, PartialOrd, Copy)]
 pub struct Price {
     pub amount: f64,
-    pub currecy: Currency
+    pub currecy: Currency,
 }
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PublishProductModel {
     body: Product,
     #[serde(rename = "type")]
     _type: String,
-    version: String
+    version: String,
 }
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, PartialOrd)]
 pub struct Product {
@@ -28,7 +30,6 @@ pub struct Product {
 }
 
 use wasm_bindgen::prelude::*;
-use web_sys::console;
 
 #[wasm_bindgen(module = "/src//js/ipfs.js")]
 extern "C" {
@@ -41,12 +42,11 @@ impl Product {
         let publish_model = PublishProductModel {
             body: product,
             _type: "https//openmarketplace.org/specification/types/0.0.1/product".into(),
-            version: "0.0.1".into()
+            version: "0.0.1".into(),
         };
         log::info!("Publish: {:?}", publish_model);
         unsafe {
             write_file();
         }
-        
     }
 }

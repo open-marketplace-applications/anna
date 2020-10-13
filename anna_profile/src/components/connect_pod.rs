@@ -55,20 +55,20 @@ impl Component for ConnectPod {
                 let john = json!({
                     "username": "John Doe"
                 });
-                 // 1. build the request
-                 let request = Request::post(self.url.clone())
-                 .header("Content-Type", "application/json")
-                 .body(Json(&john))
-                 .expect("Could not build request.");
-             
+                // 1. build the request
+                let request = Request::post(self.url.clone())
+                    .header("Content-Type", "application/json")
+                    .body(Json(&john))
+                    .expect("Could not build request.");
+
                 // 2. construct a callback
-                let callback = self
-                .link
-                .callback(|response: Response<Json<Result<RegisterResponse, anyhow::Error>>>| {
-                    log::info!("response: {:?}", response);
-                    let Json(data) = response.into_body();
-                    Msg::ReceiveResponse(data)
-                });
+                let callback =
+                    self.link
+                        .callback(|response: Response<Json<Result<RegisterResponse, anyhow::Error>>>| {
+                            log::info!("response: {:?}", response);
+                            let Json(data) = response.into_body();
+                            Msg::ReceiveResponse(data)
+                        });
                 // 3. pass the request and callback to the fetch service
                 let task = FetchService::fetch(request, callback).expect("failed to start request");
                 log::info!("task: {:?}", task);
@@ -81,7 +81,7 @@ impl Component for ConnectPod {
                 log::info!("UpdateDID: {:?}", input);
                 self.url = input;
                 true
-            },
+            }
             Msg::ReceiveResponse(response) => {
                 match response {
                     Ok(location) => {

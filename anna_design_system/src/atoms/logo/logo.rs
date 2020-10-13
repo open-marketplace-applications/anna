@@ -3,9 +3,9 @@ use yew::prelude::*;
 
 #[derive(Debug)]
 pub struct Logo {
-  link: ComponentLink<Self>,
-  style: Style,
-  props: Props,
+    link: ComponentLink<Self>,
+    style: Style,
+    props: Props,
 }
 
 #[derive(Debug)]
@@ -13,10 +13,10 @@ pub enum Msg {}
 
 #[derive(Clone, PartialEq, Properties, Debug)]
 pub struct Props {
-  #[prop_or_default]
-  pub children: Children,
-  #[prop_or_default]
-  pub class: String,
+    #[prop_or_default]
+    pub children: Children,
+    #[prop_or_default]
+    pub class: String,
 }
 
 impl Component for Logo {
@@ -49,5 +49,4 @@ impl Component for Logo {
         { self.props.children.clone() }
       </div>
     }
-  }
 }

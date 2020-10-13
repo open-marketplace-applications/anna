@@ -1,6 +1,5 @@
 use css_in_rust::Style;
-use yew::prelude::*;
-use yew::{html, Component, ComponentLink, Html, Properties, ShouldRender};
+use yew::{html, prelude::*, Component, ComponentLink, Html, Properties, ShouldRender};
 
 #[derive(Debug)]
 pub struct Theme {
@@ -42,10 +41,10 @@ impl Component for Theme {
   }
 
   fn view(&self) -> Html {
-    html! {
-        <div class=self.style.to_string()>
-          { self.props.children.clone() }
-        </div>
-    }
+      html! {
+          <div class=self.style.to_string()>
+            { self.props.children.clone() }
+          </div>
+      }
   }
 }

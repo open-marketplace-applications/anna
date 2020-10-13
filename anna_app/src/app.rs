@@ -1,16 +1,17 @@
+use anna_design_system::{Footer, Page, Theme};
+use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::router::{AppRoutes, Router};
-use crate::types::CartProduct;
+use crate::{
+    components::Nav,
+    router::{AppRoutes, Router},
+    types::CartProduct,
+};
 
-use crate::components::Nav;
-
-// 📚 Design System
-use anna_design_system::{Footer, Header, Page, Theme};
-
-struct State {
-    cart_products: Vec<CartProduct>,
+#[wasm_bindgen(module = "/js/wasm_bridge.js")]
+extern "C" {
+    fn js_test();
 }
 
 pub struct App {
@@ -20,11 +21,8 @@ pub struct App {
 
 pub enum Msg {}
 
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen(module = "/js/wasm_bridge.js")]
-extern "C" {
-    fn js_test();
+struct State {
+    cart_products: Vec<CartProduct>,
 }
 
 impl Component for App {
@@ -54,7 +52,7 @@ impl Component for App {
         html! {
             <Theme>
                 <Page>
-                    <Nav></Nav>
+                    <Nav />
                     <Router />
                     <Footer />
                 </Page>

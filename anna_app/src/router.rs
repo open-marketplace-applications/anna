@@ -1,18 +1,13 @@
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
-use yew_router::switch::Permissive;
-use yew_router::{route::Route, router::Router as YewRouter};
+use yew_router::{route::Route, router::Router as YewRouter, switch::Permissive, Switch};
 
-use yew_router::Switch;
-// use yew_router::matcher::MatcherToken;
+use crate::pages::{Cart, ProductDetail, Products, Scanner};
 
-use crate::pages::{ ProductDetail, Products, Scanner, ShoppingCart };
-
-use anna_home::Home;
 use anna_chat::chat::ChatModel;
+use anna_home::Home;
 use anna_profile::views::profile::Profile;
 use anna_shop::views::shop::Shop;
 
-/// App routes
 #[derive(Switch, Debug, Clone)]
 pub enum AppRoutes {
     #[to = "/profile"]
@@ -27,16 +22,12 @@ pub enum AppRoutes {
     Shop,
     #[to = "/product/{id}"]
     ProductDetail(i32),
-    #[to = "/shopping_cart"]
-    ShoppingCart,
+    #[to = "/cart"]
+    Cart,
     #[to = "/404"]
     NotFound(Permissive<String>),
     #[to = "/"]
     Home,
-    // #[to = MatcherToken::Exact("/")]
-    // // Home,
-    // #[to = "/{*:any}"]
-    // NotFound(Permissive<String>),
 }
 
 pub struct Router {
@@ -71,7 +62,7 @@ impl Component for Router {
                         AppRoutes::Products => html! {<Products />},
                         AppRoutes::Shop => html! {<Shop />},
                         AppRoutes::ChatModel => html! {<ChatModel />},
-                        AppRoutes::ShoppingCart => html! {<ShoppingCart />},
+                        AppRoutes::Cart => html! {<Cart />},
                         AppRoutes::NotFound(Permissive(None)) => html!{"Page not found"},
                         AppRoutes::NotFound(Permissive(Some(missed_route))) => html!{format!("Page '{}' not found", missed_route)}
                     }

@@ -1,5 +1,7 @@
-use crate::agents::auth::{AuthEventBus, Request as AuthEventBusRequest};
-use crate::types::{Auth as AuthModel, Login as Model, ServerResponse, User as UserModel};
+use crate::{
+    agents::auth::{AuthEventBus, Request as AuthEventBusRequest},
+    types::{Auth as AuthModel, Login as Model, ServerResponse, User as UserModel},
+};
 use anyhow::Error;
 use css_in_rust::Style;
 use serde::{Deserialize, Serialize};

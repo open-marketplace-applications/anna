@@ -8,4 +8,4 @@ pub use product_detail::ProductDetail;
 pub use products::Products;
 pub use profile::Profile;
 pub use scanner::Scanner;
-pub use shopping_cart::ShoppingCart;
+pub use shopping_cart::Cart;

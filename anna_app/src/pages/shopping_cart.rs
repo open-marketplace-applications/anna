@@ -1,23 +1,30 @@
 use crate::types::CartProduct;
 use css_in_rust::Style;
-use yew::{html, Component, ComponentLink, Html, ShouldRender, InputData};
+use yew::{html, Component, ComponentLink, Html, InputData, ShouldRender};
 use yew_state::{GlobalHandle, SharedStateComponent};
 use yewtil::NeqAssign;
 
-use crate::components::ShopingCartItem;
-use crate::components::OrderForm;
-
+use crate::components::{OrderForm, PayWithPaypalResponse, PaymentForm, RegisterResponse, ShopingCartItem};
 
 pub struct Model {
     style: Style,
     cart_products: GlobalHandle<Vec<CartProduct>>,
     link: ComponentLink<Self>,
-    value: String
+    value: String,
+    scene: Scene,
+    order: RegisterResponse,
 }
 
 pub enum Msg {
-    GotInput(String),
-    Clicked,
+    HandleOrder(RegisterResponse),
+    HandlePayment(PayWithPaypalResponse),
+}
+
+#[derive(Debug)]
+pub enum Scene {
+    ShippingForm,
+    PaymentForm,
+    PaymentSuccess,
 }
 
 impl Component for Model {
@@ -25,6 +32,7 @@ impl Component for Model {
     type Properties = GlobalHandle<Vec<CartProduct>>;
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        log::info!("log info");
         let style = Style::create(
             String::from("shopping_cart"),
             String::from(
@@ -38,11 +46,28 @@ impl Component for Model {
             cart_products: _props,
             value: "".into(),
             link: _link,
+            scene: Scene::ShippingForm,
+            order: RegisterResponse {
+                id: "".into(),
+                final_price: 0.0,
+            },
         }
     }
 
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-        true
+    fn update(&mut self, message: Self::Message) -> ShouldRender {
+        match message {
+            Msg::HandleOrder(response) => {
+                log::info!("Handleresponse: {:?}", response);
+                self.order = response;
+                self.scene = Scene::PaymentForm;
+                true
+            }
+            Msg::HandlePayment(response) => {
+                log::info!("HandlePayment: ");
+                self.scene = Scene::PaymentSuccess;
+                true
+            }
+        }
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
@@ -62,16 +87,31 @@ impl Component for Model {
             })
             .collect();
 
-        html! {
-            <div class=self.style.to_string()>
+        match self.scene {
+            Scene::ShippingForm => html! {
+                <div class=self.style.to_string()>
                 <h1>{"shopping_cart"}</h1>
                 <div class="product_card_list">{products}</div>
 
-   
-                <OrderForm />
+
+                <OrderForm onsignal=self.link.callback(|response| Msg::HandleOrder(response))  />
             </div>
+            },
+            Scene::PaymentForm => html! {
+                <div class=self.style.to_string()>
+                    <h1>{"shopping_cart"}</h1>
+                    <p>{"payment form"}</p>
+                    <PaymentForm order=&self.order onsignal=self.link.callback(|response| Msg::HandlePayment(response)) />
+                </div>
+            },
+            Scene::PaymentSuccess => html! {
+                <div class=self.style.to_string()>
+                    <h1>{"shopping_cart"}</h1>
+                    <p>{"thanks for your payment!"}</p>
+                </div>
+            },
         }
     }
 }
 
-pub type ShoppingCart = SharedStateComponent<Model>;
+pub type Cart = SharedStateComponent<Model>;

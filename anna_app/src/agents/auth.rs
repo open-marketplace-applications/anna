@@ -4,8 +4,10 @@ use crate::types::Auth;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::collections::HashSet;
-use yew::agent::{Agent, AgentLink, Context, HandlerId};
-use yew::services::{storage::Area, StorageService};
+use yew::{
+    agent::{Agent, AgentLink, Context, HandlerId},
+    services::{storage::Area, StorageService},
+};
 
 static AUTH_KEY: &str = "Auth";
 

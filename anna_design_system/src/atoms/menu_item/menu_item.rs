@@ -6,9 +6,9 @@ use crate::Icon;
 
 #[derive(Debug)]
 pub struct MenuItem {
-  link: ComponentLink<Self>,
-  style: Style,
-  props: Props,
+    link: ComponentLink<Self>,
+    style: Style,
+    props: Props,
 }
 
 #[derive(Debug)]
@@ -32,8 +32,6 @@ impl Component for MenuItem {
 
   fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
     let style = Style::create("menu_item", include_str!("menu_item.scss")).expect("An error occured while creating the style.");
-    
-    log::info!("Überhaupt was siehn");
     
     MenuItem {
       link,

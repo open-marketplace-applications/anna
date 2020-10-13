@@ -1,34 +1,35 @@
-use crate::router::{AppRoutes, Router};
-use crate::types::CartProduct;
+use crate::{
+    router::{AppRoutes}
+};
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew_state::{GlobalHandle, SharedStateComponent};
 
 // 📚 Design System
-use anna_design_system::{Header, Icon, Logo, Menu, MenuItem, Tooltip};
+use anna_design_system::{Header, Logo, Menu, MenuItem, Tooltip};
 
 pub struct Nav {
-  props: Props,
+    props: Props,
 }
 
 #[derive(Properties, Clone)]
 pub struct Props {}
 
 impl Component for Nav {
-  type Message = ();
-  type Properties = Props;
+    type Message = ();
+    type Properties = Props;
 
-  fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-    Self { props }
-  }
+    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self {
+        Self { props }
+    }
 
-  fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-    true
-  }
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+        true
+    }
 
-  fn change(&mut self, handle: Self::Properties) -> ShouldRender {
-    true
-  }
+    fn change(&mut self, handle: Self::Properties) -> ShouldRender {
+        true
+    }
 
   fn view(&self) -> Html {
     html! {
@@ -54,7 +55,7 @@ impl Component for Nav {
               </MenuItem>
             </RouterAnchor<AppRoutes>>
 
-            <RouterAnchor<AppRoutes> route=AppRoutes::ShoppingCart>
+            <RouterAnchor<AppRoutes> route=AppRoutes::Cart>
               <MenuItem icon="cart">
                 <Tooltip title={"Cart"}></Tooltip>
               </MenuItem>
