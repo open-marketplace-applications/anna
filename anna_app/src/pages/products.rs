@@ -1,6 +1,7 @@
 use crate::{api, components::ProductCard, types::Product};
 use anyhow::Error;
 use yew::{format::Json, prelude::*, services::fetch::FetchTask};
+use anna_design_system::{Page, Section, Container, H1};
 
 struct State {
     products: Vec<Product>,
@@ -99,13 +100,25 @@ impl Component for Products {
             }
         } else if let Some(_) = self.state.get_products_error {
             html! {
-                <div>
-                    <span>{"Error loading products! :("}</span>
-                </div>
+                <Page>
+                    <Section class="light">
+                        <Container>
+                            <H1>{"Error loading products! :("}</H1>
+                        </Container>
+                    </Section>
+                </Page>
             }
         } else {
             html! {
-                <div class="product_card_list">{products}</div>
+                <Page>
+                    <Section class="light">
+                        <Container>
+                            <H1>{"Open Marketplace Page"}</H1>
+                            <div class="product_card_list">{products}</div>
+                        </Container>
+                    </Section>
+                </Page>
+                
             }
         }
     }

@@ -11,6 +11,8 @@ css-in-rust = { version = "0.4.1", features = ["yew_integration"] }
 
 wasm-bindgen = "0.2.63"
 
+# internal dependencies
+anna_design_system = { path = "../anna_design_system" }
 
 # logs
 log = "0.4"

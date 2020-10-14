@@ -1,0 +1,19 @@
+& {
+  margin-bottom: 8px;
+}
+
+&.light {
+  background-color: var(--light);
+}
+
+&.dark {
+  background-color: var(--dark);
+}
+
+&.black {
+  background-color: var(--black);
+}
+
+&.black *, &.dark * {
+  color: var(--white);
+}
