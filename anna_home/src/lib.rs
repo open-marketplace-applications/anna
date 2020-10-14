@@ -1,14 +1,14 @@
-use css_in_rust::Style;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use wasm_bindgen::prelude::*;
+use css_in_rust::Style;
+use anna_design_system::{Page, Section, Container, H1};
 
-/// Home page for logging in or displaying the Dashboard.
+#[derive(Debug)]
 pub struct Home {
     style: Style,
 }
 
 pub enum Msg {}
-
-use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "/src/js/paypal.js")]
 extern "C" {
@@ -20,12 +20,6 @@ impl Component for Home {
     type Properties = ();
 
     fn create(_props: Self::Properties, _link: ComponentLink<Self>) -> Self {
-        log::info!("home create ");
-
-        unsafe {
-            // show_button();
-        }
-
         let style = Style::create(
             String::from("home-page"),
             String::from(
@@ -47,12 +41,16 @@ impl Component for Home {
 
     fn view(&self) -> Html {
         html! {
-            <div class=self.style.to_string()>
-                <h1>{"Open Marketplace Page"}</h1>
-                <h2>{"Spotlight"}</h2>
-                <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
-                <a href="/cart">{"Jetzt vorbestellen!"}</a>
-            </div>
+            <Page>
+                <Section class="light">
+                    <Container>
+                        <H1>{"Open Marketplace Page"}</H1>
+                        <h2>{"Spotlight"}</h2>
+                        <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
+                        <a href="/cart">{"Jetzt vorbestellen!"}</a>
+                    </Container>
+                </Section>
+            </Page>
         }
     }
 }

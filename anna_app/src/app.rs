@@ -1,6 +1,6 @@
+use yew::prelude::*;
 use anna_design_system::{Footer, Page, Theme};
 use wasm_bindgen::prelude::*;
-use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::{
@@ -51,11 +51,9 @@ impl Component for App {
     fn view(&self) -> Html {
         html! {
             <Theme>
-                <Page>
-                    <Nav />
-                    <Router />
-                    <Footer />
-                </Page>
+                <Nav />
+                <Router />
+                <Footer />
             </Theme>
         }
     }
