@@ -6,9 +6,10 @@ use yew_form::{Field, Form};
 
 use regex::Regex;
 
-use identity_comm::{did_comm::TrustPing, types::TRUSTPING, DIDComm_message};
-use identity_common::Timestamp;
-use identity_core::did::{Param, DID};
+// use identity_comm::{did_comm::TrustPing, types::TRUSTPING, DIDComm_message};
+// use identity_common::Timestamp;
+// use identity_core::did::{Param, DID};
+// use identity_core::common::Timestamp;
 
 use serde::{Deserialize, Serialize};
 
@@ -21,7 +22,7 @@ use yew::services::{storage::Area, DialogService, StorageService};
 
 use yew::format::Json;
 
-use crate::components::{connect_pod::ConnectPod, search_did::SearchDID};
+// use crate::components::{connect_pod::ConnectPod, search_did::SearchDID};
 
 #[derive(Debug)]
 pub enum Msg {
@@ -79,7 +80,7 @@ struct Registration {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ProfileModel {
-    did: DID,
+    did: String,
 }
 
 /// Profile.
@@ -89,7 +90,7 @@ pub struct Profile {
     form: Form<Registration>,
     submitted: bool,
     id: String,
-    did: DID,
+    did: String,
     // worker
     job: Box<dyn Bridge<job::Worker>>,
     context: Box<dyn Bridge<context::Worker>>,
@@ -103,12 +104,15 @@ impl Component for Profile {
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
         // get profile from local storage
+        // let profil = ProfileModel {
+        //     did: DID {
+        //         method_name: "iota".into(),
+        //         id_segments: vec!["".into()],
+        //         ..Default::default()
+        //     },
+        // };
         let profil = ProfileModel {
-            did: DID {
-                method_name: "iota".into(),
-                id_segments: vec!["".into()],
-                ..Default::default()
-            },
+            did: "".into()
         };
         link.send_message(Msg::GetProfile);
         let storage = StorageService::new(Area::Local).expect("storage was disabled by the user");
@@ -152,11 +156,12 @@ impl Component for Profile {
             form: Form::new(model),
             submitted: false,
             id: "".into(),
-            did: DID {
-                method_name: "iota".into(),
-                id_segments: vec!["".into()],
-                ..Default::default()
-            },
+            // did: DID {
+            //     method_name: "iota".into(),
+            //     id_segments: vec!["".into()],
+            //     ..Default::default()
+            // },
+            did: "".into(),
 
             // workers
             job,
@@ -177,22 +182,26 @@ impl Component for Profile {
                 true
             }
             Msg::CreateDid => {
-                self.did = DID {
-                    method_name: "iota".into(),
-                    id_segments: vec![self.id.to_owned()],
-                    ..Default::default()
-                }
-                .init()
-                .unwrap();
+                // self.did = DID {
+                //     method_name: "iota".into(),
+                //     id_segments: vec![self.id.to_owned()],
+                //     ..Default::default()
+                // }
+                // .init()
+                // .unwrap();
+                self.did = "".into();
 
                 log::info!("starting up: DID {}", self.did.to_string());
 
+                // let profile = ProfileModel {
+                //     did: DID {
+                //         method_name: "iota".into(),
+                //         id_segments: vec![self.id.to_owned()],
+                //         ..Default::default()
+                //     },
+                // };
                 let profile = ProfileModel {
-                    did: DID {
-                        method_name: "iota".into(),
-                        id_segments: vec![self.id.to_owned()],
-                        ..Default::default()
-                    },
+                    did: "".into()
                 };
 
                 self.link.send_message(Msg::SaveProfile(profile));
@@ -200,27 +209,27 @@ impl Component for Profile {
                 true
             }
             Msg::SendDIDCommMessage => {
-                log::info!("SendDIDCommMessage from: {}", self.did.to_string());
-                let mut did_comm_message: DIDComm_message = DIDComm_message::new();
-                did_comm_message.set_id("123".to_string());
+                // log::info!("SendDIDCommMessage from: {}", self.did.to_string());
+                // let mut did_comm_message: DIDComm_message = DIDComm_message::new();
+                // did_comm_message.set_id("123".to_string());
 
-                did_comm_message.set_from(self.did.to_string());
+                // did_comm_message.set_from(self.did.to_string());
 
-                did_comm_message.set_type(TRUSTPING); // https:://didcomm.org/v1/messages/TrustPing
+                // did_comm_message.set_type(TRUSTPING); // https:://didcomm.org/v1/messages/TrustPing
 
-                let ping = TrustPing {
-                    response_requested: true,
-                };
-                let value = serde_json::to_value(ping).unwrap();
-                let object = value.as_object().unwrap();
-                did_comm_message.set_body(object.clone());
+                // let ping = TrustPing {
+                //     response_requested: true,
+                // };
+                // let value = serde_json::to_value(ping).unwrap();
+                // let object = value.as_object().unwrap();
+                // did_comm_message.set_body(object.clone());
 
-                // TODO: sign message
+                // // TODO: sign message
 
-                log::info!("did_comm_message from: {:?}", did_comm_message);
+                // log::info!("did_comm_message from: {:?}", did_comm_message);
 
-                let did_comm_message_string = serde_json::to_string(&did_comm_message).unwrap();
-                log::info!("did_comm_message_string from:{:?}", did_comm_message_string);
+                // let did_comm_message_string = serde_json::to_string(&did_comm_message).unwrap();
+                // log::info!("did_comm_message_string from:{:?}", did_comm_message_string);
 
                 true
             }
@@ -245,20 +254,24 @@ impl Component for Profile {
                 log::info!("GetProfile");
                 let Json(profile) = self.storage.restore(KEY);
                 let profile: ProfileModel = profile.ok().unwrap_or(ProfileModel {
-                    did: DID {
-                        method_name: "iota".into(),
-                        id_segments: vec![self.id.to_owned()],
-                        ..Default::default()
-                    },
+                    did: "".into(),
                 });
+
+                // let profile: ProfileModel = profile.ok().unwrap_or(ProfileModel {
+                //     did: DID {
+                //         method_name: "iota".into(),
+                //         id_segments: vec![self.id.to_owned()],
+                //         ..Default::default()
+                //     },
+                // });
                 log::info!("GetProfile::profile {:?}", profile);
                 self.link.send_message(Msg::GetProfileSuccess(profile));
                 true
             }
             Msg::GetProfileSuccess(profile) => {
                 log::info!("GetProfileSuccess profile: {:?}", profile);
-                self.did = profile.did.to_owned();
-                self.id = profile.did.id_segments.first().unwrap().into();
+                // self.did = profile.did.to_owned();
+                // self.id = profile.did.id_segments.first().unwrap().into();
                 true
             }
             Msg::SaveProfile(profile) => {
@@ -289,16 +302,16 @@ impl Component for Profile {
                 >
                     { "Update DID" }
                 </button>
-                <button
-                    disabled=self.did.id_segments.first().unwrap().is_empty()
-                    onclick=self.link.callback(|_| Msg::SendDIDCommMessage)
-                >
-                    { "Send Trustping" }
-                </button>
+                // <button
+                //     disabled=self.did.id_segments.first().unwrap().is_empty()
+                //     onclick=self.link.callback(|_| Msg::SendDIDCommMessage)
+                // >
+                //     { "Send Trustping" }
+                // </button>
                 <h1>{"Search did:"}</h1>
-                <SearchDID />
+                // <SearchDID />
                 <h1>{"Connect to pod:"}</h1>
-                <ConnectPod />
+                // <ConnectPod />
                 <h1>{"Workers:"}</h1>
                 <nav class="menu">
                 <button onclick=self.link.callback(|_| Msg::SendToJob)>{ "Send to Job" }</button>
