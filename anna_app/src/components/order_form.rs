@@ -4,8 +4,24 @@ use serde::{Deserialize, Serialize};
 use yew::{
     format::{Json, Nothing},
     services::fetch::{FetchService, FetchTask, Request, Response},
+    utils, App, ChangeData,
 };
 
+use web_sys::{HtmlOptionElement, HtmlSelectElement};
+use wasm_bindgen::JsCast;
+
+use celes::Country;
+use yew_styles::{
+    forms::form_component::Form,
+    forms::form_input::{FormInput, InputType},
+    forms::form_select::FormSelect,
+    forms::form_label::FormLabel,
+    forms::form_submit::FormSubmit,
+    forms::form_group::{FormGroup, Orientation},
+    styles::{Palette, Size, Style},
+};
+
+use anna_design_system::Button;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RegisterResponse {
     pub id: String,
@@ -16,11 +32,21 @@ pub struct RegisterResponse {
 pub enum Msg {
     SendOrder,
     ReceiveResponse(Result<RegisterResponse, anyhow::Error>),
+    Select(String),
+    Clicked(String),
+
+    // Update Messages
+    UpdateAmount(String),
+    UpdateEmail(String),
+    UpdateZipCode(String),
+    UpdateAddress(String),
+    UpdateFirstName(String),
+    UpdateLastName(String),
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Order {
-    // user
+    // person
     first_name: String,
     last_name: String,
     email: String,
@@ -32,10 +58,10 @@ pub struct Order {
     country: String,
 
     // product
-    amount: String,
+    amount: i32,
 
     // TODO: remove this
-    final_price: String,
+    final_price: f64,
 }
 
 #[derive(Debug)]
@@ -45,6 +71,7 @@ pub struct OrderForm {
     url: String,
     order: Order,
     onsignal: Callback<RegisterResponse>,
+    shipping_costs: f64
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -63,10 +90,10 @@ impl Component for OrderForm {
             address: "Kells".into(),
             zip_code: "5546".into(),
             city: "Downtown".into(),
-            country: "PO".into(),
+            country: "DE".into(),
             email: "john.d@mail.ls".into(),
-            amount: "1".into(),
-            final_price: "9.00".into(),
+            amount: 1,
+            final_price: 9.00,
         };
 
         Self {
@@ -75,6 +102,7 @@ impl Component for OrderForm {
             fetch_task: None,
             url: "http://localhost:5000/api/orders".to_string(),
             onsignal: props.onsignal,
+            shipping_costs: 1.55
         }
     }
 
@@ -112,10 +140,9 @@ impl Component for OrderForm {
                 match response {
                     Ok(reg_response) => {
                         log::info!("reg_response: {:?}", reg_response);
-                        // self.iss = Some(location);
+                        // emit response to parent (shopping cart)
                         self.onsignal.emit(reg_response);
 
-                        // emit response to parent (shopping cart)
                     }
                     Err(error) => {
                         log::info!("error: {:?}", error);
@@ -126,6 +153,37 @@ impl Component for OrderForm {
                 // we want to redraw so that the page displays the location of the ISS instead of
                 // 'fetching...'
             }
+            Msg::Select(value) => {
+                if value.eq(&"DE") {
+                    log::info!("matches: {:?}", value);
+                    self.shipping_costs = 1.55
+                } else {
+                    log::info!("matches not: {:?}", value);
+                    self.shipping_costs = 3.70
+                }
+                self.order.country = value;
+            }
+            Msg::Clicked(value) => log::info!("logi: {:?}", value),
+            
+            // Update order varliales from forms messages
+            Msg::UpdateAmount(value) => {
+                self.order.amount = value.parse().unwrap();
+            }
+            Msg::UpdateEmail(value) => {
+                self.order.email = value;
+            }
+            Msg::UpdateZipCode(value) => {
+                self.order.zip_code = value;
+            }
+            Msg::UpdateAddress(value) => {
+                self.order.address = value;
+            }
+            Msg::UpdateLastName(value) => {
+                self.order.first_name = value;
+            }
+            Msg::UpdateFirstName(value) => {
+                self.order.last_name = value;
+            }
         }
         true
     }
@@ -134,40 +192,129 @@ impl Component for OrderForm {
         self.onsignal = props.onsignal;
         true
     }
+    fn rendered(&mut self, first_render: bool) {
+        if first_render {
+            set_default_selected("country");
+        }
+    }
 
     fn view(&self) -> Html {
+        let countries = Country::get_countries();
+
+        let country = |model: &Country| {
+            html! {
+                <option value={model.alpha2.clone()}>{ model }</option>
+            }
+        };
         html! {
             <div>
-                <input class="firstname"
-                    placeholder="First name"
-                    value=&self.order.first_name />
-                <input
-                    class="lastname"
-                    placeholder="Last name"
-                    value=&self.order.last_name />
-                <input
-                    class="address"
-                    placeholder="address"
-                    value=&self.order.address />
-                <input
-                    class="zip_code"
-                    placeholder="zip_code"
-                    value=&self.order.zip_code />
-                <input
-                    class="country"
-                    placeholder="country"
-                    value=&self.order.country />
-                <input
-                    class="email"
-                    placeholder="email"
-                    value=&self.order.email />
-                <input
-                    class="amount"
-                    placeholder="amount"
-                    value=&self.order.amount />
-                <button onclick=self.link.callback(|_| Msg::SendOrder)>{ "Buy now" }</button>
+            <Button
+                onclick_signal=&self.link.callback(move |_| Msg::Clicked("Hello world".into()))
+                button_size=Size::Medium
+                >{"Greeting"}</Button>
+                <Form onsubmit_signal=self.link.callback(|e| Msg::SendOrder)>
+
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="firstname: "/>
+                        <input
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateFirstName(e.value))
+                            class="firstname"
+                            placeholder="firstname"
+                            value=&self.order.first_name />
+                    </FormGroup>
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="lastname: "/>
+                        <input
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateLastName(e.value))
+                            class="lastname"
+                            placeholder="lastname"
+                            value=&self.order.last_name />
+                    </FormGroup>
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="address: "/>
+                        <input
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateAddress(e.value))
+                            class="address"
+                            placeholder="address"
+                            value=&self.order.address />
+                    </FormGroup>
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="zip_code: "/>
+                        <input
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateZipCode(e.value))
+                            class="zip_code"
+                            placeholder="zip_code"
+                            value=&self.order.zip_code />
+                    </FormGroup>
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="Country: "/>
+                        <FormSelect
+                            id="country"
+                            select_size=Size::Medium
+                            onchange_signal = &self.link.callback(|e: ChangeData|
+                                match e {
+                                    ChangeData::Select(element) => {
+                                        let value = element.value();
+                                        Msg::Select(value)
+                                    },
+                                    _ => unreachable!(),
+                                }
+                            )
+                            options=html!{
+                                <>
+                                { for countries.iter().map(country) }
+                                </>
+                            }
+                        />
+                    </FormGroup>
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="Amount: "/>
+                        <input
+                            oninput=self.link.callback(|e: InputData| Msg::UpdateAmount(e.value))
+                            class="amount"
+                            placeholder="amount"
+                            value=&self.order.amount />
+                    </FormGroup>
+
+                    <FormGroup orientation=Orientation::Horizontal>
+                        <FormLabel text="Email: "/>
+                        <FormInput
+                            error_message="Email field is required"
+                            input_type=InputType::Email
+                            oninput_signal=self.link.callback(|e: InputData| Msg::UpdateEmail(e.value))
+                        />
+                    </FormGroup>
+                    <p>{"Shipping Costs: "}{&self.shipping_costs}</p>
+                    <p>{"Total: "}{(&self.order.final_price * f64::from(self.order.amount.clone())) + &self.shipping_costs}</p>
+                    
+                    <FormGroup>
+                        <FormSubmit
+                            value="Submit application"
+                            submit_palette=Palette::Success
+                            submit_style=Style::Outline
+                        />
+                    </FormGroup>
+                </Form>
             </div>
 
         }
     }
+}
+
+
+fn set_default_selected(select: &str) {
+    let specialty_form_element = utils::document()
+        .get_element_by_id(select)
+        .unwrap()
+        .dyn_into::<HtmlSelectElement>()
+        .unwrap();
+    let specialty_options = specialty_form_element.options();
+
+    let option = specialty_options
+        .get_with_index(76)
+        .unwrap()
+        .dyn_into::<HtmlOptionElement>()
+        .unwrap();
+
+    option.set_selected(true);
 }

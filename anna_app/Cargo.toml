@@ -42,6 +42,11 @@ anna_profile = { path = "../anna_profile" }
 anna_shop = { path = "../anna_shop" }
 anna_design_system = { path = "../anna_design_system" }
 
+celes = "1.0.5"
+yew_styles = { version="0.7", features=["forms"]}
+
+qrcode = { version = "0.8", default-features = false, features = ["svg"] }
+
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
 
