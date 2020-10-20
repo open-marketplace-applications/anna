@@ -9,3 +9,6 @@ pub use products::Products;
 pub use profile::Profile;
 pub use scanner::Scanner;
 pub use shopping_cart::Cart;
+
+pub mod home;
+pub use home::Home;

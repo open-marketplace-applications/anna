@@ -10,11 +10,6 @@ pub struct Home {
 
 pub enum Msg {}
 
-#[wasm_bindgen(module = "/src/js/paypal.js")]
-extern "C" {
-    fn show_button();
-}
-
 impl Component for Home {
     type Message = Msg;
     type Properties = ();
@@ -46,7 +41,7 @@ impl Component for Home {
                     <Container>
                         <H1>{"Open Marketplace"}</H1>
                         <h2>{"Spotlight"}</h2>
-                        <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
+                        <p>{"einfachIOTA Magazine 2 Vorverkauf"}</p>
                         <a href="/cart">{"Jetzt vorbestellen!"}</a>
                     </Container>
                 </Section>
