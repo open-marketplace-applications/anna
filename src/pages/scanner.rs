@@ -3,7 +3,7 @@ use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen(module = "/js/scanner.js")]
+#[wasm_bindgen(module = "/src/js/scanner.js")]
 extern "C" {
     fn start_scanner();
 }

@@ -9,7 +9,7 @@ use crate::{
     types::CartProduct,
 };
 
-#[wasm_bindgen(module = "/js/wasm_bridge.js")]
+#[wasm_bindgen(module = "/src/js/wasm_bridge.js")]
 extern "C" {
     fn js_test();
 }

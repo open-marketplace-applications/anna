@@ -44,7 +44,7 @@ impl Component for Home {
             <Page>
                 <Section class="light">
                     <Container>
-                        <H1>{"Open Marketplace Page"}</H1>
+                        <H1>{"Open Marketplace"}</H1>
                         <h2>{"Spotlight"}</h2>
                         <p id="paypal-button">{"einfachIOTA Magazine 2 Vorverkauf"}</p>
                         <a href="/cart">{"Jetzt vorbestellen!"}</a>

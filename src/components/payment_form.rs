@@ -110,7 +110,7 @@ impl fmt::Display for PayWithPaypalRequestBody {
 }
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen(module = "/js/paypal.js")]
+#[wasm_bindgen(module = "/src/js/paypal.js")]
 extern "C" {
     fn show_button(val: &JsValue);
 // pub fn handlePayPalPayment(val: &JsValue);
