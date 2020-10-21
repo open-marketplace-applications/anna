@@ -1,6 +1,4 @@
-use crate::{
-    router::{AppRoutes}
-};
+use crate::router::AppRoutes;
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew_state::{GlobalHandle, SharedStateComponent};
@@ -31,47 +29,47 @@ impl Component for Nav {
         true
     }
 
-  fn view(&self) -> Html {
-    html! {
-        <Header>
-          <Menu>
-            <RouterAnchor<AppRoutes> route=AppRoutes::Home>
-              <Logo />
-            </RouterAnchor<AppRoutes>>
-            
-            <RouterAnchor<AppRoutes> route=AppRoutes::Products>
-              <MenuItem text="Discover" icon="label" />
-            </RouterAnchor<AppRoutes>>
+    fn view(&self) -> Html {
+        html! {
+            <Header>
+              <Menu>
+                <RouterAnchor<AppRoutes> route=AppRoutes::Home>
+                  <Logo />
+                </RouterAnchor<AppRoutes>>
 
-            <RouterAnchor<AppRoutes> route=AppRoutes::Shop>
-              <MenuItem text="Shop" />
-            </RouterAnchor<AppRoutes>>
-          </Menu>
+                <RouterAnchor<AppRoutes> route=AppRoutes::Products>
+                  <MenuItem text="Discover" icon="label" />
+                </RouterAnchor<AppRoutes>>
 
-          <Menu>
-            <RouterAnchor<AppRoutes> route=AppRoutes::Scanner>
-              <MenuItem icon="scan">
-                <Tooltip title={"Scan QR Code"}></Tooltip>
-              </MenuItem>
-            </RouterAnchor<AppRoutes>>
+                <RouterAnchor<AppRoutes> route=AppRoutes::Shop>
+                  <MenuItem text="Shop" />
+                </RouterAnchor<AppRoutes>>
+              </Menu>
 
-            <RouterAnchor<AppRoutes> route=AppRoutes::Cart>
-              <MenuItem icon="cart">
-                <Tooltip title={"Cart"}></Tooltip>
-              </MenuItem>
-            </RouterAnchor<AppRoutes>>
-            
-            <RouterAnchor<AppRoutes> route=AppRoutes::ChatModel>
-              <MenuItem icon="chat">
-                <Tooltip title={"Messages"}></Tooltip>
-              </MenuItem>
-            </RouterAnchor<AppRoutes>>
+              <Menu>
+                <RouterAnchor<AppRoutes> route=AppRoutes::Scanner>
+                  <MenuItem icon="scan">
+                    <Tooltip title={"Scan QR Code"}></Tooltip>
+                  </MenuItem>
+                </RouterAnchor<AppRoutes>>
 
-            <RouterAnchor<AppRoutes> route=AppRoutes::Profile>
-              <MenuItem text="Profile" />
-            </RouterAnchor<AppRoutes>>
-          </Menu>
-        </Header>
+                <RouterAnchor<AppRoutes> route=AppRoutes::Cart>
+                  <MenuItem icon="cart">
+                    <Tooltip title={"Cart"}></Tooltip>
+                  </MenuItem>
+                </RouterAnchor<AppRoutes>>
+
+                <RouterAnchor<AppRoutes> route=AppRoutes::ChatModel>
+                  <MenuItem icon="chat">
+                    <Tooltip title={"Messages"}></Tooltip>
+                  </MenuItem>
+                </RouterAnchor<AppRoutes>>
+
+                <RouterAnchor<AppRoutes> route=AppRoutes::Profile>
+                  <MenuItem text="Profile" />
+                </RouterAnchor<AppRoutes>>
+              </Menu>
+            </Header>
+        }
     }
-  }
 }

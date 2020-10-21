@@ -1,7 +1,7 @@
 use crate::{api, components::ProductCard, types::Product};
 use anyhow::Error;
+use design_system::{Container, Page, Section, H1};
 use yew::{format::Json, prelude::*, services::fetch::FetchTask};
-use design_system::{Page, Section, Container, H1};
 
 struct State {
     products: Vec<Product>,
@@ -118,7 +118,7 @@ impl Component for Products {
                         </Container>
                     </Section>
                 </Page>
-                
+
             }
         }
     }

@@ -7,17 +7,19 @@ use yew::{
     utils, App, ChangeData,
 };
 
-use web_sys::{HtmlOptionElement, HtmlSelectElement};
 use wasm_bindgen::JsCast;
+use web_sys::{HtmlOptionElement, HtmlSelectElement};
 
 use celes::Country;
 use yew_styles::{
-    forms::form_component::Form,
-    forms::form_input::{FormInput, InputType},
-    forms::form_select::FormSelect,
-    forms::form_label::FormLabel,
-    forms::form_submit::FormSubmit,
-    forms::form_group::{FormGroup, Orientation},
+    forms::{
+        form_component::Form,
+        form_group::{FormGroup, Orientation},
+        form_input::{FormInput, InputType},
+        form_label::FormLabel,
+        form_select::FormSelect,
+        form_submit::FormSubmit,
+    },
     styles::{Palette, Size, Style},
 };
 
@@ -71,7 +73,7 @@ pub struct OrderForm {
     url: String,
     order: Order,
     onsignal: Callback<RegisterResponse>,
-    shipping_costs: f64
+    shipping_costs: f64,
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -102,7 +104,7 @@ impl Component for OrderForm {
             fetch_task: None,
             url: "http://localhost:5000/api/orders".to_string(),
             onsignal: props.onsignal,
-            shipping_costs: 1.55
+            shipping_costs: 1.55,
         }
     }
 
@@ -142,7 +144,6 @@ impl Component for OrderForm {
                         log::info!("reg_response: {:?}", reg_response);
                         // emit response to parent (shopping cart)
                         self.onsignal.emit(reg_response);
-
                     }
                     Err(error) => {
                         log::info!("error: {:?}", error);
@@ -164,7 +165,7 @@ impl Component for OrderForm {
                 self.order.country = value;
             }
             Msg::Clicked(value) => log::info!("logi: {:?}", value),
-            
+
             // Update order varliales from forms messages
             Msg::UpdateAmount(value) => {
                 self.order.amount = value.parse().unwrap();
@@ -286,7 +287,7 @@ impl Component for OrderForm {
                     </FormGroup>
                     <p>{"Shipping Costs: "}{&self.shipping_costs}</p>
                     <p>{"Total: "}{(&self.order.final_price * f64::from(self.order.amount.clone())) + &self.shipping_costs}</p>
-                    
+
                     <FormGroup>
                         <FormSubmit
                             value="Submit application"
@@ -300,7 +301,6 @@ impl Component for OrderForm {
         }
     }
 }
-
 
 fn set_default_selected(select: &str) {
     let specialty_form_element = utils::document()

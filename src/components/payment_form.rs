@@ -1,6 +1,6 @@
 use crate::router::AppRoutes;
-use yew::{html, Callback, Component, ComponentLink, Html, InputData, NodeRef, Properties, ShouldRender};
 use anyhow::Error;
+use yew::{html, Callback, Component, ComponentLink, Html, InputData, NodeRef, Properties, ShouldRender};
 
 use yew::{
     format::{Json, Nothing},
@@ -13,11 +13,8 @@ use crate::components::RegisterResponse;
 use serde::{Deserialize, Serialize};
 
 extern crate qrcode;
-use qrcode::render::svg;
-use qrcode::QrCode;
-use qrcode::types::QrError;
+use qrcode::{render::svg, types::QrError, QrCode};
 use web_sys::Element;
-
 
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 
@@ -38,7 +35,6 @@ pub struct IOTAPayment {
 pub struct PayWithIOTAResponse {
     pub payment: IOTAPayment,
 }
-
 
 #[derive(Properties, Clone, Debug)]
 pub struct Props {
@@ -161,8 +157,9 @@ impl PaymentForm {
     }
 
     fn fetch_json(&mut self, binary: AsBinary) -> yew::services::fetch::FetchTask {
-        let callback = self.link.batch_callback(
-            move |response: Response<Json<Result<DataFromFile, Error>>>| {
+        let callback = self
+            .link
+            .batch_callback(move |response: Response<Json<Result<DataFromFile, Error>>>| {
                 let (meta, Json(data)) = response.into_parts();
                 println!("META: {:?}, {:?}", meta, data);
                 if meta.status.is_success() {
@@ -171,8 +168,7 @@ impl PaymentForm {
                 } else {
                     Vec::new() // FIXME: Handle this error accordingly.
                 }
-            },
-        );
+            });
         let request = Request::get("/data.json").body(Nothing).unwrap();
         if binary {
             FetchService::fetch_binary(request, callback).unwrap()
@@ -186,7 +182,6 @@ impl Component for PaymentForm {
     type Properties = Props;
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self {
-
         Self {
             props: props.clone(),
             link,
@@ -207,8 +202,6 @@ impl Component for PaymentForm {
     }
     fn rendered(&mut self, first_render: bool) {
         if first_render {
-
-           
             unsafe {
                 show_button(&JsValue::from_serde(&self.props.order).unwrap());
             }
@@ -259,13 +252,13 @@ impl Component for PaymentForm {
                     .expect("Could not build request.");
 
                 // 2. construct a callback
-                let callback = self.link.callback(
-                    |response: Response<Json<Result<PayWithIOTAResponse, anyhow::Error>>>| {
-                        log::info!("response: {:?}", response);
-                        let Json(data) = response.into_body();
-                        Msg::ReceiveIOTAResponse(data)
-                    },
-                );
+                let callback =
+                    self.link
+                        .callback(|response: Response<Json<Result<PayWithIOTAResponse, anyhow::Error>>>| {
+                            log::info!("response: {:?}", response);
+                            let Json(data) = response.into_body();
+                            Msg::ReceiveIOTAResponse(data)
+                        });
                 // 3. pass the request and callback to the fetch service
                 let task = FetchService::fetch(request, callback).expect("failed to start request");
                 log::info!("task: {:?}", task);
@@ -292,10 +285,10 @@ impl Component for PaymentForm {
                     Ok(reg_response) => {
                         log::info!("reg_response: {:?}", reg_response);
                         match qrcode(&reg_response.payment.address, 300, 300) {
-                            Ok(v) => {                
+                            Ok(v) => {
                                 let el = self.node_ref2.cast::<Element>().unwrap();
                                 el.set_inner_html(&v);
-                            },
+                            }
                             Err(e) => {
                                 format!("{}", e);
                             }
@@ -314,7 +307,6 @@ impl Component for PaymentForm {
                     Format::Json => self.fetch_json(binary),
                 };
                 self.ft = Some(task);
-                
             }
             Msg::WsAction(action) => match action {
                 WsAction::Connect => {
@@ -326,19 +318,18 @@ impl Component for PaymentForm {
                             Vec::new()
                         }
                     });
-                    let task =
-                        WebSocketService::connect("ws://localhost:5000/iotapay/socket/?EIO=3&transport=websocket", callback, notification);
+                    let task = WebSocketService::connect(
+                        "ws://localhost:5000/iotapay/socket/?EIO=3&transport=websocket",
+                        callback,
+                        notification,
+                    );
 
-                        match task {
-                            Ok(_task) => {
-
-                                self.ws = Some(_task);
-                            },
-                            Err(err) => {
-                                log::info!("error ws: {:?}", err)
-                            }
+                    match task {
+                        Ok(_task) => {
+                            self.ws = Some(_task);
                         }
-                    
+                        Err(err) => log::info!("error ws: {:?}", err),
+                    }
                 }
                 WsAction::SendData(binary) => {
                     let request = WsRequest { value: 321 };
@@ -347,25 +338,20 @@ impl Component for PaymentForm {
                     } else {
                         self.ws.as_mut().unwrap().send(Json(&request));
                     }
-                    
                 }
                 WsAction::Disconnect => {
                     self.ws.take();
-                    
                 }
                 WsAction::Lost => {
                     self.ws = None;
-                    
                 }
             },
             Msg::FetchReady(response) => {
                 self.fetching = false;
                 self.data = response.map(|data| data.value).ok();
-                
             }
             Msg::WsReady(response) => {
                 self.data = response.map(|data| data.value).ok();
-                
             }
         }
         true
@@ -421,11 +407,13 @@ impl Component for PaymentForm {
 }
 
 fn qrcode<T>(data: T, width: u32, height: u32) -> Result<String, QrError>
-where T: AsRef<[u8]> {
-    QrCode::with_error_correction_level(data.as_ref(), qrcode::EcLevel::Q)
-        .map(|code| code.render::<svg::Color>()
+where
+    T: AsRef<[u8]>,
+{
+    QrCode::with_error_correction_level(data.as_ref(), qrcode::EcLevel::Q).map(|code| {
+        code.render::<svg::Color>()
             .max_dimensions(width, height)
             .min_dimensions(width, height)
             .build()
-        )
+    })
 }

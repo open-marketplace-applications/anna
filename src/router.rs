@@ -1,13 +1,7 @@
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew_router::{route::Route, router::Router as YewRouter, switch::Permissive, Switch};
 
-use crate::pages::{
-    Cart, 
-    ProductDetail, 
-    Products, 
-    Scanner,
-    Home
-};
+use crate::pages::{Cart, Home, ProductDetail, Products, Scanner};
 
 use anna_chat::chat::ChatModel;
 // use anna_home::Home;
