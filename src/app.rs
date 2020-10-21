@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use anna_design_system::{Footer, Page, Theme};
+use design_system::{Footer, Page, Theme};
 use wasm_bindgen::prelude::*;
 use yew_router::prelude::*;
 

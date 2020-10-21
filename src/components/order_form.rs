@@ -21,7 +21,7 @@ use yew_styles::{
     styles::{Palette, Size, Style},
 };
 
-use anna_design_system::Button;
+use design_system::Button;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RegisterResponse {
     pub id: String,

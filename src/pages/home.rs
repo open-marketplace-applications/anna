@@ -1,7 +1,7 @@
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use wasm_bindgen::prelude::*;
 use css_in_rust::Style;
-use anna_design_system::{Page, Section, Container, H1};
+use design_system::{Page, Section, Container, H1};
 
 #[derive(Debug)]
 pub struct Home {

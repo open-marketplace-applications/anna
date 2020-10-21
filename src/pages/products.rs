@@ -1,7 +1,7 @@
 use crate::{api, components::ProductCard, types::Product};
 use anyhow::Error;
 use yew::{format::Json, prelude::*, services::fetch::FetchTask};
-use anna_design_system::{Page, Section, Container, H1};
+use design_system::{Page, Section, Container, H1};
 
 struct State {
     products: Vec<Product>,
